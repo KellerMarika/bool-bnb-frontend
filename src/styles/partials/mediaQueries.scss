@@ -1,0 +1,29 @@
+/***** MEDIA  QUERIES *****************************************/
+@import 'bootstrap/scss/_functions';
+@import 'bootstrap/scss/_variables';
+@import 'bootstrap/scss/mixins/_breakpoints';
+
+/* visualizzare */
+.XXX {
+ border: 1px solid rgb(216, 127, 228);
+
+ @include media-breakpoint-up(xs) {
+  border: 1px solid rgb(9, 0, 128);
+ }
+
+ @include media-breakpoint-up(sm) {
+  border: 1px solid rgb(0, 128, 128);
+ }
+
+ @include media-breakpoint-up(lg) {
+  border: 1px solid rgb(125, 236, 91);
+ }
+
+ @include media-breakpoint-up(xl) {
+  border: 1px solid rgb(255, 174, 0);
+ }
+
+ @include media-breakpoint-up(xxl) {
+  border: 1px solid rgb(255, 0, 119);
+ }
+}
