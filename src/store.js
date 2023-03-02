@@ -1,12 +1,17 @@
 
 /* STORE:VARIABILI GOLOBALI CHE SERVONO OVUNQUE NEL SITO: */
-import { router } from "./router";
-import { reactive } from "vue";
 
+import { reactive } from "vue";
+import axios from 'axios'
 export const store = reactive({
 
-  backedRootUrl: 'http://127.0.0.1:8000',
+/*   backedRootUrl: 'http://127.0.0.1:8000', */
 });
+
+
+export function titles(pageTitle){
+  document.title=pageTitle
+};
 
 /**FUNZIONE API CALL
  * 
@@ -16,14 +21,16 @@ export const store = reactive({
  */
 export function api_GET(thisRoutePath, payload) {
 
-  let apiUrl = `${backedRootUrl}/api${thisRoutePath}`
+  let backedRootUrl = 'http://127.0.0.1:8000';
 
-  console.log(apiUrl)
+  let apiUrl = `${backedRootUrl}/api${thisRoutePath}`
+  console.log(apiUrl);
+
   axios.get(`${apiUrl}`, {
     params: payload
-
   })
     .then((resp) => {
       return resp.data
     });
-}
+};
+

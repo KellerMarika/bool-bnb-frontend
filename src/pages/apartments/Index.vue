@@ -3,7 +3,9 @@
 </template>
 
 <script>
+/* import{axios} from 'axios' */
 import { api_GET } from '../../store';
+import { titles } from '../../store';
 export default {
  name: "Apartments Index",
  components: {},
@@ -16,7 +18,11 @@ export default {
 
  },
  mounted() {
-/* api_GET(this.$route.fullPath, this.filterParams) */
+  document.title=this.$route.meta.title
+  console.log(this.$route)
+ 
+ titles(this.$route.meta.title); 
+ api_GET(this.$route.fullPath);
  },
  created() {
  }

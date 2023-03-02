@@ -3,7 +3,7 @@
 </template>
 
 <script>
-
+import { titles } from '../store';
 export default {
   components: {},
   data() {
@@ -13,6 +13,7 @@ export default {
   methods: {
   },
   mounted() {
+    titles(this.$route.meta.title); 
   },
   created() {
   }

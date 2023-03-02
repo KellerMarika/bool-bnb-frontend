@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { titles } from '../../store';
+
 export default {
  name: "Apartments Edit",
  components: {},
@@ -15,8 +17,7 @@ export default {
 
  },
  mounted() {
- },
- created() {
+  titles(this.$route.meta.title+this.$route.params.id);
  }
 }
 </script>
