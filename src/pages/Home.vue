@@ -4,6 +4,7 @@
 </template>
 
 <script>
+import { titles } from '../store';
 export default {
   name: 'Home',
   components: {},
@@ -14,6 +15,7 @@ export default {
   methods: {
   },
   mounted() {
+    titles(this.$route.meta.title); 
   },
   created() {
   }

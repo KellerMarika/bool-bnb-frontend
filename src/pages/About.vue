@@ -8,6 +8,7 @@ import TheFooter from '../components/TheFooter.vue';
 </template>
 
 <script>
+import { titles } from '../store';
 import { store } from '../store';
 import TheHeader from '../components/TheHeader.vue';
 import TheFooter from '../components/TheFooter.vue';
@@ -23,6 +24,7 @@ export default {
   methods: {
   },
   mounted() {
+    titles(this.$route.meta.title); 
   },
   created() {
   }
