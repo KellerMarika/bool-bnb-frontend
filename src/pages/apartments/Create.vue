@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import { fetch } from '../../store';
 export default {
  name: "Apartments Create",
  components: {},
