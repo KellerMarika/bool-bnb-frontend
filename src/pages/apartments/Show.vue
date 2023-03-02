@@ -3,21 +3,26 @@
 </template>
 
 <script>
+import { titles } from '../../store';
+import { api_GET } from '../../store';
 export default {
- name: "Apartments Show",
- components: {},
- data() {
-  return {
-   apartments: [],
-  }
- },
- methods: {
+  name: "Apartments Show",
+  components: {},
+  data() {
+    return {
+      apartments: [],
+    }
+  },
+  methods: {
 
- },
- mounted() {
- },
- created() {
- }
+  },
+  mounted() {
+    console.log(this.$route)
+    api_GET(this.$route.fullPath);
+    titles(this.$route.meta.title+this.$route.params.id); 
+  },
+  created() {
+  }
 }
 </script>
 

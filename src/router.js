@@ -23,17 +23,20 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: Home_Pg
+      component: Home_Pg,
+      meta: { title:"HOME"},
     },
     {
       path: "/about",
       name: "about",
-      component: About_Pg
+      component: About_Pg,
+      meta: { title:"ABOUT"},
     },
     {
       path: "/contacts",
       name: "contacts",
-      component: Contacts_Pg
+      component: Contacts_Pg,
+      meta: { title:"CONTACTS"},
     },
 
     // APARTIMENTS.....................
@@ -42,26 +45,28 @@ const router = createRouter({
       path: "/apartments",
       name: "Apartments.index",
       component: ApartmentsIndex_Pg,
+      meta: { title:"GALLERY APARTNENTS"},
     },
     //show
     {
       path: "/apartments/:id",
       name: "Apartments.show",
       component: ApartmentsShow_Pg,
+      meta: { title:"APARTMENT: #"},
     },
     //create
     {
       path: "/apartments/create",
       name: "Apartments.create",
       component: ApartmentsCreate_Pg,
-      meta: { requiresAuth: false },
+      meta: { title:"CREATE NEW APARTNENT"},
     },
     //edit
     {
       path: "/apartments/:id/edit",
       name: "Apartments.edit",
       component: ApartmentsEdit_Pg,
-      meta: { requiresAuth: false },
+      meta: { title:"EDIT APARTMENT: #"}
     },
     // 404 ................................
     {
@@ -69,6 +74,7 @@ const router = createRouter({
       path: "/:catchAll(.*)",
       name: "not-found",
       component: NotFound_Pg,
+      meta: { title:"PAGE NOT FOUND"}
     },
   ]
 });
