@@ -11,7 +11,6 @@ import { titles } from '../../store';
 import { router } from "./../../router"
 import { api_POST, store } from '../../store';
 
-import axios from 'axios';
 export default {
   name: "Apartments Create",
   components: {},
@@ -19,9 +18,6 @@ export default {
     return {
 
       store,
-
-      apartments: [],
-
       form: {
         user_id: 1,
         title: "Buco Hobbit",
@@ -46,7 +42,7 @@ export default {
       // chiamata axios ad una rotta del server alla quale inviamo i dati del form
       // siccome dobbiamo inviare un file, occorre convertire l'oggetto form in un oggetto FormData
       const formData = new FormData();
-      //  formData.append("user_id", this.form.user_id);
+      formData.append("user_id", this.form.user_id);
       formData.append("title", this.form.title);
       formData.append("address", this.form.address);
       formData.append("latitude", this.form.latitude);
@@ -62,6 +58,7 @@ export default {
 
       api_POST(this.$route.meta.apiRoutePath, formData)
     },
+
     onAttachmentChange(event) {
       // reucupero l'array dei file scelti dall'utente
       const chosenFiles = event.target.files
