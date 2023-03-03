@@ -85,10 +85,12 @@
           <input type="number" step="0.01"  placeholder="daily price of the apartment Ex. 180" class="form-control" id="daily_priceInput" v-model="form.daily_price" />
         </div>
 
-        <div class="mb-2">
-          <label for="daily_priceInput" class="form-label">Visible</label>
-          <input type="number" step="0.01"  placeholder="daily price of the apartment Ex. 180" class="form-control" id="daily_priceInput" v-model="form.daily_price" />
-        </div>
+        <!--*** da aggiungere checkbox per visible  ***-->
+        
+        <!-- <div class="mb-2">
+          <label for="visibleInput" class="form-label">Visible</label>
+          <input type="checkbox"   placeholder="visible" class="form-control" id="visibleInput" v-model="form.visible" />
+        </div> -->
 
         
 
