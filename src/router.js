@@ -52,7 +52,7 @@ const router = createRouter({
       path: "/apartments/:id",
       name: "Apartments.show",
       component: ApartmentsShow_Pg,
-      meta: { title:"APARTMENT: #",apiRoutePath:"/apartments/:id"},
+      meta: { title:"APARTMENT: #",apiRoutePath:"/apartments/" ,apiRouteDeletePath:"/admin/apartments/"},
     },
     //create
     {
@@ -66,7 +66,7 @@ const router = createRouter({
       path: "/apartments/:id/edit",
       name: "Apartments.edit",
       component: ApartmentsEdit_Pg,
-      meta: { title:"EDIT APARTMENT: #", apiRoutePath:"/admin/apartments/:id"}
+      meta: { title:"EDIT APARTMENT: #", apiRoutePath:"/admin/apartments/"}
     },
     // 404 ................................
     {

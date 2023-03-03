@@ -1,14 +1,13 @@
 <template>
   <h1>Apartments Create</h1>
-  <form @submit.prevent="onFormSubmit">
+  <form @submit.prevent="onCreateFormSubmit">
 
-    <button @click="onFormSubmit">bottone magico</button>
+    <button @click="onCreateFormSubmit">bottone magico</button>
   </form>
 </template>
 
 <script>
 import { titles } from '../../store';
-import { router } from "./../../router"
 import { api_POST, store } from '../../store';
 
 export default {
@@ -18,8 +17,8 @@ export default {
     return {
 
       store,
+      user_id: 1,//sarà quello che scarico da user autenticato
       form: {
-        user_id: 1,
         title: "Buco Hobbit",
         address: "Hobbiville, Contea",
         latitude: "14.56121",
@@ -37,12 +36,12 @@ export default {
   },
   methods: {
 
-    onFormSubmit() {
-      this.loading = true;
+    onCreateFormSubmit() {
+      this.store.loading = true;
       // chiamata axios ad una rotta del server alla quale inviamo i dati del form
       // siccome dobbiamo inviare un file, occorre convertire l'oggetto form in un oggetto FormData
       const formData = new FormData();
-      formData.append("user_id", this.form.user_id);
+      formData.append("user_id", this.user_id);
       formData.append("title", this.form.title);
       formData.append("address", this.form.address);
       formData.append("latitude", this.form.latitude);
@@ -67,27 +66,10 @@ export default {
       this.form.cover_img = chosenFiles[0];
     },
 
-
-
-    getTitle(to) {
-
-      router.beforeEach((to, from, next) => {
-        console.log(to)
-        // Get the page title from the route meta data that we have defined
-        // See further down below for how we setup this data
-        const title = to.meta.title
-        // If the route has a title, set it as the page title of the document/page
-        if (title) {
-          Document.title = title
-        }
-        next()
-      })
-    }
-
   },
   mounted() {
     titles(this.$route.meta.title);
-    this.onFormSubmit()
+    this.onCreateFormSubmit()
 
   },
   created() {
