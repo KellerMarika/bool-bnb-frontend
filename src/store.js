@@ -14,7 +14,7 @@ export function titles(pageTitle) {
   document.title = pageTitle
 };
 
-/**FUNZIONE API CALL GET
+/**FUNZIONE API CALL GET (index).........................
  * 
  * @param {string} thisRoutePath  es= 'apartments/create'
  * @param {object} payload es=  {pagination:3}
@@ -24,18 +24,62 @@ export function api_GET(thisRoutePath, payload) {
   let backedRootUrl = 'http://127.0.0.1:8000';
 
   let apiUrl = `${backedRootUrl}/api${thisRoutePath}`
-  console.log(apiUrl);
+  console.log("SHOW",apiUrl);
 
   axios.get(`${apiUrl}`, {
     params: payload
   })
     .then((resp) => {
-      console.log(resp.data)
+      store.submitResult = "success";
+      store.loading = false;
+
+      console.log("SHOW",resp.data)
       return resp.data
+    })
+    .catch((e) => {
+
+      if (e.response && e.response.data) {
+        store.submitResult = e.response.data.message;
+      } else {
+        store.submitResult = e.message;
+      }
+      console.log(e);
+    });
+};
+/**FUNZIONE API CALL SHOW (show).........................
+ * 
+ * @param {string} thisRoutePath  es= 'apartments/create'
+ * @param {object} payload es=  {pagination:3}
+ */
+export function api_SHOW(thisRoutePath, payload) {
+
+  let backedRootUrl = 'http://127.0.0.1:8000';
+
+  let apiUrl = `${backedRootUrl}/api${thisRoutePath}`
+  console.log("SHOW",apiUrl);
+
+  axios.get(`${apiUrl}`, {
+    params: payload
+  })
+    .then((resp) => {
+      store.submitResult = "success";
+      store.loading = false;
+
+      console.log("SHOW",resp.data.data[0])
+      return resp.data.data[0]
+    })
+    .catch((e) => {
+
+      if (e.response && e.response.data) {
+        store.submitResult = e.response.data.message;
+      } else {
+        store.submitResult = e.message;
+      }
+      console.log(e);
     });
 };
 
-/**FUNZIONE API CALL GET
+/**FUNZIONE API CALL POST (create->store)....................
  * 
  * @param {string} thisRoutePath  es= 'apartments/create'
  * @param {object} payload es=  {pagination:3}
@@ -71,3 +115,67 @@ export function api_POST(thisRoutePath, payload) {
     });
 }
 
+
+/**FUNZIONE API CALL PUT (edit->update)........................
+ * 
+ * @param {string} thisRoutePath  es= 'apartments/create'
+ * @param {object} payload es=  {pagination:3}
+ */
+export function api_PUT(thisRoutePath, payload) {
+
+  let backedRootUrl = 'http://127.0.0.1:8000';
+
+  let apiUrl = `${backedRootUrl}/api${thisRoutePath}`
+  /*  console.log(apiUrl);
+  */
+  axios.put(`${apiUrl}`, payload)
+    .then((resp) => {
+      console.log(resp);
+
+      store.submitResult = "success";
+      store.loading = false;
+      return
+
+    })
+    .catch((e) => {
+
+      if (e.response && e.response.data) {
+        store.submitResult = e.response.data.message;
+      } else {
+        store.submitResult = e.message;
+      }
+      console.log(e);
+    });
+}
+/**FUNZIONE API CALL DELETE ().........................
+ * 
+ * @param {string} thisRoutePath  es= 'apartments/create'
+ * @param {object} payload es=  {pagination:3}
+ */
+export function api_DELETE(thisRoutePath, payload) {
+
+  let backedRootUrl = 'http://127.0.0.1:8000';
+
+  let apiUrl = `${backedRootUrl}/api${thisRoutePath}`
+  console.log(apiUrl);
+
+  axios.delete(`${apiUrl}`, {
+    params: payload
+  })
+    .then((resp) => {
+      store.submitResult = "success";
+      store.loading = false;
+
+      console.log("DELETE",resp.data)
+      return resp.data
+    })
+    .catch((e) => {
+
+      if (e.response && e.response.data) {
+        store.submitResult = e.response.data.message;
+      } else {
+        store.submitResult = e.message;
+      }
+      console.log(e);
+    });
+};
