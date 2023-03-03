@@ -3,14 +3,18 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { titles } from '../store';
+import { api_GET } from '../store';
 export default {
   components: {},
   data() {
     return {
+      
     }
   },
   methods: {
+    
   },
   mounted() {
     titles(this.$route.meta.title); 

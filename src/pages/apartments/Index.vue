@@ -22,6 +22,7 @@ export default {
  
  titles(this.$route.meta.title); 
  api_GET(this.$route.meta.apiPrefix+this.$route.fullPath);
+ console.log(this.$route.meta.apiPrefix+this.$route.fullPath);
  },
  created() {
  }

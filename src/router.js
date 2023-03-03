@@ -45,7 +45,7 @@ const router = createRouter({
       path: "/apartments",
       name: "Apartments.index",
       component: ApartmentsIndex_Pg,
-      meta: { title:"GALLERY APARTNENTS", apiPrefix:"/admin"},
+      meta: { title:"GALLERY APARTMENTS", apiPrefix:"/admin"},
     },
     //show
     {
