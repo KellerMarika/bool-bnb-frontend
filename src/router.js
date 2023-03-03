@@ -45,28 +45,28 @@ const router = createRouter({
       path: "/apartments",
       name: "Apartments.index",
       component: ApartmentsIndex_Pg,
-      meta: { title:"GALLERY APARTNENTS"},
+      meta: { title:"GALLERY APARTMENTS", apiRoutePath:"/apartments"},
     },
     //show
     {
       path: "/apartments/:id",
       name: "Apartments.show",
       component: ApartmentsShow_Pg,
-      meta: { title:"APARTMENT: #"},
+      meta: { title:"APARTMENT: #",apiRoutePath:"/apartments/:id"},
     },
     //create
     {
       path: "/apartments/create",
       name: "Apartments.create",
       component: ApartmentsCreate_Pg,
-      meta: { title:"CREATE NEW APARTNENT"},
+      meta: { title:"CREATE NEW APARTNENT", apiRoutePath:"/apartments"},
     },
     //edit
     {
       path: "/apartments/:id/edit",
       name: "Apartments.edit",
       component: ApartmentsEdit_Pg,
-      meta: { title:"EDIT APARTMENT: #"}
+      meta: { title:"EDIT APARTMENT: #", apiRoutePath:"/admin/apartments/:id/edit"}
     },
     // 404 ................................
     {
