@@ -30,6 +30,7 @@ export function api_GET(thisRoutePath, payload) {
     params: payload
   })
     .then((resp) => {
+      console.log(resp.data)
       return resp.data
     });
 };
@@ -44,17 +45,15 @@ export function api_POST(thisRoutePath, payload) {
   let backedRootUrl = 'http://127.0.0.1:8000';
 
   let apiUrl = `${backedRootUrl}/api${thisRoutePath}`
-  console.log(apiUrl);
-
-  axios.post(`${apiUrl}`, {
-    params: payload
-  })
+  /*  console.log(apiUrl);
+  */
+  axios.post(`${apiUrl}`, payload)
     .then((resp) => {
-      console.log (resp)
-      //in caso di success, salvo una variable e imposto loading a false
+      console.log(resp);
 
-   /*    this.submitResult = "success";
-      this.loading = false; */
+      //in caso di success, salvo una variable e imposto loading a false
+      store.submitResult = "success";
+      store.loading = false;
 
       return
 
@@ -63,12 +62,12 @@ export function api_POST(thisRoutePath, payload) {
       //controllo che nell'errore ci sia il response.data. 
       // Non è detto che c'è sempre. Dipende dall'errore.
       if (e.response && e.response.data) {
-      /*   this.submitResult = e.response.data.message; */
+        store.submitResult = e.response.data.message;
       } else {
-      /*   this.submitResult = e.message; */
+        store.submitResult = e.message;
       }
       console.log(e);
-    
+
     });
 }
 

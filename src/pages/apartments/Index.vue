@@ -17,12 +17,9 @@ export default {
  methods: {
  },
  mounted() {
-  document.title=this.$route.meta.title
-  console.log(this.$route)
- 
+
  titles(this.$route.meta.title); 
- api_GET(this.$route.meta.apiPrefix+this.$route.fullPath);
- console.log(this.$route.meta.apiPrefix+this.$route.fullPath);
+ api_GET(this.$route.meta.apiRoutePath);
  },
  created() {
  }

@@ -1,6 +1,9 @@
 <template>
   <h1>Apartments Create</h1>
-  <button @click="onFormSubmit">bottone magico</button>
+  <form @submit.prevent="onFormSubmit">
+
+    <button @click="onFormSubmit">bottone magico</button>
+  </form>
 </template>
 
 <script>
@@ -18,8 +21,6 @@ export default {
       store,
 
       apartments: [],
-
-
 
       form: {
         user_id: "a",
@@ -45,12 +46,8 @@ export default {
       // chiamata axios ad una rotta del server alla quale inviamo i dati del form
       // siccome dobbiamo inviare un file, occorre convertire l'oggetto form in un oggetto FormData
       const formData = new FormData();
-      console.log(formData)
-      console.log(this.form.user_id);
-
       formData.append("user_id", this.form.user_id);
-      console.log(formData.user_id)
-
+      formData.append("username", "Chris");
       formData.append("title", this.form.title);
       formData.append("address", this.form.address);
       formData.append("latitude", this.form.latitude);
@@ -63,34 +60,8 @@ export default {
       formData.append("mq", this.form.mq);
       formData.append("daily_price", this.form.daily_price);
       formData.append("visible", this.form.visible);
-      console.log(formData);
 
-      /*       api_POST(this.$route.meta.apiPrefix + this.$route.fullPath, formData); */
-     /*  axios.post("http://127.0.0.1:8000/api/admin/apartments/create", formData)
-        .then((resp) => {
-          console.log(resp)
-        }); */
-
-
-      // post(url, dati) - i dati devono essere un oggetto js.
-      // api_POST(this.$route.meta.apiPrefix+this.$route.fullPath, formData)
-      // axios.post("http://127.0.0.1:8000/api/admin/apartments", formData)
-      // .then((resp) => {
-      //     // in caso di success, salvo una variable e imposto loading a false
-      //     this.submitResult = "success";
-      //     this.loading = false;
-      //   })
-      //   .catch((e) => {
-      //     // controllo che nell'errore ci sia il response.data. 
-      //     // Non è detto che c'è sempre. Dipende dall'errore.
-      //     if (e.response && e.response.data) {
-      //       this.submitResult = e.response.data.message;
-      //     } else {
-      //       this.submitResult = e.message;
-      //     }
-      //     console.log(e);
-      //     this.loading = false;
-      //   });
+      api_POST(this.$route.meta.apiRoutePath, formData)
     },
     onAttachmentChange(event) {
       // reucupero l'array dei file scelti dall'utente
