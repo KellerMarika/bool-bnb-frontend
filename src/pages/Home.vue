@@ -1,6 +1,8 @@
 <template>
-  <h1 >HOME</h1>
+  <div class="container">
+  <h1 class="text-danger">HOME</h1>
   <i ></i>
+</div>
 </template>
 
 <script>
