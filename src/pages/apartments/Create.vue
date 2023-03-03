@@ -124,14 +124,6 @@ export default {
     return {
 
       store,
-<<<<<<< HEAD
-      user_id: 1,//sarà quello che scarico da user autenticato
-      form: {
-        title: "Buco Hobbit",
-        address: "Hobbiville, Contea",
-        latitude: "14.56121",
-        longitude: "22.33456",
-=======
 
       apartments: [],
 
@@ -151,7 +143,6 @@ export default {
         address: "",
         latitude: "",
         longitude: "",
->>>>>>> 238dfac54bd3b2b481f05932aa02f1904c990c22
         cover_img: "",
         description: "",
         rooms_qty: "",
