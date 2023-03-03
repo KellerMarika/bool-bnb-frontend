@@ -6,17 +6,16 @@ import axios from 'axios'
 export const store = reactive({
   loading: false,
   submitResult: "",
-/*   backedRootUrl: 'http://127.0.0.1:8000', */
+  /*   backedRootUrl: 'http://127.0.0.1:8000', */
 });
 
 
-export function titles(pageTitle){
-  document.title=pageTitle
+export function titles(pageTitle) {
+  document.title = pageTitle
 };
 
-/**FUNZIONE API CALL
+/**FUNZIONE API CALL GET
  * 
- * @param {string} backedRootUrl  'http://127.0.0.1:8000'
  * @param {string} thisRoutePath  es= 'apartments/create'
  * @param {object} payload es=  {pagination:3}
  */
@@ -34,6 +33,12 @@ export function api_GET(thisRoutePath, payload) {
       return resp.data
     });
 };
+
+/**FUNZIONE API CALL GET
+ * 
+ * @param {string} thisRoutePath  es= 'apartments/create'
+ * @param {object} payload es=  {pagination:3}
+ */
 export function api_POST(thisRoutePath, payload) {
 
   let backedRootUrl = 'http://127.0.0.1:8000';
@@ -44,23 +49,26 @@ export function api_POST(thisRoutePath, payload) {
   axios.post(`${apiUrl}`, {
     params: payload
   })
-  .then((resp) => {
-       //in caso di success, salvo una variable e imposto loading a false
-       this.submitResult = "success";
-       this.loading = false;
-       return 
-       
-     })
-     .catch((e) => {
-       //controllo che nell'errore ci sia il response.data. 
-       // Non è detto che c'è sempre. Dipende dall'errore.
-       if (e.response && e.response.data) {
-         this.submitResult = e.response.data.message;
-       } else {
-         this.submitResult = e.message;
-       }
-       console.log(e);
-       this.loading = false;
-     });
-    }
+    .then((resp) => {
+      console.log (resp)
+      //in caso di success, salvo una variable e imposto loading a false
+
+   /*    this.submitResult = "success";
+      this.loading = false; */
+
+      return
+
+    })
+    .catch((e) => {
+      //controllo che nell'errore ci sia il response.data. 
+      // Non è detto che c'è sempre. Dipende dall'errore.
+      if (e.response && e.response.data) {
+      /*   this.submitResult = e.response.data.message; */
+      } else {
+      /*   this.submitResult = e.message; */
+      }
+      console.log(e);
+    
+    });
+}
 

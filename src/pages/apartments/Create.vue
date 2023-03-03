@@ -1,11 +1,12 @@
 <template>
   <h1>Apartments Create</h1>
+  <button @click="onFormSubmit">bottone magico</button>
 </template>
 
 <script>
 import { titles } from '../../store';
 import { router } from "./../../router"
-import { api_POST, store} from '../../store';
+import { api_POST, store } from '../../store';
 
 import axios from 'axios';
 export default {
@@ -18,22 +19,22 @@ export default {
 
       apartments: [],
 
-      
-      
+
+
       form: {
-        user_id:"",
-        title: "",
-        address: "",
-        latitude: "",
-        longitude: "",
-        cover_img: "",
-        description: "",
-        rooms_qty: "",
-        beds_qty: "",
-        bathrooms_qty: "",
-        mq: "",
-        daily_price: "",
-        visible: "",
+        user_id: "a",
+        title: "b",
+        address: "c",
+        latitude: "d",
+        longitude: "e",
+        cover_img: "f",
+        description: "g",
+        rooms_qty: "h",
+        beds_qty: "i",
+        bathrooms_qty: "l",
+        mq: "m",
+        daily_price: "n",
+        visible: "o",
       },
     }
   },
@@ -44,7 +45,12 @@ export default {
       // chiamata axios ad una rotta del server alla quale inviamo i dati del form
       // siccome dobbiamo inviare un file, occorre convertire l'oggetto form in un oggetto FormData
       const formData = new FormData();
+      console.log(formData)
+      console.log(this.form.user_id);
+
       formData.append("user_id", this.form.user_id);
+      console.log(formData.user_id)
+
       formData.append("title", this.form.title);
       formData.append("address", this.form.address);
       formData.append("latitude", this.form.latitude);
@@ -57,8 +63,15 @@ export default {
       formData.append("mq", this.form.mq);
       formData.append("daily_price", this.form.daily_price);
       formData.append("visible", this.form.visible);
+      console.log(formData);
 
-      api_POST(this.$route.meta.apiPrefix + this.$route.fullPath, formData)
+      /*       api_POST(this.$route.meta.apiPrefix + this.$route.fullPath, formData); */
+     /*  axios.post("http://127.0.0.1:8000/api/admin/apartments/create", formData)
+        .then((resp) => {
+          console.log(resp)
+        }); */
+
+
       // post(url, dati) - i dati devono essere un oggetto js.
       // api_POST(this.$route.meta.apiPrefix+this.$route.fullPath, formData)
       // axios.post("http://127.0.0.1:8000/api/admin/apartments", formData)
@@ -87,7 +100,7 @@ export default {
       this.form.cover_img = chosenFiles[0];
     },
 
-    
+
 
     getTitle(to) {
 
@@ -107,7 +120,7 @@ export default {
   },
   mounted() {
     titles(this.$route.meta.title);
-  
+
   },
   created() {
   }
