@@ -1,6 +1,6 @@
 <template>
   <h1>Apartments Create</h1>
- 
+
   <section class="contacts d-flex flex-column ">
     <div class="container flex-fill">
       <h1 class="mt-3">Create Apartment</h1>
@@ -93,52 +93,52 @@
         </div>
 
         <!--*** da aggiungere checkbox per visible  ***-->
-<!-- 
+        <!-- 
         <div class="mb-2">
           <label for="visibleInput" class="form-label">Visible</label>
 
           <input type="checkbox" placeholder="visible" class="form-control" id="visibleInput" v-model="form.visible" />
         </div> -->
-<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+        <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
 
 
 
-  <!--  {{ --visible --}} -->
-            <div class="input-container pb-2 col-12  col-sm-4 col-md-2 ps-3">
-                <div class="form-check form-switch p-0">
+        <!--  {{ --visible --}} -->
+        <div class="input-container pb-2 col-12  col-sm-4 col-md-2 ps-3">
+          <div class="form-check form-switch p-0">
 
-                    <label class="form-check-label" for="visible">visible</label>
-                    <div class="form-check form-switch pt-2">
-                        
-                        <!--    {{ --2 imput per raccogliere true o false subito-- }} -->
-                        <input type="hidden" value="0">
-                        <input
-                            class="form-check-input"
-                            value="1" v-model="form.visible" type="checkbox" role="switch" id="visible">
-                    </div>
-                </div>
+            <label class="form-check-label" for="visible">visible</label>
+            <div class="form-check form-switch pt-2">
+
+              <!--    {{ --2 imput per raccogliere true o false subito-- }} -->
+              <input type="hidden" value="0">
+              <input
+                  class="form-check-input"
+                  value="1" v-model="form.visible" type="checkbox" role="switch" id="visible">
             </div>
+          </div>
+        </div>
 
 
-            <!--    {{ --services --}} -->
+        <!--    {{ --services --}} -->
 
-    <!--         <div class="input-container pb-2 col-12 ">
-                <label class="form-label text-uppercase">Tecnologie:</label> <br>
-                <div class="form-check form-check-inline" v-for=" tecnology, i in tecnologies">
-                    <input type="checkbox"
-                        class="form-check-input"
-                        :value="tecnology.id"
+        <div class="input-container pb-2 col-12 ">
+          <label class="form-label text-uppercase">Tecnologie:</label> <br>
+          <div class="form-check form-check-inline" v-for=" tecnology, i in tecnologies">
+            <input type="checkbox"
+                class="form-check-input"
+                :value="tecnology.id"
 
-                        id="tecnology_{{i}}"
-                        v-model="createForm.tecnologies">
+                id="tecnology_{{i}}"
+                v-model="createForm.tecnologies">
 
-                    <label class="form-check form-check-inline"
-                        for="tecnology_{{i}}">{{ tecnology.name }}</label>
-                </div>
+            <label class="form-check form-check-inline"
+                for="tecnology_{{i}}">{{ tecnology.name }}</label>
+          </div>
 
-            </div> -->
+        </div>
 
-<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+        <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
 
         <!-- //**************************************************** */ -->
         <div class="d-flex justify-content-center gap-3">
@@ -159,6 +159,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { titles } from '../../store';
 import { api_POST, store } from '../../store';
 
@@ -169,8 +170,7 @@ export default {
     return {
 
       store,
-
-      apartments: [],
+      services: null,
 
       formAddress: {
         streetNumber: "",
@@ -179,7 +179,6 @@ export default {
         postalCode: "",
         municipality: "",
       },
-
 
 
       form: {
@@ -200,6 +199,32 @@ export default {
     }
   },
   methods: {
+
+    fetchServices() {
+
+      let apiUrl = `${this.store.backedRootUrl}/api/services`
+      console.log("URL", apiUrl);
+
+      axios.get(`${apiUrl}`)
+        .then((resp) => {
+          console.log(resp)
+        /*   this.store.submitResult = "success";
+          this.store.loading = false; */
+
+          /*      console.log("GET", resp.data) */
+        /*   this.services = resp.data 
+ */
+        })
+       /*  .catch((e) => {
+
+          if (e.response && e.response.data) {
+            this.store.submitResult = e.response.data.message;
+          } else {
+            this.store.submitResult = e.message;
+          }
+          console.log(e);
+        }); */
+    },
 
     onCreateFormSubmit() {
       this.store.loading = true;
@@ -234,8 +259,7 @@ export default {
   },
   mounted() {
     titles(this.$route.meta.title);
-    /*  this.onCreateFormSubmit() */
-
+    this.fetchServices();
   },
   created() {
   }
@@ -243,5 +267,7 @@ export default {
 </script>
 
 
-<style lang="scss" scoped>@use "../../styles/generic.scss";
-@use "../../styles/partials/variables" as *;</style>
+<style lang="scss" scoped>
+@use "../../styles/generic.scss";
+@use "../../styles/partials/variables" as *;
+</style>
