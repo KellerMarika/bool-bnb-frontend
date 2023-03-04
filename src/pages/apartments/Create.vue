@@ -88,7 +88,7 @@
 
         <div class="mb-2">
           <label for="daily_priceInput" class="form-label">Daily Price</label>
-          <input type="number" step="0.01" placeholder="daily price of the apartment Ex. 180" class="form-control"
+          <input type="number" step=".01" placeholder="daily price of the apartment Ex. 180" class="form-control"
               id="daily_priceInput" v-model="form.daily_price" />
         </div>
 
@@ -110,11 +110,10 @@
             <label class="form-check-label" for="visible">visible</label>
             <div class="form-check form-switch pt-2">
 
-              <!--    {{ --2 imput per raccogliere true o false subito-- }} -->
-              <input type="hidden" value="0">
+              <input type="hidden" value="1">
               <input
                   class="form-check-input"
-                  value="1" v-model="form.visible" type="checkbox" role="switch" id="visible">
+                  true-value="1" false-value="0" v-model="form.visible" type="checkbox" role="switch" id="visible">
             </div>
           </div>
         </div>
@@ -247,9 +246,17 @@ export default {
       formData.append("mq", this.form.mq);
       formData.append("daily_price", this.form.daily_price);
       formData.append("visible", this.form.visible);
-      formData.append("services", this.form.services);
+      
+      /* services non si sa  */
+      for (let i = 0; i < this.form.services.length; i++) {
+        formData.append('services[]', this.form.services[i]);
+      }
+
+      /* SERVICES FORMATO STRINGA: */
+      /* formData.append("services", this.form.services); */
 
       api_POST(this.$route.meta.apiRoutePath, formData)
+
     },
 
     onAttachmentChange(event) {
