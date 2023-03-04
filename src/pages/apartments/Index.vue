@@ -1,4 +1,5 @@
 <template>
+
   <h1>Apartments Index</h1>
   <!-- pagination up -->
 
@@ -90,7 +91,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 @use "../../styles/generic.scss";
