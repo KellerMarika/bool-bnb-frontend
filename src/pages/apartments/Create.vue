@@ -263,6 +263,7 @@ axios.get(`${apiUrl}`)
   },
   mounted() {
     titles(this.$route.meta.title);
+    this.fetchServices();
     /*  this.onCreateFormSubmit() */
 
   },
