@@ -1,13 +1,44 @@
 <template>
-  <h1>Apartments Show</h1>
+  <div class="container">
+    <h1>Apartments Show</h1>
 
-  {{ apartment.title }}
+    <h3>{{ apartment.title }}</h3>
+
+    <h5><i class="fa-solid fa-map-location-dot"></i></h5>
+    <div class="mb-2">
+      {{ apartment.address }}
+    </div>
+    <h5>Rooms Quantity</h5>
+    <div class="mb-2">
+      {{ apartment.rooms_qty }}
+    </div>
+    <h5><i class="fa-solid fa-bed"></i></h5>
+    <div class="mb-2">
+      {{ apartment.beds_qty }}
+    </div>
+    <h5><i class="fa-solid fa-bath"></i></h5>
+    <div class="mb-2">
+      {{ apartment.bathrooms_qty }}
+    </div>
+    <h5>Square Meters</h5>
+    <div class="mb-2">
+      {{ apartment.mq }}
+    </div>
+    <h5>Daily Price <i class="fa-regular fa-money-bill-1"></i></h5>
+    <div class="mb-2">
+      {{ apartment.daily_price }}
+    </div>
 
 
-<!--   <router-link v-slot="{ ButtonDelete }" :to="{ name: 'Apartments.index' }">
+
+
+
+    <!--   <router-link v-slot="{ ButtonDelete }" :to="{ name: 'Apartments.index' }">
     <ButtonDelete :is="ButtonDelete" />
   </router-link> -->
-  <ButtonDelete @click="onDeleteClick()" />
+    <ButtonDelete @click="onDeleteClick()" />
+
+  </div>
 </template>
 
 <script>
@@ -50,7 +81,7 @@ export default {
   },
   methods: {
     onDeleteClick() {
-      api_DELETE(this.$route.meta.apiRouteDeletePath+this.$route.params.id)
+      api_DELETE(this.$route.meta.apiRouteDeletePath + this.$route.params.id)
     },
 
     /**FUNZIONE API CALL SHOW (show).........................
