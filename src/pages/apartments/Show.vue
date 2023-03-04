@@ -62,7 +62,7 @@ export default {
 
       let backedRootUrl = 'http://127.0.0.1:8000';
 
-      let apiUrl = `${backedRootUrl}/api${thisRoutePath}`
+      let apiUrl = `${backedRootUrl}/api${thisRoutePath}${this.$route.params.id}`
       axios.get(`${apiUrl}`, {
         params: payload
       })
@@ -70,9 +70,8 @@ export default {
           this.store.submitResult = "success";
           this.store.loading = false;
 
-          console.log("APPARTAMENTO", resp.data.data[0])
-          return this.apartment = resp.data.data[0]
-
+          console.log("APPARTAMENTO", resp.data)
+          this.apartment = resp.data
         })
         .catch((e) => {
 
