@@ -19,7 +19,7 @@
 
 <script>
 import axios from 'axios';
-import { api_GET, store } from '../../store';
+import {store } from '../../store';
 import { titles } from '../../store';
 import SingleCardApartment from '../../components/SingleCardApartment.vue'
 export default {
