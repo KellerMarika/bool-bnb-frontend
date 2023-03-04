@@ -1,37 +1,30 @@
 <template>
   <h1>Apartments Index</h1>
-
-  <!-- pagination  -->
-  <!--   <div v-if="store.apartmentsList" v-for="element in store.apartmentsList"> -->
+  <!-- pagination up -->
 
 
+  <!-- LINK ALLO SHOW -->
   <router-link v-for="apartment in store.apartmentsList"
       :to="{ name: 'Apartments.show', params: { id: apartment.id } }"
       v-slot="{ singleCard }"
 
       class="card  my-4 overflow-hidden shadow">
+
     <!-- CARD -->
-
-    <div :is="singleCard" :apartment='apartment' class="card"> card{{ apartment.title }}</div>
-
+    <SingleCardApartment :is="singleCard" :apartment='apartment' class="card"> </SingleCardApartment>
   </router-link>
-  <!--     <div class="card"> card</div> -->
 
-  <!--   </div> -->
-
-
-
-  <!-- pagination  -->
-  <div v-if="apartments" v-for="element in apartments">evelyn in braccio</div>
+  <!-- pagination down -->
 </template>
 
 <script>
 /* import{axios} from 'axios' */
 import { api_GET, store } from '../../store';
 import { titles } from '../../store';
+import SingleCardApartment from '../../components/SingleCardApartment.vue'
 export default {
   name: "Apartments Index",
-  components: {},
+  components: { SingleCardApartment },
   data() {
     return {
       store,
@@ -48,7 +41,6 @@ export default {
     /*  if (this.store.list) {
             console.log("daiiii")
             this.apartments = {...store.list}
-    
           } */
   },
   created() {
