@@ -119,6 +119,7 @@
           </div>
         </div>
 
+        
 
         <!--    {{ --services --}} -->
 
@@ -134,7 +135,7 @@
 
             <label class="form-check form-check-inline"
                 for="service_{{i}}">{{ service.name }}
-              <i><img src="./services-icons/{{service.icon}}" alt=""></i></label>
+              <i><img :src="'../../../public/services-icons/'+service.icon" alt=""></i></label>
           </div>
 
         </div>
@@ -276,4 +277,9 @@ export default {
 <style lang="scss" scoped>
 @use "../../styles/generic.scss";
 @use "../../styles/partials/variables" as *;
+
+img{
+  width: 20px;
+  margin-left: 1rem;
+}
 </style>
