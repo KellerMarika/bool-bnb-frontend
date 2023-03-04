@@ -6,6 +6,7 @@ import axios from 'axios'
 export const store = reactive({
   loading: false,
   submitResult: "",
+  list:null
   /*   backedRootUrl: 'http://127.0.0.1:8000', */
 });
 
@@ -34,7 +35,10 @@ export function api_GET(thisRoutePath, payload) {
       store.loading = false;
 
       console.log("SHOW",resp.data)
-      return resp.data
+      store.list={...resp.data}
+      if(store.list){
+        
+      }
     })
     .catch((e) => {
 
