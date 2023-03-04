@@ -60,9 +60,8 @@ export default {
      */
     api_SHOW(thisRoutePath, payload) {
 
-      let backedRootUrl = 'http://127.0.0.1:8000';
 
-      let apiUrl = `${backedRootUrl}/api${thisRoutePath}${this.$route.params.id}`
+      let apiUrl = `${this.store.backedRootUrl}/api${thisRoutePath}${this.$route.params.id}`
       axios.get(`${apiUrl}`, {
         params: payload
       })

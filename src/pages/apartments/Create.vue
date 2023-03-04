@@ -1,20 +1,24 @@
 <template>
-  <h1>Apartments Create</h1>
-
   <section class="contacts d-flex flex-column ">
     <div class="container flex-fill">
       <h1 class="mt-3">Create Apartment</h1>
 
-      <div class="alert alert-success" v-if="submitResult === 'success'">
-        Messaggio inviato correttamente. Ti risponderemo il prima possibile
+      <div class="alert alert-success" v-if="this.store.submitResult === 'success'">
+        appartamento creato correttamente!
+
+        <!-- HOME BUTTON -->
+        <router-link @click="store.submitResult = ''"
+            :to="{ name: 'home' }">
+          <button> TORNA ALLA HOME </button>
+        </router-link>
       </div>
 
-      <div class="alert alert-danger" v-else-if="submitResult">
+      <div class="alert alert-danger" v-else-if="this.store.submitResult">
         Sembra ci sia stato un errore. Ti invitiamo a riprovare pià tardi.<br />
-        {{ submitResult }}
+        {{ this.store.submitResult }}
       </div>
 
-      <form @submit.prevent="onCreateFormSubmit" v-if="submitResult !== 'success'">
+      <form @submit.prevent="onCreateFormSubmit" v-if="this.store.submitResult !== 'success'">
         <div class="mb-3">
           <label for="titleInput" class="form-label">Title</label>
           <input type="text" class="form-control" id="titleInput" v-model="form.title" />
@@ -92,17 +96,6 @@
               id="daily_priceInput" v-model="form.daily_price" />
         </div>
 
-        <!--*** da aggiungere checkbox per visible  ***-->
-        <!-- 
-        <div class="mb-2">
-          <label for="visibleInput" class="form-label">Visible</label>
-
-          <input type="checkbox" placeholder="visible" class="form-control" id="visibleInput" v-model="form.visible" />
-        </div> -->
-        <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
-
-
-
         <!--  {{ --visible --}} -->
         <div class="input-container pb-2 col-12  col-sm-4 col-md-2 ps-3">
           <div class="form-check form-switch p-0">
@@ -118,8 +111,6 @@
           </div>
         </div>
 
-        
-
         <!--    {{ --services --}} -->
 
         <div class="input-container pb-2 col-12 ">
@@ -134,14 +125,10 @@
 
             <label class="form-check form-check-inline"
                 for="service_{{i}}">{{ service.name }}
-              <i><img :src="'../../../public/services-icons/'+service.icon" alt=""></i></label>
+              <i><img :src="'../../../public/services-icons/' + service.icon" alt=""></i></label>
           </div>
 
         </div>
-
-        <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
-
-        <!-- //**************************************************** */ -->
         <div class="d-flex justify-content-center gap-3">
           <button class="btn btn-secondary" typeof="reset" :disabled="loading">
             Annulla
@@ -152,9 +139,6 @@
           </button>
         </div>
       </form>
-
-      <!-- <a href="mailto:pippo@gmail.com?subject=testo di prova&body=messaggio predefinito">email</a>
-      <a href="tel:3333333333">telefono</a> -->
     </div>
   </section>
 </template>
@@ -171,7 +155,6 @@ export default {
     return {
 
       store,
-
       apartments: [],
       services: [],
 
@@ -186,9 +169,9 @@ export default {
       form: {
         user_id: 1,
         title: "",
-        address: "via giuseppe di v,7",
-        latitude: "14.22245",
-        longitude: "14.22245",
+        address: "",
+        latitude: "",
+        longitude: "",
         cover_img: "",
         description: "",
         rooms_qty: "",
@@ -202,21 +185,18 @@ export default {
     }
   },
   methods: {
-
+    /* RECUOERA LISTA SERVIZI DISPONIBILI PER APPARTAMENTO */
     fetchServices() {
 
       let apiUrl = `${this.store.backedRootUrl}/api/services`
-      console.log("URL", apiUrl);
 
       axios.get(`${apiUrl}`)
         .then((resp) => {
           /* console.log(resp) */
           this.store.submitResult = "success";
           this.store.loading = false;
-
-
           this.services = resp.data;
-          console.log("GET", this.services)
+          // console.log("services", this.services)
         })
         .catch((e) => {
 
@@ -228,11 +208,13 @@ export default {
           console.log(e);
         });
     },
-
+    /* FORMATTA E INVIA AL BECKEND I DATI  DEL FORM PER LA CREAZIONE DEL NUOVO "APPARTAMENTO" E RELATIVE RELAZIONI */
     onCreateFormSubmit() {
+
       this.store.loading = true;
-      // chiamata axios ad una rotta del server alla quale inviamo i dati del form
-      // siccome dobbiamo inviare un file, occorre convertire l'oggetto form in un oggetto FormData
+      //Assegno form. addres, longitude e latitude attraverso la chiamata axios
+      this.fecthTomTom();
+
       const formData = new FormData();
       formData.append("user_id", this.form.user_id);
       formData.append("title", this.form.title);
@@ -247,19 +229,14 @@ export default {
       formData.append("mq", this.form.mq);
       formData.append("daily_price", this.form.daily_price);
       formData.append("visible", this.form.visible);
-      
-      /* services non si sa  */
+
       for (let i = 0; i < this.form.services.length; i++) {
         formData.append('services[]', this.form.services[i]);
       }
 
-      /* SERVICES FORMATO STRINGA: */
-      /* formData.append("services", this.form.services); */
-
-      api_POST(this.$route.meta.apiRoutePath, formData)
-
+    api_POST(this.$route.meta.apiRoutePath, formData)
     },
-
+    /* RECUPERO COVER IMG DA INPUT FILE ----> QUESTA ANDRA' RIVISTA PER + IMMAGINI */
     onAttachmentChange(event) {
       // reucupero l'array dei file scelti dall'utente
       const chosenFiles = event.target.files
@@ -268,12 +245,27 @@ export default {
       this.form.cover_img = chosenFiles[0];
     },
 
+    fecthTomTom() {
+
+      axios.get(this.store.geoApiUrl + this.store.geoApiKey, {
+        params: this.formAddress
+      })
+        .then((resp) => {
+          this.form.address = resp.data.results[0].address.freeformAddress;
+          this.form.latitude = resp.data.results[0].position.lat;
+          this.form.longitude = resp.data.results[0].position.lon;
+        })
+
+
+    },
   },
   mounted() {
     titles(this.$route.meta.title);
     this.fetchServices();
-    /*  this.onCreateFormSubmit() */
-
+  },
+  beforeUpdate() {
+    //reset submitREsult
+    this.store.submitResult = ""
   },
   created() {
   }
@@ -285,8 +277,5 @@ export default {
 @use "../../styles/generic.scss";
 @use "../../styles/partials/variables" as *;
 
-img{
-  width: 20px;
-  margin-left: 1rem;
-}
+
 </style>

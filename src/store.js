@@ -5,10 +5,16 @@ import { reactive } from "vue";
 import axios from 'axios'
 export const store = reactive({
   backedRootUrl: 'http://127.0.0.1:8000',
+
+  geoApiKey: "key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE",
+  geoApiUrl: "https://api.tomtom.com/search/2/structuredGeocode.json?",
+
+
   loading: false,
   submitResult: "",
   apartmentsList: null,
   apartmentsPagination: null,
+
   /*   backedRootUrl: 'http://127.0.0.1:8000', */
 });
 
