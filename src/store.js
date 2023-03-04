@@ -4,7 +4,7 @@
 import { reactive } from "vue";
 import axios from 'axios'
 export const store = reactive({
-  backedRootUrl : 'http://127.0.0.1:8000',
+  backedRootUrl: 'http://127.0.0.1:8000',
   loading: false,
   submitResult: "",
   apartmentsList: null,
@@ -138,26 +138,28 @@ export function api_PUT(thisRoutePath, payload) {
  * @param {string} thisRoutePath  es= 'apartments/create'
  * @param {object} payload es=  {pagination:3}
  */
-export function api_DELETE(thisRoutePath, payload) {
+export function api_DELETE(thisRoutePath) {
 
   let apiUrl = `${store.backedRootUrl}/api${thisRoutePath}`
-  console.log(apiUrl);
+  let x = window.confirm("You want to delete the user?");
 
-  axios.delete(`${apiUrl}`, {
-    params: payload
-  })
-    .then((resp) => {
+  if (x) {
+
+    axios.delete(`${apiUrl}`).then((resp) => {
       store.submitResult = "success";
       store.loading = false;
       console.log("DELETE", resp)
     })
-    .catch((e) => {
+      .catch((e) => {
 
-      if (e.response && e.response.data) {
-        store.submitResult = e.response.data.message;
-      } else {
-        store.submitResult = e.message;
-      }
-      console.log(e);
-    });
+        if (e.response && e.response.data) {
+          store.submitResult = e.response.data.message;
+        } else {
+          store.submitResult = e.message;
+        }
+        console.log(e);
+      });
+    alert("Apartment deleted!");
+  };
+
 };

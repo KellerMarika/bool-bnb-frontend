@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     onDeleteClick() {
-      api_DELETE(this.$route.meta.apiRouteDeletePath, this.$route.params)
+      api_DELETE(this.$route.meta.apiRouteDeletePath+this.$route.params.id)
     },
 
     /**FUNZIONE API CALL SHOW (show).........................
