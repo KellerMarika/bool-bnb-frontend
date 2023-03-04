@@ -202,6 +202,32 @@ export default {
     }
   },
   methods: {
+    
+    fetchServices() {
+
+let apiUrl = `${this.store.backedRootUrl}/api/services`
+console.log("URL", apiUrl);
+
+axios.get(`${apiUrl}`)
+  .then((resp) => {
+    console.log(resp)
+  /*   this.store.submitResult = "success";
+    this.store.loading = false; */
+
+    /*      console.log("GET", resp.data) */
+  /*   this.services = resp.data 
+*/
+  })
+ /*  .catch((e) => {
+
+    if (e.response && e.response.data) {
+      this.store.submitResult = e.response.data.message;
+    } else {
+      this.store.submitResult = e.message;
+    }
+    console.log(e);
+  }); */
+},
 
     onCreateFormSubmit() {
       this.store.loading = true;
