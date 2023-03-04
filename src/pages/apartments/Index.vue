@@ -1,26 +1,30 @@
 <template>
+  <section>
+    <div class="container">
+      <h1>Apartments Index</h1>
+      <!-- pagination up -->
+      <div class="row gap-3">
 
-  <h1>Apartments Index</h1>
-  <!-- pagination up -->
+      <!-- LINK ALLO SHOW -->
+      <router-link v-for="apartment in apartments"
+        :to="{ name: 'Apartments.show', params: { id: apartment.id } }"
+        v-slot="{ singleCard }"
 
+        class="col-3 my-4 overflow-hidden shadow">
 
-  <!-- LINK ALLO SHOW -->
-  <router-link v-for="apartment in apartments"
-      :to="{ name: 'Apartments.show', params: { id: apartment.id } }"
-      v-slot="{ singleCard }"
+        <!-- CARD -->
+        <SingleCardApartment :is="singleCard" :apartment='apartment' class=" card w-100"> </SingleCardApartment>
+      </router-link>
 
-      class="card  my-4 overflow-hidden shadow">
-
-    <!-- CARD -->
-    <SingleCardApartment :is="singleCard" :apartment='apartment' class="card"> </SingleCardApartment>
-  </router-link>
-
-  <!-- pagination down -->
+      <!-- pagination down -->
+    </div>
+    </div>
+  </section>
 </template>
 
 <script>
 import axios from 'axios';
-import {store } from '../../store';
+import { store } from '../../store';
 import { titles } from '../../store';
 import SingleCardApartment from '../../components/SingleCardApartment.vue'
 export default {
@@ -29,8 +33,8 @@ export default {
   data() {
     return {
       store,
-        apartments: null,
-        pagination: null 
+      apartments: null,
+      pagination: null
     }
   },
   methods: {
@@ -67,9 +71,9 @@ export default {
           this.store.submitResult = "success";
           this.store.loading = false;
 
-     /*      console.log("GET", resp.data) */
-          this. apartments = { ...resp.data.data }
-          this.pagination = { ...this.omitKey(resp.data, "data")}
+          /*      console.log("GET", resp.data) */
+          this.apartments = { ...resp.data.data }
+          this.pagination = { ...this.omitKey(resp.data, "data") }
         })
         .catch((e) => {
 
