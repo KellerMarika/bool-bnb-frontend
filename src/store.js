@@ -8,7 +8,7 @@ export const store = reactive({
   loading: false,
   submitResult: "",
   apartmentsList: null,
-  apartmentsPagination: null
+  apartmentsPagination: null,
   /*   backedRootUrl: 'http://127.0.0.1:8000', */
 });
 
@@ -16,58 +16,6 @@ export const store = reactive({
 export function titles(pageTitle) {
   document.title = pageTitle
 };
-
-/* FUNZIONE ESCLUDI CHIAVE DA OGGETTO (per pagination) */
-/** omit({ a: 1, b: 2, c: 3 }, 'c')  // {a: 1, b: 2}
- * 
- * @param {object} obj 
- * @param {string} omitKey 
- */
-export function omitKey(obj, omitKey) {
-  return Object.keys(obj).reduce((result, key) => {
-    if (key !== omitKey) {
-      result[key] = obj[key];
-    }
-    return result;
-  }, {});
-};
-
-/**FUNZIONE API CALL GET (index).........................
- * 
- * @param {string} thisRoutePath  es= 'apartments/create'
- * @param {object} payload es=  {pagination:3}
- */
-export function api_GET(thisRoutePath, List, payload) {
-
-  let apiUrl = `${store.backedRootUrl}/api${thisRoutePath}`
-  console.log("SHOW", apiUrl);
-
-  return axios.get(`${apiUrl}`, {
-    params: payload
-  })
-    .then((resp) => {
-      store.submitResult = "success";
-      store.loading = false;
-
-      console.log("GET", resp.data)
-      store.apartmentsList = { ...resp.data.data }
-      store.apartmentsPagination = { ...omitKey(resp.data, "data") }
-      /*       if (store.list) {
-              console.log("ambacabanane")
-              list = { ...store.list }
-            } */
-    })
-    .catch((e) => {
-
-      if (e.response && e.response.data) {
-        store.submitResult = e.response.data.message;
-      } else {
-        store.submitResult = e.message;
-      }
-      console.log(e);
-    });
-};
-
 
 /**FUNZIONE API CALL POST (create->store)....................
  * 

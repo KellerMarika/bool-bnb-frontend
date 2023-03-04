@@ -4,7 +4,7 @@
 
 
   <!-- LINK ALLO SHOW -->
-  <router-link v-for="apartment in store.apartmentsList"
+  <router-link v-for="apartment in apartments"
       :to="{ name: 'Apartments.show', params: { id: apartment.id } }"
       v-slot="{ singleCard }"
 
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-/* import{axios} from 'axios' */
+import axios from 'axios';
 import { api_GET, store } from '../../store';
 import { titles } from '../../store';
 import SingleCardApartment from '../../components/SingleCardApartment.vue'
@@ -28,20 +28,63 @@ export default {
   data() {
     return {
       store,
-    /*   apartments: null,
-      pagination: null */
+        apartments: null,
+        pagination: null 
     }
   },
   methods: {
+
+    /* FUNZIONE ESCLUDI CHIAVE DA OGGETTO (per pagination) */
+    /** omit({ a: 1, b: 2, c: 3 }, 'c')  // {a: 1, b: 2}
+     * 
+     * @param {object} obj 
+     * @param {string} omitKey 
+     */
+    omitKey(obj, omitKey) {
+      return Object.keys(obj).reduce((result, key) => {
+        if (key !== omitKey) {
+          result[key] = obj[key];
+        }
+        return result;
+      }, {});
+    },
+
+    /**FUNZIONE API CALL GET (index).........................
+     * 
+     * @param {string} thisRoutePath  es= 'apartments/create'
+     * @param {object} payload es=  {pagination:3}
+     */
+    api_GET(thisRoutePath, payload) {
+
+      let apiUrl = `${this.store.backedRootUrl}/api${thisRoutePath}`
+      console.log("URL", apiUrl);
+
+      axios.get(`${apiUrl}`, {
+        params: payload
+      })
+        .then((resp) => {
+          this.store.submitResult = "success";
+          this.store.loading = false;
+
+     /*      console.log("GET", resp.data) */
+          this. apartments = { ...resp.data.data }
+          this.pagination = { ...this.omitKey(resp.data, "data")}
+        })
+        .catch((e) => {
+
+          if (e.response && e.response.data) {
+            this.store.submitResult = e.response.data.message;
+          } else {
+            this.store.submitResult = e.message;
+          }
+          console.log(e);
+        });
+    }
   },
   mounted() {
 
     titles(this.$route.meta.title);
-    api_GET(this.$route.meta.apiRoutePath, this.apartments);
-    /*  if (this.store.list) {
-            console.log("daiiii")
-            this.apartments = {...store.list}
-          } */
+    this.api_GET(this.$route.meta.apiRoutePath, this.apartments)
   },
   created() {
   }
