@@ -6,7 +6,8 @@ import axios from 'axios'
 export const store = reactive({
   loading: false,
   submitResult: "",
-  list:null
+  apartmentsList: null,
+  apartmentsPagination: null
   /*   backedRootUrl: 'http://127.0.0.1:8000', */
 });
 
@@ -20,25 +21,27 @@ export function titles(pageTitle) {
  * @param {string} thisRoutePath  es= 'apartments/create'
  * @param {object} payload es=  {pagination:3}
  */
-export function api_GET(thisRoutePath, payload) {
+export function api_GET(thisRoutePath,List, payload) {
 
   let backedRootUrl = 'http://127.0.0.1:8000';
 
   let apiUrl = `${backedRootUrl}/api${thisRoutePath}`
-  console.log("SHOW",apiUrl);
+  console.log("SHOW", apiUrl);
 
-  axios.get(`${apiUrl}`, {
+ return axios.get(`${apiUrl}`, {
     params: payload
   })
     .then((resp) => {
       store.submitResult = "success";
       store.loading = false;
 
-      console.log("SHOW",resp.data)
-      store.list={...resp.data}
-      if(store.list){
-        
-      }
+      console.log("SHOW", resp.data)
+      store.apartmentsList = { ...resp.data.data }
+      store.apartmentsPagination = { ...resp.data}
+/*       if (store.list) {
+        console.log("ambacabanane")
+        list = { ...store.list }
+      } */
     })
     .catch((e) => {
 
@@ -50,6 +53,54 @@ export function api_GET(thisRoutePath, payload) {
       console.log(e);
     });
 };
+
+
+
+
+
+
+
+/**FUNZIONE API CALL BOH (index).........................
+ * 
+ * @param {string} thisRoutePath  es= 'apartments/create'
+ * @param {object} payload es=  {pagination:3}
+ */
+export async function api_BOH(thisRoutePath, list, payload) {
+
+  let backedRootUrl = 'http://127.0.0.1:8000';
+
+  let apiUrl = `${backedRootUrl}/api${thisRoutePath}`
+  console.log("API CALL", apiUrl);
+
+  list = await axios.get(`${apiUrl}`, {
+    params: payload
+  })
+    .then((resp) => {
+      store.submitResult = "success";
+      store.loading = false;
+
+
+      return resp.data
+      /*       if (store.list) {
+              console.log("ambacabanane")
+              list = { ...store.list }
+      
+            } */
+    })
+    .catch((e) => {
+
+      if (e.response && e.response.data) {
+        store.submitResult = e.response.data.message;
+      } else {
+        store.submitResult = e.message;
+      }
+      console.log(e);
+    });
+};
+
+
+
+
 /**FUNZIONE API CALL SHOW (show).........................
  * 
  * @param {string} thisRoutePath  es= 'apartments/create'
@@ -60,7 +111,7 @@ export function api_SHOW(thisRoutePath, payload) {
   let backedRootUrl = 'http://127.0.0.1:8000';
 
   let apiUrl = `${backedRootUrl}/api${thisRoutePath}`
-  console.log("SHOW",apiUrl);
+  console.log("SHOW", apiUrl);
 
   axios.get(`${apiUrl}`, {
     params: payload
@@ -69,7 +120,7 @@ export function api_SHOW(thisRoutePath, payload) {
       store.submitResult = "success";
       store.loading = false;
 
-      console.log("SHOW",resp.data.data[0])
+      console.log("SHOW", resp.data.data[0])
       return resp.data.data[0]
     })
     .catch((e) => {
@@ -170,7 +221,7 @@ export function api_DELETE(thisRoutePath, payload) {
       store.submitResult = "success";
       store.loading = false;
 
-      console.log("DELETE",resp.data)
+      console.log("DELETE", resp.data)
       return resp.data
     })
     .catch((e) => {
