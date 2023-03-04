@@ -4,6 +4,7 @@
 
     <button @click="onCreateFormSubmit">bottone magico</button>
   </form>
+
   <section class="contacts d-flex flex-column ">
     <div class="container flex-fill">
       <h1 class="mt-3">Create Apartment</h1>
@@ -17,7 +18,7 @@
         {{ submitResult }}
       </div>
 
-      <form @submit.prevent="onFormSubmit" v-if="submitResult !== 'success'">
+      <form @submit.prevent="onCreateFormSubmit" v-if="submitResult !== 'success'">
         <div class="mb-3">
           <label for="titleInput" class="form-label">Title</label>
           <input type="text" class="form-control" id="titleInput" v-model="form.title" />
@@ -140,9 +141,9 @@ export default {
       form: {
         user_id: 1,
         title: "",
-        address: "",
-        latitude: "",
-        longitude: "",
+        address: "via giuseppe di v,7",
+        latitude: "14.22245",
+        longitude: "14.22245",
         cover_img: "",
         description: "",
         rooms_qty: "",
@@ -150,7 +151,7 @@ export default {
         bathrooms_qty: "",
         mq: "",
         daily_price: "",
-        visible: "",
+        visible: "1",
       },
     }
   },
@@ -161,7 +162,7 @@ export default {
       // chiamata axios ad una rotta del server alla quale inviamo i dati del form
       // siccome dobbiamo inviare un file, occorre convertire l'oggetto form in un oggetto FormData
       const formData = new FormData();
-      formData.append("user_id", this.user_id);
+      formData.append("user_id", this.form.user_id);
       formData.append("title", this.form.title);
       formData.append("address", this.form.address);
       formData.append("latitude", this.form.latitude);
@@ -189,7 +190,7 @@ export default {
   },
   mounted() {
     titles(this.$route.meta.title);
-    this.onCreateFormSubmit()
+   /*  this.onCreateFormSubmit() */
 
   },
   created() {

@@ -4,14 +4,32 @@
 import { reactive } from "vue";
 import axios from 'axios'
 export const store = reactive({
+  backedRootUrl: 'http://127.0.0.1:8000',
   loading: false,
   submitResult: "",
+  apartmentsList: null,
+  apartmentsPagination: null
   /*   backedRootUrl: 'http://127.0.0.1:8000', */
 });
 
-
+/* FUNZIONE ASSEGNA TITOLO A PAGINA */
 export function titles(pageTitle) {
   document.title = pageTitle
+};
+
+/* FUNZIONE ESCLUDI CHIAVE DA OGGETTO (per pagination) */
+/** omit({ a: 1, b: 2, c: 3 }, 'c')  // {a: 1, b: 2}
+ * 
+ * @param {object} obj 
+ * @param {string} omitKey 
+ */
+export function omitKey(obj, omitKey) {
+  return Object.keys(obj).reduce((result, key) => {
+    if (key !== omitKey) {
+      result[key] = obj[key];
+    }
+    return result;
+  }, {});
 };
 
 /**FUNZIONE API CALL GET (index).........................
@@ -19,22 +37,25 @@ export function titles(pageTitle) {
  * @param {string} thisRoutePath  es= 'apartments/create'
  * @param {object} payload es=  {pagination:3}
  */
-export function api_GET(thisRoutePath, payload) {
+export function api_GET(thisRoutePath, List, payload) {
 
-  let backedRootUrl = 'http://127.0.0.1:8000';
+  let apiUrl = `${store.backedRootUrl}/api${thisRoutePath}`
+  console.log("SHOW", apiUrl);
 
-  let apiUrl = `${backedRootUrl}/api${thisRoutePath}`
-  console.log("SHOW",apiUrl);
-
-  axios.get(`${apiUrl}`, {
+  return axios.get(`${apiUrl}`, {
     params: payload
   })
     .then((resp) => {
       store.submitResult = "success";
       store.loading = false;
 
-      console.log("SHOW",resp.data)
-      return resp.data
+      console.log("GET", resp.data)
+      store.apartmentsList = { ...resp.data.data }
+      store.apartmentsPagination = { ...omitKey(resp.data, "data") }
+      /*       if (store.list) {
+              console.log("ambacabanane")
+              list = { ...store.list }
+            } */
     })
     .catch((e) => {
 
@@ -46,38 +67,7 @@ export function api_GET(thisRoutePath, payload) {
       console.log(e);
     });
 };
-/**FUNZIONE API CALL SHOW (show).........................
- * 
- * @param {string} thisRoutePath  es= 'apartments/create'
- * @param {object} payload es=  {pagination:3}
- */
-export function api_SHOW(thisRoutePath, payload) {
 
-  let backedRootUrl = 'http://127.0.0.1:8000';
-
-  let apiUrl = `${backedRootUrl}/api${thisRoutePath}`
-  console.log("SHOW",apiUrl);
-
-  axios.get(`${apiUrl}`, {
-    params: payload
-  })
-    .then((resp) => {
-      store.submitResult = "success";
-      store.loading = false;
-
-      console.log("SHOW",resp.data.data[0])
-      return resp.data.data[0]
-    })
-    .catch((e) => {
-
-      if (e.response && e.response.data) {
-        store.submitResult = e.response.data.message;
-      } else {
-        store.submitResult = e.message;
-      }
-      console.log(e);
-    });
-};
 
 /**FUNZIONE API CALL POST (create->store)....................
  * 
@@ -86,9 +76,7 @@ export function api_SHOW(thisRoutePath, payload) {
  */
 export function api_POST(thisRoutePath, payload) {
 
-  let backedRootUrl = 'http://127.0.0.1:8000';
-
-  let apiUrl = `${backedRootUrl}/api${thisRoutePath}`
+  let apiUrl = `${store.backedRootUrl}/api${thisRoutePath}`
   /*  console.log(apiUrl);
   */
   axios.post(`${apiUrl}`, payload)
@@ -98,7 +86,6 @@ export function api_POST(thisRoutePath, payload) {
       //in caso di success, salvo una variable e imposto loading a false
       store.submitResult = "success";
       store.loading = false;
-
       return
 
     })
@@ -123,9 +110,7 @@ export function api_POST(thisRoutePath, payload) {
  */
 export function api_PUT(thisRoutePath, payload) {
 
-  let backedRootUrl = 'http://127.0.0.1:8000';
-
-  let apiUrl = `${backedRootUrl}/api${thisRoutePath}`
+  let apiUrl = `${store.backedRootUrl}/api${thisRoutePath}`
   /*  console.log(apiUrl);
   */
   axios.put(`${apiUrl}`, payload)
@@ -147,35 +132,33 @@ export function api_PUT(thisRoutePath, payload) {
       console.log(e);
     });
 }
+
 /**FUNZIONE API CALL DELETE ().........................
  * 
  * @param {string} thisRoutePath  es= 'apartments/create'
  * @param {object} payload es=  {pagination:3}
  */
-export function api_DELETE(thisRoutePath, payload) {
+export function api_DELETE(thisRoutePath) {
 
-  let backedRootUrl = 'http://127.0.0.1:8000';
+  let apiUrl = `${store.backedRootUrl}/api${thisRoutePath}`
+  let x = window.confirm("You want to delete the user?");
 
-  let apiUrl = `${backedRootUrl}/api${thisRoutePath}`
-  console.log(apiUrl);
+  if (x) {
 
-  axios.delete(`${apiUrl}`, {
-    params: payload
-  })
-    .then((resp) => {
+    axios.delete(`${apiUrl}`).then((resp) => {
       store.submitResult = "success";
       store.loading = false;
-
-      console.log("DELETE",resp.data)
-      return resp.data
+      console.log("DELETE", resp)
     })
-    .catch((e) => {
+      .catch((e) => {
 
-      if (e.response && e.response.data) {
-        store.submitResult = e.response.data.message;
-      } else {
-        store.submitResult = e.message;
-      }
-      console.log(e);
-    });
+        if (e.response && e.response.data) {
+          store.submitResult = e.response.data.message;
+        } else {
+          store.submitResult = e.message;
+        }
+        console.log(e);
+      });
+    alert("Apartment deleted!");
+  };
 };
