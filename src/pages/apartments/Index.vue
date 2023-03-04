@@ -28,8 +28,8 @@ export default {
   data() {
     return {
       store,
-      apartments: null,
-      pagination: null
+    /*   apartments: null,
+      pagination: null */
     }
   },
   methods: {

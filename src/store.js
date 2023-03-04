@@ -161,5 +161,4 @@ export function api_DELETE(thisRoutePath) {
       });
     alert("Apartment deleted!");
   };
-
 };
