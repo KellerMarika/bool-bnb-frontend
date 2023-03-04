@@ -1,5 +1,13 @@
 <template>
+<h5>Title Apartment</h5>
+<div class="mb-2">
 {{apartment.title}}
+</div>
+<h5>Apartment Description</h5>
+<div class="mb-2">
+{{apartment.description}}
+</div>
+
 </template>
 <script>
 
