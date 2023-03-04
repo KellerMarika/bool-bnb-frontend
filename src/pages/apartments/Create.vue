@@ -277,5 +277,10 @@ export default {
 @use "../../styles/generic.scss";
 @use "../../styles/partials/variables" as *;
 
+img{
+  width: 20px;
+  margin-left: 1rem;
+}
+
 
 </style>
