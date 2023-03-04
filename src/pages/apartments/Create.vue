@@ -195,7 +195,7 @@ export default {
         bathrooms_qty: "",
         mq: "",
         daily_price: "",
-        visible: "1",
+        visible: 0,
       },
     }
   },
