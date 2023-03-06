@@ -9,7 +9,7 @@
 				appartamento creato correttamente!
 
 				<!-- HOME BUTTON -->
-				<router-link @click="store.submitResult = ''" :to="{name: 'home'}">
+				<router-link @click="this.store.submitResult = ''" :to="{name: 'home'}">
 					<button>TORNA ALLA HOME</button>
 				</router-link>
 			</div>
@@ -29,6 +29,7 @@
 						type="text"
 						class="form-control"
 						id="titleInput"
+            placeholder="Ex. partment title"
 						v-model="form.title" />
 				</div>
 
@@ -75,7 +76,7 @@
 					<input
 						type="text"
 						placeholder="Ex. IT"
-						class="form-control"
+						class="form-control text-uppercase" max="2"
 						id="countryCodeInput"
 						v-model="formAddress.countryCode" />
 				</div>
@@ -287,11 +288,9 @@ export default {
 			axios
 				.get(`${apiUrl}`)
 				.then((resp) => {
-					/* console.log(resp) */
 					this.store.submitResult = 'success';
 					this.store.loading = false;
 					this.services = resp.data;
-					// console.log("services", this.services)
 				})
 				.catch((e) => {
 					if (e.response && e.response.data) {

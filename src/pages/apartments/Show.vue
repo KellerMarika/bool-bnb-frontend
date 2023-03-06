@@ -102,6 +102,7 @@ export default {
 
           console.log("APPARTAMENTO", resp.data)
           this.apartment = resp.data
+          console.log(resp.data)
         })
         .catch((e) => {
 

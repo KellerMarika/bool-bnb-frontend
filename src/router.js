@@ -66,7 +66,7 @@ const router = createRouter({
       path: "/apartments/:id/edit",
       name: "Apartments.edit",
       component: ApartmentsEdit_Pg,
-      meta: { title:"EDIT APARTMENT: #", apiRoutePath:"/admin/apartments/"}
+      meta: { title:"EDIT APARTMENT: #", apiShowRoutePath:"/apartments/",apiUpdateRoutePath:"/admin/apartments/"}
     },
     // 404 ................................
     {

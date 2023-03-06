@@ -36,7 +36,7 @@ export function api_POST(thisRoutePath, payload) {
   axios.post(`${apiUrl}`, payload)
     .then((resp) => {
       console.log(resp);
-
+      alert("appartamento creato con successo")
       //in caso di success, salvo una variable e imposto loading a false
       store.submitResult = "success";
       store.loading = false;
@@ -47,6 +47,7 @@ export function api_POST(thisRoutePath, payload) {
       //controllo che nell'errore ci sia il response.data. 
       // Non è detto che c'è sempre. Dipende dall'errore.
       if (e.response && e.response.data) {
+        alert(`errore: ${e.response.data.message}`)
         store.submitResult = e.response.data.message;
       } else {
         store.submitResult = e.message;
