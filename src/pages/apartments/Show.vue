@@ -17,15 +17,10 @@
              class="img-fluid mb-2 card-img my-imgs "
               :src="img.image"
               :alt="'image ' + (index + 1)" />
-            
           </div>
-
-
         </div>
       </div>
-
     </div>
-
     <div v-else class="col-8 m-auto">
 
       <img class="img-fluid mb-2 card-img"
@@ -79,6 +74,16 @@
     <div class="mb-2 mx-2">
       <p>{{ apartment.description }}</p>
     </div>
+    <hr>
+
+    <div class="mb-2 mx-2 col-8">
+      <span class="fw-semibold">Cosa troverai</span>
+
+      <i v-for="service in apartment.services">{{ service }} ciaooo</i>
+      <a href="ciao">ciaooo</a>
+    </div>
+    
+
 
 
 

@@ -2,13 +2,13 @@
 
 <div class="card text-dark  border-0" >
    <img class="card-img-top mb-2 card-img rounded-4"
-		:src="this.apartment"
+		:src="apartment.images[0].image"
 		alt="" />
 	<span class="mt-1 fw-semibold">{{ apartment.title }}</span>
 	
    <div v-if="apartment.description.length > 70">
 	   <div class="px-1 mt-0 card-text opacity-50">
-	   	{{ apartment.description.substring(0, 70) + "..." }}
+	   	{{ apartment.description.substring(0, 50) + "..." }}
 	   </div>
    </div>
    <div v-else>
@@ -87,5 +87,9 @@ export default {
   max-width: calc(50ch + 2px);
 }
 
+img{
+   aspect-ratio: 1 / 1;
+   
+}
 
 </style>
