@@ -4,14 +4,14 @@
 
     <h1 class="mb-4">{{ apartment.title }}</h1>
     <div v-if="apartment.images" class="row">
-      <div class="col-6 mb-2 ">
+      <div class="col-xl-6 col-lg-6 col-md-4 col-sm-3 mb-2 ">
         <img class="img-fluid mb-2 card-img container-cards-left "
           :src="apartment.images[0].image"
           alt="" />
       </div>
       <div class="col-6">
         <div class="row">
-          <div v-for="(img, index) in apartment.images"  key="index" v-bind:class="(index ===0) ? ' ' : 'col-6' ">
+          <div v-for="(img, index) in apartment.images"  key="index" v-bind:class="(index ===0) ? ' ' : 'col-xl-6 col-lg-5 col-md-4 col-sm-6 ' ">
             
             <img v-if="index > 0" :class="(index === 2) ? 'container-cards-top-right' : '' | (index === 4) ? 'container-cards-bottom-right' : ''  "  
              class="img-fluid mb-2 card-img "
@@ -73,8 +73,13 @@
       <div class="mx-2">
         <i class="fa-solid fa-euro-sign"></i> {{ apartment.daily_price }} night
       </div>
-
+      
     </div>
+    <hr>
+    <div class="mb-2 mx-2">
+      <p>{{ apartment.description }}</p>
+    </div>
+
 
 
 
