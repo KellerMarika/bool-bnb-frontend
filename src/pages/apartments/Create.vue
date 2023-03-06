@@ -276,11 +276,13 @@ export default {
 <style lang="scss" scoped>
 @use "../../styles/generic.scss";
 @use "../../styles/partials/variables" as *;
-
-img{
-  width: 20px;
-  margin-left: 1rem;
+i {
+  img{
+    width: 25px;
+    margin-left: 0.7rem;
+  }
 }
+
 
 
 </style>
