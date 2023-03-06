@@ -198,7 +198,7 @@ export default {
  mounted() {
   titles(this.$route.meta.title + this.$route.params.id);
   this.onEditFormSubmit();
- }
+ },
 }
 </script>
 
