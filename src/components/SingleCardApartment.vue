@@ -2,7 +2,7 @@
 
 <div class="card text-dark  border-0" >
    <img class="card-img-top mb-2 card-img rounded-4"
-		:src="this.store.backedRootUrl + '/storage/' + apartment.cover_img"
+		:src="this.apartment"
 		alt="" />
 	<span class="mt-1 fw-semibold">{{ apartment.title }}</span>
 	

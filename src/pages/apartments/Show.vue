@@ -3,18 +3,18 @@
     <!--Apartments Show -->
 
     <h1 class="mb-4">{{ apartment.title }}</h1>
-    <div v-if="apartment.images" class="row ">
+    <div v-if="apartment.images" class="row d-flex">
       <div class="col-xl-6 col-lg-6 col-md-4 col-sm-12 col-6 mb-2 ">
         <img class="img-fluid mb-2 card-img container-cards-left "
           :src="apartment.images[0].image"
           alt="" />
       </div>
       <div class="col-6">
-        <div class="row">
+        <div class="row d-flex">
           <div v-for="(img, index) in apartment.images"  key="index" v-bind:class="(index ===0) ? ' ' : 'col-xl-6 col-lg-6 col-md-5 col-sm-6 ' ">
             
             <img v-if="index > 0" :class="(index === 2) ? 'container-cards-top-right' : '' | (index === 4) ? 'container-cards-bottom-right' : ''  "  
-             class="img-fluid mb-2 card-img "
+             class="img-fluid mb-2 card-img my-imgs "
               :src="img.image"
               :alt="'image ' + (index + 1)" />
             
@@ -208,5 +208,8 @@ export default {
 
   }
 
+}
+.my-imgs{
+  max-height: 205px;
 }
 </style>
