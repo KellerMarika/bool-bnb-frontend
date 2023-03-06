@@ -247,7 +247,7 @@ export default {
       },
 
       form: {
-        user_id: 1,
+        user_id: '',
         title: '',
         address: '',
         latitude: '',
@@ -351,18 +351,6 @@ export default {
         console.log("FORM ADDRESS NON C'E' FACCIO PARTIRE CHIAMATA X EDIT");
         this.onEditFormSubmit();
       }
-
-      /*  axios
-         .get(this.store.geoApiUrl + this.store.geoApiKey, {
-           params: this.formAddress,
-         })
-         .then((resp) => {
-           this.form.address = resp.data.results[0].address.freeformAddress;
-           this.form.latitude = resp.data.results[0].position.lat;
-           this.form.longitude = resp.data.results[0].position.lon;
- 
-           this.onEditFormSubmit();
-         }); */
     },
 
     /* FORMATTA E INVIA AL BECKEND I DATI  DEL FORM PER LA CREAZIONE DEL NUOVO "APPARTAMENTO" E RELATIVE RELAZIONI */
@@ -390,7 +378,6 @@ export default {
       }
 
       api_PUT(this.$route.meta.apiUpdateRoutePath+this.$route.params.id, formData);
-      console.log(this.$route.meta.apiUpdateRoutePath+this.$route.params.id)
     },
     /* RECUPERO COVER IMG DA INPUT FILE ----> QUESTA ANDRA' RIVISTA PER + IMMAGINI */
     onAttachmentChange(event) {
