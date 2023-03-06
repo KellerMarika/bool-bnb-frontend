@@ -1,12 +1,31 @@
 <template>
-<h5>Title Apartment</h5>
-<div class="mb-2">
-{{apartment.title}}
+<template>
+	<h5>Title Apartment</h5>
+	<div class="mb-2 card-title">
+		{{ apartment.title }}
+	</div>
+	<div class="card-body">
+		
+		<img class="mb-2 card-img"
+		:src="this.store.backedRootUrl + '/storage/' + apartment.cover_img"
+		alt="" />
+	
+	<h5>Apartment Description</h5>
+	<p class="mb-2 card-text">
+		{{ apartment.description }}
+	</p>
+	
+
 </div>
-<h5>Apartment Description</h5>
-<div class="mb-2">
-{{apartment.description}}
-</div>
+
+		
+    
+      
+        
+       
+     
+   
+</template>
 
 </template>
 <script>
