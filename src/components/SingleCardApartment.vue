@@ -1,22 +1,29 @@
 <template>
-<template>
-	<h5>Title Apartment</h5>
-	<div class="mb-2 card-title">
-		{{ apartment.title }}
-	</div>
-	<div class="card-body">
-		
-		<img class="mb-2 card-img"
+
+<div class="card text-dark  border-0" >
+   <img class="card-img-top mb-2 card-img rounded-4"
 		:src="this.store.backedRootUrl + '/storage/' + apartment.cover_img"
 		alt="" />
+	<span class="mt-1 fw-semibold">{{ apartment.title }}</span>
 	
-	<h5>Apartment Description</h5>
-	<p class="mb-2 card-text">
-		{{ apartment.description }}
-	</p>
+   <div v-if="apartment.description.length > 70">
+	   <div class="px-1 mt-0 card-text opacity-50">
+	   	{{ apartment.description.substring(0, 70) + "..." }}
+	   </div>
+   </div>
+   <div v-else>
+      <div class="px-1 mt-0 card-text opacity-50">
+	   	{{ apartment.description }}
+	   </div>
+   </div>
+
+	<div class="px-1 mt-0 fw-bolder">
+		{{ apartment.daily_price }} € <small class="opacity-50">night</small>
+	</div>
 	
 
 </div>
+
 
 		
     
@@ -25,10 +32,11 @@
        
      
    
-</template>
+
 
 </template>
 <script>
+import { store } from '../store';
 
 export default {
    props: {
@@ -55,6 +63,7 @@ export default {
    },
    data() {
       return {
+         store
       }
    },
    methods: {
@@ -64,4 +73,19 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+
+.card-text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
+}
+
+.card-text-truncate-40 {
+  max-width: calc(50ch + 2px);
+}
+
+
+</style>
