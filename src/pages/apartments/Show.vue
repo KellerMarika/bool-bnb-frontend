@@ -33,10 +33,10 @@
 
 
 
-    <!--   <router-link v-slot="{ ButtonDelete }" :to="{ name: 'Apartments.index' }">
-    <ButtonDelete :is="ButtonDelete" />
-  </router-link> -->
-    <ButtonDelete @click="onDeleteClick()" />
+    <router-link v-slot="{ ButtonDelete }" :to="{ name: 'Apartments.index' }">
+      <ButtonDelete :is="ButtonDelete" @click="onDeleteClick()" />
+    </router-link>
+
 
   </div>
 </template>
