@@ -4,7 +4,7 @@
       <!--     @click="fetchProjectLists(getPageNumber(link, pagination))" -->
       <li v-for="link in pagination.links"
 
-      @click="fetchProjectLists(getPageNumber(link, pagination))"
+          @click="fetchProjectLists(getPageNumber(link, pagination))"
 
           class="page-item">
 
@@ -44,32 +44,14 @@ export default {
       link_obj: {
         label: null,
         class: null,
-      /*   queries: {
-          page: 3
-        } */
       },
 
     }
   },
   methods: {
-/*     vai(a) {
-
-
-      console.log("LABEL:", a)
-      /*   this.queries.page=a */
-
-      /*    console.log(this.queries)
-       axios.get('http://127.0.0.1:8000/api/apartments', {
-           params: this.queries
-         })
-           .then((resp) => {
-             console.log(resp)
-           })   
-    }, */
-
+   
     /* EMIT */
     fetchProjectLists(page) {
-
       this.$emit("fetchProjectLists", page)
     },
 
@@ -81,22 +63,29 @@ export default {
 
         if (link.label.includes('Previous')) {
           if (pagination.current_page - 1 <= 1) {
-            return pagination.current_page = 1
+            pagination.current_page = 1;
+
+            return { "page": pagination.current_page }
           } else {
             /*   console.log("CURRENT", pagination.current_page) */
-            return pagination.current_page -= 1
+            pagination.current_page -= 1
+            return { "page": pagination.current_page }
           }
 
         } else if (link.label.includes('Next')) {
 
           if (pagination.current_page + 1 < pagination.last_page) {
-            return pagination.current_page += 1
+            pagination.current_page += 1
+            return { "page": pagination.current_page }
+
           } else {
-            return pagination.current_page = pagination.last_page
+            pagination.current_page = pagination.last_page
+            return { "page": pagination.current_page }
           }
         }
       } else {
-        return pagination.current_page =link.label
+        pagination.current_page = link.label
+        return { "page": pagination.current_page }
       }
     },
 
@@ -127,9 +116,6 @@ export default {
       if (link.active === true)
         return "active"
     }
-
-
-
   },
 
   computed: {

@@ -20,10 +20,7 @@
       </div>
 
       <!-- PAGINAZIONE SOTTO -->
-      <Pagination :pagination="pagination" @fetchProjectLists="fetchProjectLists"></Pagination>
-
-
-
+   <!--    <Pagination :pagination="pagination" @fetchProjectLists="fetchProjectLists"></Pagination> -->
     </div>
   </section>
 </template>
@@ -42,9 +39,6 @@ export default {
       store,
       apartments: null,
       pagination: [],
-      queries: {
-        page: 1
-      }
     }
   },
   methods: {
@@ -72,14 +66,10 @@ export default {
     fetchProjectLists(payload) {
 
       let apiUrl = `${this.store.backedRootUrl}/api${this.$route.meta.apiRoutePath}`
-      console.log("URL", apiUrl);
-      console.log(this.queries)
-      console.log("PAYLOAD", payload)
-
-     payload
 
       axios.get(`${apiUrl}`, {
-        params: { "page":payload }
+        params: { ...payload }
+ /*        params: { "page":payload } */
       })
         .then((resp) => {
           console.log(resp)
