@@ -85,7 +85,7 @@ export default {
 
           this.apartments = { ...resp.data.data }
           this.pagination = { ...this.omitKey(resp.data, "data") }
-          console.log("PAGINATION", this.pagination.links)
+          console.log("PAGINATION", this.pagination)
         })
         .catch((e) => {
 
