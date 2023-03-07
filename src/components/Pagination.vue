@@ -155,7 +155,6 @@ export default {
 .pagination {
   li a {
     color: variables.$dark_color;
-
     &.active {
       background-color: variables.$primary_color;
     }
