@@ -24,7 +24,7 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: Home_Pg,
-      meta: { title:"HOME"},
+      meta: { title:"HOME", apiRoutePath:"/apartments"},
     },
     {
       path: "/about",

@@ -1,7 +1,7 @@
 <template>
 
-<div class="card text-dark  border-0" >
-   <img class="card-img-top mb-2 card-img rounded-4"
+<div class="card text-dark   border-0" >
+   <img class="card-img-top mb-2 card-img rounded-4" 
 		:src="apartment.images[0].image"
 		alt="" />
 	<span class="mt-1 fw-semibold">{{ apartment.title }}</span>
@@ -89,7 +89,10 @@ export default {
 
 img{
    aspect-ratio: 1 / 1;
-   
+   box-shadow: 3px 5px 4px black;
 }
+
+
+
 
 </style>
