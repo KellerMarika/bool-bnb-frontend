@@ -1,26 +1,23 @@
 <template>
   <section>
-    <div class="container">
+    <div class="container-fluid px-5">
       <h1>Apartments Index</h1>
-
-      <!-- PAGINAZIONE SOPRA -->
-      <Pagination :pagination="pagination" @fetchProjectLists="fetchProjectLists"></Pagination>
-
       <!-- pagination up -->
-      <div class="row g-4">
+      <div class="row row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5 g-4 px-md-5">
 
         <!-- LINK ALLO SHOW -->
         <router-link v-for="apartment in apartments"
             :to="{ name: 'Apartments.show', params: { id: apartment.id } }"
-            v-slot="{ singleCard }" class=" col-xl-2 col-lg-3 col-md-4 col-sm-6 card-group my-4">
-
+            v-slot="{ singleCard }" class="card-group my-4">
+      
           <!-- CARD -->
           <SingleCardApartment :is="singleCard" :apartment='apartment'> </SingleCardApartment>
         </router-link>
       </div>
 
       <!-- PAGINAZIONE SOTTO -->
-   <!--    <Pagination :pagination="pagination" @fetchProjectLists="fetchProjectLists"></Pagination> -->
+
+      <Pagination :pagination="pagination" @fetchProjectLists="fetchProjectLists"></Pagination>
     </div>
   </section>
 </template>
@@ -69,7 +66,7 @@ export default {
 
       axios.get(`${apiUrl}`, {
         params: { ...payload }
- /*        params: { "page":payload } */
+        /*        params: { "page":payload } */
       })
         .then((resp) => {
           console.log(resp)

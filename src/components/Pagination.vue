@@ -1,5 +1,5 @@
 <template>
-  <nav aria-label="...">
+  <nav aria-label="..." class="d-flex justify-content-end">
     <ul class="pagination">
       <!--     @click="fetchProjectLists(getPageNumber(link, pagination))" -->
       <li v-for="link in pagination.links"
@@ -49,12 +49,11 @@ export default {
     }
   },
   methods: {
-   
+
     /* EMIT */
     fetchProjectLists(page) {
       this.$emit("fetchProjectLists", page)
     },
-
     /* COMPUTED CHE NON VANNO COL THIS */
 
     getPageNumber(link, pagination) {
@@ -143,7 +142,6 @@ export default {
       } */
   },
   mounted() {
-
   }
 }
 </script>
@@ -155,9 +153,14 @@ export default {
 
 /* ADMIN/PROJECTS */
 .pagination {
-  li a.active {
-    background-color: tomato;
+  li a {
+    color: variables.$dark_color;
+
+    &.active {
+      background-color: variables.$primary_color;
+    }
   }
+
 
 
 }
