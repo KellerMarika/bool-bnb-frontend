@@ -3,17 +3,15 @@
     <div class="container">
       <h1>Apartments Index</h1>
       <!-- pagination up -->
-      <div class="row gap-3">
+      <div class="row g-4">
 
       <!-- LINK ALLO SHOW -->
       <router-link v-for="apartment in apartments"
         :to="{ name: 'Apartments.show', params: { id: apartment.id } }"
-        v-slot="{ singleCard }"
-
-        class="col-3 my-4 overflow-hidden shadow">
+        v-slot="{ singleCard }" class=" col-xl-2 col-lg-3 col-md-4 col-sm-6 card-group my-4">
 
         <!-- CARD -->
-        <SingleCardApartment :is="singleCard" :apartment='apartment' class=" card w-100"> </SingleCardApartment>
+        <SingleCardApartment :is="singleCard" :apartment='apartment'> </SingleCardApartment>
       </router-link>
 
       <!-- pagination down -->
