@@ -33,7 +33,7 @@ import axios from 'axios';
 import { store } from '../../store';
 import { titles } from '../../store';
 import SingleCardApartment from '../../components/SingleCardApartment.vue';
-import Pagination from '../../components/pagination.vue';
+import Pagination from '../../components/Pagination.vue';
 export default {
   name: "Apartments Index",
   components: { SingleCardApartment, Pagination },

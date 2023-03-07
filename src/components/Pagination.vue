@@ -1,9 +1,10 @@
 <template>
   <nav aria-label="...">
     <ul class="pagination">
+      <!--     @click="fetchProjectLists(getPageNumber(link, pagination))" -->
       <li v-for="link in pagination.links"
 
-          @click="fetchProjectLists(getPageNumber(link, pagination))"
+          @click="vai(getPageNumber(link, pagination))"
 
           class="page-item">
 
@@ -15,6 +16,7 @@
   </nav>
 </template>
 <script>
+import axios from 'axios';
 import { store } from '../store';
 export default {
   props: {
@@ -43,17 +45,31 @@ export default {
         label: null,
         class: null,
         queries: {
-          page: 2
+          page: 3
         }
       },
 
     }
   },
   methods: {
+    vai(a) {
+
+
+      console.log("LABEL:", a)
+      /*   this.queries.page=a */
+
+      /*    console.log(this.queries)
+       axios.get('http://127.0.0.1:8000/api/apartments', {
+           params: this.queries
+         })
+           .then((resp) => {
+             console.log(resp)
+           })   */
+    },
 
     /* EMIT */
-    fetchProjectLists(queries) {
-      this.$emit("fetchProjectLists", queries)
+    fetchProjectLists(page) {
+      this.$emit("fetchProjectLists", page)
     },
 
     /* COMPUTED CHE NON VANNO COL THIS */
@@ -64,21 +80,22 @@ export default {
 
         if (link.label.includes('Previous')) {
           if (pagination.current_page - 1 <= 1) {
-            return 1
+            return pagination.current_page = 1
           } else {
-            return pagination.current_page - 1
+            /*   console.log("CURRENT", pagination.current_page) */
+            return pagination.current_page -= 1
           }
 
         } else if (link.label.includes('Next')) {
 
           if (pagination.current_page + 1 < pagination.last_page) {
-            return pagination.current_page + 1
+            return pagination.current_page += 1
           } else {
-            return pagination.last_page
+            return pagination.current_page = pagination.last_page
           }
         }
       } else {
-        return link.label
+        return pagination.current_page =link.label
       }
     },
 
