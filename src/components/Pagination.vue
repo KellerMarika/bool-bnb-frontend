@@ -4,7 +4,7 @@
       <!--     @click="fetchProjectLists(getPageNumber(link, pagination))" -->
       <li v-for="link in pagination.links"
 
-          @click="vai(getPageNumber(link, pagination))"
+      @click="fetchProjectLists(getPageNumber(link, pagination))"
 
           class="page-item">
 
@@ -44,15 +44,15 @@ export default {
       link_obj: {
         label: null,
         class: null,
-        queries: {
+      /*   queries: {
           page: 3
-        }
+        } */
       },
 
     }
   },
   methods: {
-    vai(a) {
+/*     vai(a) {
 
 
       console.log("LABEL:", a)
@@ -64,11 +64,12 @@ export default {
          })
            .then((resp) => {
              console.log(resp)
-           })   */
-    },
+           })   
+    }, */
 
     /* EMIT */
     fetchProjectLists(page) {
+
       this.$emit("fetchProjectLists", page)
     },
 

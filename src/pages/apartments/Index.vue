@@ -42,9 +42,9 @@ export default {
       store,
       apartments: null,
       pagination: [],
-/*       queries:{
-        page:2
-      } */
+      queries: {
+        page: 1
+      }
     }
   },
   methods: {
@@ -73,11 +73,16 @@ export default {
 
       let apiUrl = `${this.store.backedRootUrl}/api${this.$route.meta.apiRoutePath}`
       console.log("URL", apiUrl);
+      console.log(this.queries)
+      console.log("PAYLOAD", payload)
+
+     payload
 
       axios.get(`${apiUrl}`, {
-        params: payload
+        params: { "page":payload }
       })
         .then((resp) => {
+          console.log(resp)
           this.store.submitResult = "success";
           this.store.loading = false;
 
