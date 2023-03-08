@@ -1,104 +1,88 @@
 <template>
-  <div class="container">
-    <!--Apartments Show -->
+  <section class="px-xxl-5  mx-3 mx-sm-5 mx-lg-5">
+    <div class=" container.fluid  px-md-3 px-xl-5">
 
-    <h1 class="mb-4">{{ apartment.title }}</h1>
-    <div v-if="apartment.images" class="row d-flex">
-      <div class="col-xl-6 col-lg-6 col-md-4 col-sm-12 col-6 mb-2 ">
-        <img class="img-fluid mb-2 card-img container-cards-left "
-          :src="apartment.images[0].image"
-          alt="" />
-      </div>
-      <div class="col-6">
-        <div class="row d-flex">
-          <div v-for="(img, index) in apartment.images"  key="index" v-bind:class="(index ===0) ? ' ' : 'col-xl-6 col-lg-6 col-md-5 col-sm-6 ' ">
-            
-            <img v-if="index > 0" :class="(index === 2) ? 'container-cards-top-right' : '' | (index === 4) ? 'container-cards-bottom-right' : ''  "  
-             class="img-fluid mb-2 card-img my-imgs "
-              :src="img.image"
-              :alt="'image ' + (index + 1)" />
+      <!--Apartments Show -->
+
+      <h1 class="mb-4">{{ apartment.title }}</h1>
+
+      <div class="img-container rounded-4 overflow-hidden">
+
+
+        <div v-if="apartment.images"
+            class="img-row-left border-success border-5 row  row-cols-1  row-cols-lg-2 gap-2">
+
+          <!-- main img -->
+          <div class="col h-100 p-0 pb-md-2">
+            <img class="img-fluid w-100"
+                :src="apartment.images[0].image"
+                alt="" />
+          </div>
+
+          <!--  <div class="col h-100 p-0"> -->
+          <div class="row-dx col row row-cols-4 row-cols-lg-2 p-0">
+            <div
+                v-for="(img, index) in apartment.images"
+                v-show="(index > 0)"
+                class="col h-50 p-0 px-md-1  px-lg-3 py-lg-4">
+              <img
+                  class="img-fluid"
+
+                  :src="img.image"
+                  :alt="'image ' + (index + 1)" />
+
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div v-else class="col-8 m-auto">
 
-      <img class="img-fluid mb-2 card-img"
-          :src="apartment.cover_img"
-          alt="" />
+      <div class="my-2">
+        <i class="h5 me-2 fa-solid fa-map-location-dot"></i> {{ apartment.address }}
+      </div>
+      <hr>
+      <div class="d-flex mb-3">
 
-    </div>
-    <!-- <div class="col-6 container-cards">
-          <img class="img-fluid container-cards-left mb-2 card-img  "
-            :src="this.apartment.images[0].image"
-            alt="" />
+        <div class="mb-2 mx-2">
+          Rooms {{ apartment.rooms_qty }} |
         </div>
-        <div class="col-6">
-          <div v-for="(img, i) in apartment.images" class="row">
-            <div  class="col-6 mb-2"><img class="img-fluid mb-2 card-img "
-                :src="img.image"
-                alt="" /></div>
-          </div>
-        </div> -->
 
+        <div class="mb-2 mx-2">
+          <i class="fa-solid fa-bed"></i> {{ apartment.beds_qty }} |
+        </div>
 
+        <div class="mb-2 mx-2">
+          <i class="fa-solid fa-bath"></i> {{ apartment.bathrooms_qty }} |
+        </div>
 
+        <div class="mb-2 mx-2">
+          MQ {{ apartment.mq }} |
+        </div>
+        <div class="mx-2">
+          <i class="fa-solid fa-euro-sign"></i> {{ apartment.daily_price }} night
+        </div>
 
-    <div class="my-2">
-      <i class="h5 me-2 fa-solid fa-map-location-dot"></i> {{ apartment.address }}
-    </div>
-    <hr>
-    <div class="d-flex mb-3">
-
+      </div>
+      <hr>
       <div class="mb-2 mx-2">
-        Rooms {{ apartment.rooms_qty }} |
+        <p>{{ apartment.description }}</p>
+      </div>
+      <hr>
+
+      <div class="mb-2 mx-2 col-8">
+        <span class="fw-semibold">Cosa troverai</span>
+
+        <i v-for="service in apartment.services">{{ apartment.services.name }} ciaooo</i>
+        <a href="ciao">ciaooo</a>
       </div>
 
-      <div class="mb-2 mx-2">
-        <i class="fa-solid fa-bed"></i> {{ apartment.beds_qty }} |
-      </div>
 
-      <div class="mb-2 mx-2">
-        <i class="fa-solid fa-bath"></i> {{ apartment.bathrooms_qty }} |
-      </div>
+      <router-link v-slot="{ ButtonDelete }" :to="{ name: 'Apartments.index' }">
+        <ButtonDelete :is="ButtonDelete" @click="onDeleteClick()" />
+      </router-link>
+      <a href="http://localhost:5173/apartments" class="btn btn-info ms-2 text-light">RETURN TO INDEX</a>
 
-      <div class="mb-2 mx-2">
-        MQ {{ apartment.mq }} |
-      </div>
-      <div class="mx-2">
-        <i class="fa-solid fa-euro-sign"></i> {{ apartment.daily_price }} night
-      </div>
-      
     </div>
-    <hr>
-    <div class="mb-2 mx-2">
-      <p>{{ apartment.description }}</p>
-    </div>
-    <hr>
-
-    <div class="mb-2 mx-2 col-8">
-      <span class="fw-semibold">Cosa troverai</span>
-
-      <i v-for="service in apartment.services">{{ service }} ciaooo</i>
-      <a href="ciao">ciaooo</a>
-    </div>
-    
-
-
-
-
-
-
-
-
-    <router-link v-slot="{ ButtonDelete }" :to="{ name: 'Apartments.index' }">
-      <ButtonDelete :is="ButtonDelete" @click="onDeleteClick()" />
-    </router-link>
-
-
-    <a href="http://localhost:5173/apartments" class="btn btn-info ms-2 text-light">RETURN TO INDEX</a>
-
-  </div>
+  </section>
 </template>
 
 <script>
@@ -187,35 +171,34 @@ export default {
 }
 </script>
 
-
 <style lang="scss" scoped>
 @use "../../styles/generic.scss";
 @use "../../styles/partials/variables" as *;
+@import 'bootstrap/scss/_functions';
+@import 'bootstrap/scss/_variables';
+@import 'bootstrap/scss/mixins/_breakpoints';
 
 
+.img-container {
+  height: 1/3vh;
 
-.col-6 {
+  .img-row-left img {
 
-  .container-cards-left {
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-
+    @include media-breakpoint-up(lg) {
+      transform: scaleY(120%) translateY(8%);
+    }
+    @include media-breakpoint-up(xl) {
+      transform: scaleY(120%) translateY(5%);
+    }
   }
 
-  .container-cards-top-right {
-    border-top-right-radius: 20px;
-
-
-  }
-
-  .container-cards-bottom-right {
-
-    border-bottom-right-radius: 20px;
+  .row-dx {
+    transform: scaleY(115%) scaleX(102%) translate(10px);
+    position: relative;
+    top: 0;
+    left: 0;
 
   }
-
 }
-.my-imgs{
-  max-height: 205px;
-}
+
 </style>
