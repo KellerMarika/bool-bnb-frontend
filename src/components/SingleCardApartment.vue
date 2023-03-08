@@ -1,11 +1,13 @@
 <template>
 	<div class="card text-dark border-0">
 		<img
-			v-if="apartment.images.length"
 			class="card-img-top mb-2 card-img rounded-4"
-			:src="apartment.images[0].image"
+			:src="
+				apartment.images.length
+					? apartment.images[0].image
+					: '/placeholder-image.png'
+			"
 			alt="" />
-		<img v-else src="/placeholder-image.png" alt="" />
 		<span class="mt-1 fw-semibold">{{ apartment.title }}</span>
 
 		<div v-if="apartment.description.length > 70">
