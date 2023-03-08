@@ -33,12 +33,12 @@
                 </li>
 
                 <li class="nav-item  d-flex flex-column align-items-center">
-                  <a class="nav-link fs-5  pt-md-4 px-2" href="/abaut">
+                  <a class="nav-link fs-5  pt-md-4 px-2" href="/about">
                     About</a>
                   <div class="link-underline m-3 mb-0"></div>
                 </li>
                 <li class="nav-item  d-flex flex-column align-items-center">
-                  <a class="nav-link fs-5  pt-md-4 px-2" href="/contact">
+                  <a class="nav-link fs-5  pt-md-4 px-2" href="/contacts">
                     Contacts</a>
                   <div class="link-underline m-3 mb-0"></div>
                 </li>
@@ -54,7 +54,7 @@
 
                 <li class="nav-item   d-flex flex-column align-items-center">
                   <a class="nav-link fs-5 pt-md-4 px-2"
-                      :href="store.backedRootUrl + '/Register'">Register</a>
+                      :href="store.backedRootUrl + '/register'">Register</a>
                   <div class="link-underline m-3 mb-0"></div>
                 </li>
 
@@ -64,9 +64,9 @@
                   </a>
 
                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item fs-5" :href="store.backedRootUrl + '/dashboard'">Dashboard</a>
+                    <a class="dropdown-item fs-5" :href="store.backedRootUrl + '/Admin/dashboard'">Dashboard</a>
                     <!--   onclick="event.preventDefault(); -->
-                    <a class="dropdown-item fs-5" :href="store.backedRootUrl + '/logout'">Logout</a>
+                    <a class="dropdown-item fs-5" :href="store.backedRootUrl + '/Admin/logout'">Logout</a>
                   </div>
                 </li>
               </ul>
