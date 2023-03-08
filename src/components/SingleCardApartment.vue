@@ -2,11 +2,7 @@
 	<div class="card text-dark border-0">
 		<img
 			class="card-img-top mb-2 card-img rounded-4"
-			:src="
-				apartment.images.length
-					? apartment.images[0].image
-					: '/placeholder-image.png'
-			"
+			:src="fetchImage(apartment.cover_img, apartment.images)"
 			alt="" />
 		<span class="mt-1 fw-semibold">{{ apartment.title }}</span>
 
@@ -27,26 +23,26 @@
 	</div>
 </template>
 <script>
-import {store} from '../store';
+import { store} from '../store';
 
 export default {
 	props: {
 		/**
-		 *@param {int} user_id => required|exists:users,id,
-		 *@param {string} title => required|string,
-		 *@param {string} address => required|string,
-		 *@param {string} latitude => required,
-		 *@param {string} longitude => required,
-		 *@param {string} cover_img => file|image,
-		 *@param {string} description => string|max:1000,
-		 *@param {int} rooms_qty => required|integer,
-		 *@param {int} beds_qty => required|integer,
-		 *@param {int} bathrooms_qty => required|integer,
-		 *@param {int} mq => integer,
-		 *@param {float} daily_price => required|decimal:2,
-		 *@param {bool} visible => nullable|boolean,
-		 *@param {array} services => 'nullable|array',
-		 */
+			*@param {int} user_id => required|exists:users,id,
+			*@param {string} title => required|string,
+			*@param {string} address => required|string,
+			*@param {string} latitude => required,
+			*@param {string} longitude => required,
+			*@param {string} cover_img => file|image,
+			*@param {string} description => string|max:1000,
+			*@param {int} rooms_qty => required|integer,
+			*@param {int} beds_qty => required|integer,
+			*@param {int} bathrooms_qty => required|integer,
+			*@param {int} mq => integer,
+			*@param {float} daily_price => required|decimal:2,
+			*@param {bool} visible => nullable|boolean,
+			*@param {array} services => 'nullable|array',
+			*/
 		apartment: {
 			required: true,
 			type: Object,
@@ -57,8 +53,23 @@ export default {
 			store,
 		};
 	},
-	methods: {},
-	mounted() {},
+	methods: {
+		
+/* FUNZIONE FETCH COVER IMG  */
+		fetchImage(apartmentCoverImg, apartmentImages) {
+
+			if (apartmentCoverImg !== null) {
+				return apartmentCoverImg
+			} else if (apartmentImages.length) {
+				return apartmentImages[0].image
+			} else {
+				let defaultImg = '/placeholder-image.png'
+				return defaultImg
+			}
+		}
+	},
+	mounted() {
+ },
 };
 </script>
 
@@ -69,11 +80,9 @@ export default {
 	max-width: 100%;
 	display: block;
 }
-
 .card-text-truncate-40 {
 	max-width: calc(50ch + 2px);
 }
-
 img {
 	aspect-ratio: 1 / 1;
 	box-shadow: 3px 5px 4px black;
