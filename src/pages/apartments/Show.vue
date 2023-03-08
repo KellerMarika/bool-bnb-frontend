@@ -80,8 +80,9 @@
       <div class="mb-4 mx-2 col-8">
         <div class="fw-semibold">Cosa troverai: </div>
         <div class="d-flex gap-3">
-          <span class="d-flex gap-2 my-services" v-for="service in apartment.services">{{ service.name }}
+          <span class="d-flex gap-2 my-services" v-for="service in apartment.services">
             <img :src="'/public/services-icons/' + service.icon" alt="">
+            {{ service.name }}
           </span>
         </div>
       </div>
