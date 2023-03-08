@@ -206,17 +206,11 @@
 							id="service_{{i}}"
 							v-model="form.services" />
 
-						<label
-							class="form-check form-check-inline"
-							for="service_{{i}}"
-							>{{ service.name }}
-							<i
-								><img
-									:src="
-										'../../../public/services-icons/' + service.icon
-									"
-									alt="" /></i
-						></label>
+						<label class="form-check form-check-inline" for="service_{{i}}" >{{ service.name }}
+							<i>
+								<img :src="'../../../public/services-icons/' + service.icon " alt="" />
+							</i>
+							</label>
 					</div>
 				</div>
 				<div class="d-flex justify-content-center gap-3">

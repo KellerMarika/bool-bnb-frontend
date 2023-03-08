@@ -79,9 +79,9 @@
       <div class="mb-2 mx-2 col-8">
         <span class="fw-semibold">Cosa troverai</span>
 
-        <i  v-if="apartment.images && apartment.images.length> 0"
-        v-for="service in apartment.services">{{ apartment.services.name }} ciaooo</i>
-        <a href="ciao">ciaooo</a>
+        <span   
+        v-for="service in apartment.services">{{service.name }} </span>
+        <img :src="'../../../public/services-icons/' + service.icon" :alt="service.icon">
       </div>
       <a href="http://localhost:5173/apartments" class="btn btn-info ms-2 text-light">RETURN TO INDEX</a>
     </div>
