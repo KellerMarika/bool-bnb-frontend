@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-fluid px-5 ">
     <div class="d-flex justify-content-center my-5 align-items-center">
 
       <div class="position-relative">
@@ -7,25 +7,25 @@
         <button @click="fetchTomTom()" class="my-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
 
       </div>
-        <a class="ms-4 rounded-5 btn-outline-dark btn p-2" href="">Ad search</a>
+      <a class="ms-4 rounded-5 btn-outline-dark btn p-2" href="">Ad search</a>
     </div>
-    <h4 class="my-3">{{ querySearch ? querySearch : 'Think for You' }}</h4>
 
+    <div class="card-container px-sm-2 px-xl-5">
+      <h4 class="my-3">{{ querySearch ? querySearch : 'Think for You' }}</h4>
+      <div class="row g-4">
 
+        <!-- LINK ALLO SHOW -->
+        <router-link v-for="apartment in apartments"
+            :to="{ name: 'Apartments.show', params: { id: apartment.id } }"
+            v-slot="{ singleCard }" class=" col-xl-2 col-lg-3 col-md-4 col-sm-6 card-group my-4">
 
-    <div class="row g-4">
-
-      <!-- LINK ALLO SHOW -->
-      <router-link v-for="apartment in apartments"
-        :to="{ name: 'Apartments.show', params: { id: apartment.id } }"
-        v-slot="{ singleCard }" class=" col-xl-2 col-lg-3 col-md-4 col-sm-6 card-group my-4">
-
-        <!-- CARD -->
-        <SingleCardApartment :is="singleCard" :apartment='apartment'> </SingleCardApartment>
-      </router-link>
-
-      <!-- pagination down -->
+          <!-- CARD -->
+          <SingleCardApartment :is="singleCard" :apartment='apartment'> </SingleCardApartment>
+        </router-link>
+        <!-- pagination down -->
+      </div>
     </div>
+
   </div>
 </template>
 
