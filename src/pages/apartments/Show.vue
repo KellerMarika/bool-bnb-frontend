@@ -1,40 +1,49 @@
 <template>
-  <section class="px-xxl-5  mx-3 mx-sm-5 mx-lg-5">
+  <section class="px-xxl-5  mx-3 mx-sm-5 mx-lg-5"
+    :class="apartment.images && apartment.images.length ? '' : 'd-flex'">
     <div class=" container.fluid  px-md-3 px-xl-5">
 
       <!--Apartments Show -->
 
       <h1 class="mb-4">{{ apartment.title }}</h1>
+      <!-- se non ci sono immagini gallery -->
+      <div v-if="apartment.images && apartment.images.length > 0" class="img-container rounded-4 overflow-hidden">
 
-      <div class="img-container rounded-4 overflow-hidden">
-
-
-        <div v-if="apartment.images"
-            class="img-row-left border-success border-5 row  row-cols-1  row-cols-lg-2 gap-2">
+        <div class="img-row-left border-success border-5 row  row-cols-1  row-cols-lg-2 gap-2">
 
           <!-- main img -->
           <div class="col h-100 p-0 pb-md-2">
             <img class="img-fluid w-100"
-                :src="apartment.images[0].image"
-                alt="" />
+              :src="apartment.images[0].image"
+              alt="" />
           </div>
 
           <!--  <div class="col h-100 p-0"> -->
           <div class="row-dx col row row-cols-4 row-cols-lg-2 p-0">
             <div
-                v-for="(img, index) in apartment.images"
-                v-show="(index > 0)"
-                class="col h-50 p-0 px-md-1  px-lg-3 py-lg-4">
+              v-for="(img, index) in apartment.images"
+              v-show="(index > 0)"
+              class="col h-50 p-0 px-md-1  px-lg-3 py-lg-4">
               <img
-                  class="img-fluid"
+                class="img-fluid"
 
-                  :src="img.image"
-                  :alt="'image ' + (index + 1)" />
-
+                :src="img.image"
+                :alt="'image ' + (index + 1)" />
             </div>
           </div>
         </div>
       </div>
+
+      <!-- carica solo la cover -->
+      <div class="img-container rounded-4 overflow-hidden"
+        :class="apartment.cover_img ? 'w-50' : 'w-25'">
+
+        <img :src="apartment.cover_img ? apartment.cover_img : '/placeholder-image.png'"
+          :alt="apartment.title + '_img_' + apartment.cover_img"
+          class="img-fluid w-100">
+      </div>
+
+      <!-- MESSAGGIO TRISTE -->
 
       <div class="my-2">
         <i class="h5 me-2 fa-solid fa-map-location-dot"></i> {{ apartment.address }}
@@ -68,19 +77,16 @@
       </div>
       <hr>
 
-      <div class="mb-2 mx-2 col-8">
-        <span class="fw-semibold">Cosa troverai</span>
-
-        <i v-for="service in apartment.services">{{ apartment.services.name }} ciaooo</i>
-        <a href="ciao">ciaooo</a>
+      <div class="mb-4 mx-2 col-8">
+        <div class="fw-semibold">Cosa troverai: </div>
+        <div class="d-flex gap-3">
+          <span class="d-flex gap-2 my-services" v-for="service in apartment.services">
+            <img :src="'/public/services-icons/' + service.icon" alt="">
+            {{ service.name }}
+          </span>
+        </div>
       </div>
-
-
-      <router-link v-slot="{ ButtonDelete }" :to="{ name: 'Apartments.index' }">
-        <ButtonDelete :is="ButtonDelete" @click="onDeleteClick()" />
-      </router-link>
-      <a href="http://localhost:5173/apartments" class="btn btn-info ms-2 text-light">RETURN TO INDEX</a>
-
+      <a href="http://localhost:5173/apartments" class="mb-3 btn btn-info ms-2 text-light">RETURN TO INDEX</a>
     </div>
   </section>
 </template>
@@ -187,6 +193,7 @@ export default {
     @include media-breakpoint-up(lg) {
       transform: scaleY(120%) translateY(8%);
     }
+
     @include media-breakpoint-up(xl) {
       transform: scaleY(120%) translateY(5%);
     }
@@ -197,6 +204,13 @@ export default {
     position: relative;
     top: 0;
     left: 0;
+  }
+
+}
+
+.my-services {
+  img {
+    width: 20px;
   }
 }
 </style>

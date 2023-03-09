@@ -9,19 +9,33 @@ export const store = reactive({
   geoApiKey: "key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE",
   geoApiUrl: "https://api.tomtom.com/search/2/structuredGeocode.json?",
 
-
   loading: false,
   submitResult: "",
   apartmentsList: null,
   apartmentsPagination: null,
-
-  /*   backedRootUrl: 'http://127.0.0.1:8000', */
 });
 
 /* FUNZIONE ASSEGNA TITOLO A PAGINA */
 export function titles(pageTitle) {
   document.title = pageTitle
 };
+
+/* FUNZIONE FETCH IMG  nn gli piace export e non ho tempo */
+/* export function fetchImage(apartmentCoverImg, apartmentImages){
+
+  if(apartmentCoverImg!==null){
+    return apartmentCoverImg
+  }else if(apartmentImages.length){
+    return apartmentImages[0].image
+  }else{
+    let defaultImg='/placeholder-image.png'
+    return  defaultImg
+  }
+} */
+
+
+
+
 
 /**FUNZIONE API CALL POST (create->store)....................
  * 

@@ -1,9 +1,9 @@
 
-import TheFooter from '../components/TheFooter.vue';
+
 
 <template>
   <TheHeaderVue />
-  <h1 class="text-uppercase">abaut</h1>
+  <h1 class="text-uppercase">about</h1>
   <TheFooterVue/>
 </template>
 
