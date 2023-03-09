@@ -86,7 +86,7 @@
           </span>
         </div>
       </div>
-      <a href="http://localhost:5173/apartments" class="mb-3 btn btn-info ms-2 text-light">RETURN TO INDEX</a>
+      <a href="http://localhost:5174/apartments" class="mb-3 btn btn-info ms-2 text-light">RETURN TO INDEX</a>
     </div>
   </section>
 </template>
