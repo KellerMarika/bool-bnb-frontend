@@ -8,7 +8,7 @@
               v-model="address" />
         </div>
 
-        <!-- rooms -->
+				<!-- rooms -->
 
         <div class="input-container pb-2 col-3 text-center">
           <label class="form-label" for="min_rooms">min Rooms number</label>
@@ -19,18 +19,22 @@
           </select>
         </div>
 
-        <!--     {{-- BEDROOMS QTY ------------------------------------------------------------------ --}} -->
+				<!--     {{-- BEDROOMS QTY ------------------------------------------------------------------ --}} -->
 
-        <div class="input-container text-center pb-2 col-3 ">
-          <label class="form-label" for="min_beads">min Beds number</label>
-          <select v-model="query.min_beds" class="form-control" id="min_beads" name="min_beads">
-            <option v-for="i in 5" :key="i" :value="i">
-              {{ i == 5 ? i + ' +' : i }}
-            </option>
-          </select>
-        </div>
+				<div class="input-container text-center pb-2 col-3">
+					<label class="form-label" for="min_beads">min Beds number</label>
+					<select
+						v-model="query.min_beds"
+						class="form-control"
+						id="min_beads"
+						name="min_beads">
+						<option v-for="i in 5" :key="i" :value="i">
+							{{ i == 5 ? i + ' +' : i }}
+						</option>
+					</select>
+				</div>
 
-        <!-- radis --------------------------------------------------------------------------------------- -->
+				<!-- radis --------------------------------------------------------------------------------------- -->
 
         <div class="mb-2 col-3 text-end">
           <label class="form-label me-2" for="radiusInput">Radius (km)</label>
@@ -76,7 +80,7 @@
 </template>
 <script>
 import axios from 'axios';
-import { store, titles } from '../store';
+import {store, titles} from '../store';
 export default {
   name: 'AdvancedSearch',
   data() {
@@ -206,9 +210,9 @@ export default {
 @use '../styles/partials/variables' as *;
 
 i {
-  img {
-    width: 25px;
-    margin-left: 0.7rem;
-  }
+	img {
+		width: 25px;
+		margin-left: 0.7rem;
+	}
 }
 </style>
