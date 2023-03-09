@@ -6,7 +6,7 @@ import About_Pg from "./pages/About.vue";
 
 /* APPARTIMENTS */
 import ApartmentsIndex_Pg from "./pages/apartments/Index.vue";
-//import AdvancedSearch from "./pages/AdvancedSearch.vue";
+import AdvancedSearch from "./pages/AdvancedSearch.vue";
 import ApartmentsCreate_Pg from "./pages/apartments/Create.vue";
 import ApartmentsShow_Pg from "./pages/apartments/Show.vue";
 import ApartmentsEdit_Pg from "./pages/apartments/Edit.vue";
@@ -26,25 +26,25 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: Home_Pg,
-      meta: { title:"HOME", apiRoutePath:"/apartments"},
+      meta: { title: "HOME", apiRoutePath: "/apartments" },
     },
-    //{
-    //  path: "/advancedSearch",
-    //  name: "AdvancedSearch",
-    //  component: AdvancedSearch,
-    //  meta: { title:"ADVANCED SEARCH", apiRoutePath:"/advancedSearch"},
-    //},
+    {
+      path: "/advancedSearch",
+      name: "AdvancedSearch",
+      component: AdvancedSearch,
+      meta: { title: "ADVANCED SEARCH", apiRoutePath: "/advancedSearch" },
+    },
     {
       path: "/about",
       name: "about",
       component: About_Pg,
-      meta: { title:"ABOUT"},
+      meta: { title: "ABOUT" },
     },
     {
       path: "/contacts",
       name: "contacts",
       component: Contacts_Pg,
-      meta: { title:"CONTACTS"},
+      meta: { title: "CONTACTS" },
     },
 
     // APARTIMENTS.....................
@@ -53,14 +53,14 @@ const router = createRouter({
       path: "/apartments",
       name: "Apartments.index",
       component: ApartmentsIndex_Pg,
-      meta: { title:"GALLERY APARTMENTS", apiRoutePath:"/apartments"},
+      meta: { title: "GALLERY APARTMENTS", apiRoutePath: "/apartments" },
     },
     //show
     {
       path: "/apartments/:id",
       name: "Apartments.show",
       component: ApartmentsShow_Pg,
-      meta: { title:"APARTMENT: #",apiRoutePath:"/apartments/" ,apiRouteDeletePath:"/admin/apartments/"},
+      meta: { title: "APARTMENT: #", apiRoutePath: "/apartments/", apiRouteDeletePath: "/admin/apartments/" },
     },
     //create
     /* {
@@ -82,7 +82,7 @@ const router = createRouter({
       path: "/:catchAll(.*)",
       name: "not-found",
       component: NotFound_Pg,
-      meta: { title:"PAGE NOT FOUND"}
+      meta: { title: "PAGE NOT FOUND" }
     },
   ]
 });
