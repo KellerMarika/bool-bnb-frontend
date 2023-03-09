@@ -90,26 +90,23 @@ export default {
 
       api_key: '.json?key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE',
 			baseUrl: 'https://api.tomtom.com/search/2/geocode/',
-
       apartments:  {
 
       },
-
       query: {
         lat: '',
         lon: '',
         radius:'',
-        min_rooms: '',
+     /*    min_rooms: '',
         min_beds: '',
-        services: [],
+        services: [], */
       }
     }
   },
   methods: {
-    /* RECUOERA LISTA SERVIZI DISPONIBILI PER APPARTAMENTO */
+    /* RECUPERA LISTA SERVIZI DISPONIBILI PER APPARTAMENTO */
     fetchServices() {
       let apiUrl = `${this.store.backedRootUrl}/api/services`;
-
       axios
         .get(`${apiUrl}`)
         .then((resp) => {
@@ -126,25 +123,27 @@ export default {
           console.log(e);
         });
     },
+
     /* FORMATTA E INVIA AL BECKEND I DATI  DEL FORM PER LA CREAZIONE DEL NUOVO "APPARTAMENTO" E RELATIVE RELAZIONI */
 
-    onCreateFormSubmit() {
+    searchAdvancedResult() {
       this.store.loading = true;
       //Assegno form. addres, longitude e latitude attraverso la chiamata axios
 
-      const formData = new FormData();
+     /*  const formData = new FormData();
       formData.append('lat', this.query.lat);
       formData.append('lon', this.query.lon);
       formData.append('radius', this.query.radius);
       formData.append('min_rooms', this.query.min_rooms);
       formData.append('min_beds', this.query.min_beds);
-    
-      for (let i = 0; i < this.services.length; i++) {
+     */
+    /*   for (let i = 0; i < this.services.length; i++) {
         formData.append('services[]', this.query.services[i]);
-      }
+      } */
 
-      axios.get('http://127.0.0.1:8000/api/search', formData)
+      axios.get('http://127.0.0.1:8000/api/search', this.query)
       .then((resp) => {
+        console.log("RESP!::",resp)
         this.apartments = resp.data.data
       });
     },
@@ -155,8 +154,7 @@ export default {
           this.address = resp.data.results[0].address.freeformAddress;
           this.query.lat = resp.data.results[0].position.lat;
           this.query.lon = resp.data.results[0].position.lon;
-
-          this.onCreateFormSubmit();
+          this.searchAdvancedResult();
         });
     },
   },
