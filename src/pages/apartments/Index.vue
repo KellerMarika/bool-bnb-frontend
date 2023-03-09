@@ -9,7 +9,7 @@
         <router-link v-for="apartment in apartments"
             :to="{ name: 'Apartments.show', params: { id: apartment.id } }"
             v-slot="{ singleCard }" class="card-group my-4">
-      
+
           <!-- CARD -->
           <SingleCardApartment :is="singleCard" :apartment='apartment'> </SingleCardApartment>
         </router-link>
@@ -73,8 +73,6 @@ export default {
           this.store.submitResult = "success";
           this.store.loading = false;
 
-
-
           this.apartments = { ...resp.data.data }
           this.pagination = { ...this.omitKey(resp.data, "data") }
           console.log("PAGINATION", this.pagination)
@@ -94,6 +92,7 @@ export default {
 
     titles(this.$route.meta.title);
     this.fetchProjectLists(this.queries)
+
   },
   created() {
   }
