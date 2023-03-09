@@ -6,9 +6,11 @@ import About_Pg from "./pages/About.vue";
 
 /* APPARTIMENTS */
 import ApartmentsIndex_Pg from "./pages/apartments/Index.vue";
+//import AdvancedSearch from "./pages/AdvancedSearch.vue";
 import ApartmentsCreate_Pg from "./pages/apartments/Create.vue";
 import ApartmentsShow_Pg from "./pages/apartments/Show.vue";
 import ApartmentsEdit_Pg from "./pages/apartments/Edit.vue";
+
 
 /* rotta 404 */
 import NotFound_Pg from "./pages/NotFound.vue";
@@ -26,6 +28,12 @@ const router = createRouter({
       component: Home_Pg,
       meta: { title:"HOME", apiRoutePath:"/apartments"},
     },
+    //{
+    //  path: "/advancedSearch",
+    //  name: "AdvancedSearch",
+    //  component: AdvancedSearch,
+    //  meta: { title:"ADVANCED SEARCH", apiRoutePath:"/advancedSearch"},
+    //},
     {
       path: "/about",
       name: "about",
