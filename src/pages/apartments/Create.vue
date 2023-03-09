@@ -49,12 +49,7 @@
 					<label for="streetNameInput" class="form-label"
 						>Street Name</label
 					>
-					<input
-						type="text"
-						placeholder="Ex. via generale cascino"
-						class="form-control"
-						id="streetNameInput"
-						v-model="formAddress.streetName" />
+					<input type="text" placeholder="Ex. via generale cascino" class="form-control" id="streetNameInput" v-model="formAddress.streetName" />
 				</div>
 
 				<div class="mb-2">
@@ -97,46 +92,28 @@
 					<label for="cover_imgInput" class="form-label"
 						>Apartment Images</label
 					>
-					<input
-						type="file"
-						class="form-control"
-						id="cover_imgInput"
-						@change="onAttachmentChange" />
+					<input type="file" class="form-control" id="cover_imgInput" @change="onAttachmentChange" />
 				</div>
 
 				<div class="mb-2">
-					<label for="descriptionInput" class="form-label"
-						>Description</label
-					>
-					<textarea
-						placeholder="Ex. describe your apartment"
-						class="form-control"
-						id="descriptionInput"
-						v-model="form.description" />
+					<label for="descriptionInput" class="form-label">
+						Description
+						</label>
+					<textarea placeholder="Ex. describe your apartment" class="form-control" id="descriptionInput" v-model="form.description" />
 				</div>
 
 				<div class="mb-2">
-					<label for="rooms_qtyInput" class="form-label"
-						>Rooms Quantity</label
-					>
-					<input
-						type="number"
-						placeholder="number of rooms Ex. 5"
-						class="form-control"
-						id="rooms_qtyInput"
-						v-model="form.rooms_qty" />
+					<label for="rooms_qtyInput" class="form-label">
+						Rooms Quantity
+					</label>
+					<input type="number" placeholder="number of rooms Ex. 5" class="form-control" id="rooms_qtyInput" v-model="form.rooms_qty" />
 				</div>
 
 				<div class="mb-2">
-					<label for="beds_qtyInput" class="form-label"
-						>Beds Quantity</label
-					>
-					<input
-						type="number"
-						placeholder="number of beds Ex. 10"
-						class="form-control"
-						id="beds_qtyInput"
-						v-model="form.beds_qty" />
+					<label for="beds_qtyInput" class="form-label">
+						Beds Quantity
+						</label>
+					<input type="number" placeholder="number of beds Ex. 10" class="form-control" id="beds_qtyInput" v-model="form.beds_qty" />
 				</div>
 
 				<div class="mb-2">
@@ -214,18 +191,10 @@
 					</div>
 				</div>
 				<div class="d-flex justify-content-center gap-3">
-					<button
-						class="btn btn-secondary"
-						typeof="reset"
-						:disabled="loading">
-						Annulla
+					<button class="btn btn-secondary" typeof="reset" :disabled="loading"> Annulla
 					</button>
 					<button class="btn btn-success" :disabled="loading">
-						<span
-							v-if="loading"
-							class="spinner-border spinner-border-sm"
-							role="status"
-							aria-hidden="true"></span>
+						<span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
 						Invia
 					</button>
 				</div>

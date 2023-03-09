@@ -1,15 +1,16 @@
 <template>
   <div class="container">
     <h1 class="text-danger">HOME</h1>
-    <div class="d-flex justify-content-center my-5 ">
+    <div class="d-flex justify-content-center my-5 align-items-center">
 
       <div class="position-relative">
         <input v-model="query" class="search__input" type="text" placeholder="Search Apartment">
         <button @click="fetchTomTom()" class="my-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-        <a class="btn btn-info" href="">Vai alla ricerca avanzata</a>
+
       </div>
+        <a class="ms-4 rounded-5 btn-outline-dark btn p-2" href="">Ad search</a>
     </div>
-    <h4 class="my-3">{{ querySearch ? querySearch : 'Pensati per Te' }}</h4>
+    <h4 class="my-3">{{ querySearch ? querySearch : 'Think for You' }}</h4>
 
 
 
@@ -36,7 +37,7 @@ import { store } from '../store';
 import SingleCardApartment from '../components/SingleCardApartment.vue';
 export default {
   name: 'Home',
-  components: {SingleCardApartment},
+  components: { SingleCardApartment },
   data() {
     return {
       store,
