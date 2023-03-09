@@ -49,8 +49,9 @@ export default {
 
       coordinates: {
 
-        latitude: '',
-        longitude: '',
+        lat: '',
+        lon: '',
+        radius: 20,
       },
       querySearch: '',
 
@@ -119,13 +120,13 @@ export default {
 
 
           this.querySearch = resp.data.results[0].address.freeformAddress;
-          this.coordinates.latitude = resp.data.results[0].position.lat;
-          this.coordinates.longitude = resp.data.results[0].position.lon;
+          this.coordinates.lat = resp.data.results[0].position.lat;
+          this.coordinates.lon = resp.data.results[0].position.lon;
 
           console.log(this.coordinates);
 
 
-          this.api_GET("http://127.0.0.1:8000/api/search", this.coordinates);
+          this.api_GET("/search", this.coordinates);
 
 
         })

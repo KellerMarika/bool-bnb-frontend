@@ -64,8 +64,8 @@ export default {
 
       query: {
         address: '',
-        latitude: '',
-        longitude: '',
+        lat: '',
+        lon: '',
         radius: '',
         rooms_qty: '',
 				beds_qty: '',
