@@ -6,9 +6,10 @@
       <div class="position-relative">
         <input v-model="query" class="search__input" type="text" placeholder="Search Apartment">
         <button @click="fetchTomTom()" class="my-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <a class="btn btn-info" href="">Vai alla ricerca avanzata</a>
       </div>
-
     </div>
+    <h4 class="my-3">{{ querySearch ? querySearch : 'Pensati per Te' }}</h4>
 
 
 
@@ -50,7 +51,8 @@ export default {
 
         latitude: '',
         longitude: '',
-      }
+      },
+      querySearch: '',
 
     }
   },
@@ -115,6 +117,8 @@ export default {
           console.log(resp.data.results[0].position.lat);
           console.log(resp.data.results[0].position.lon);
 
+
+          this.querySearch = resp.data.results[0].address.freeformAddress;
           this.coordinates.latitude = resp.data.results[0].position.lat;
           this.coordinates.longitude = resp.data.results[0].position.lon;
 
