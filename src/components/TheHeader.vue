@@ -18,25 +18,34 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
           <!-- Left Side Of Navbar -->
-          <ul class="navbar nav me-md-auto align-items-end py-0 ">
+          
+        
+          <ul class="navbar nav me-md-auto align-items-end py-0">
             <li class="nav-item d-flex flex-column align-items-center">
-              <a class="nav-link fs-5  pt-md-4 px-2" href="/"> Home</a>
+              <a class="nav-link fs-5  pt-md-4 px-2 "
+              :class="this.$route.name=='home'? 'active':''" 
+              href="/"> Home</a>
               <div class="link-underline m-3 mb-0"></div>
             </li>
             <li class="nav-item  d-flex flex-column align-items-center">
               <a class="nav-link fs-5  pt-md-4 px-2"
+              :class="this.$route.name=='Apartments.index'? 'active':''" 
                   href="/apartments">
                 Apartments</a>
               <div class="link-underline m-3 mb-0"></div>
             </li>
 
             <li class="nav-item  d-flex flex-column align-items-center">
-              <a class="nav-link fs-5  pt-md-4 px-2" href="/about">
+              <a class="nav-link fs-5  pt-md-4 px-2" 
+              :class="this.$route.name=='about'? 'active':''"
+              href="/about">
                 About</a>
               <div class="link-underline m-3 mb-0"></div>
             </li>
             <li class="nav-item  d-flex flex-column align-items-center">
-              <a class="nav-link fs-5  pt-md-4 px-2" href="/contacts">
+              <a class="nav-link fs-5  pt-md-4 px-2"
+              :class="this.$route.name=='contacts'? 'active':''"
+              href="/contacts">
                 Contacts</a>
               <div class="link-underline m-3 mb-0"></div>
             </li>

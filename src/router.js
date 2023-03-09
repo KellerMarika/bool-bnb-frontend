@@ -55,7 +55,7 @@ const router = createRouter({
       meta: { title:"APARTMENT: #",apiRoutePath:"/apartments/" ,apiRouteDeletePath:"/admin/apartments/"},
     },
     //create
-    {
+    /* {
       path: "/apartments/create",
       name: "Apartments.create",
       component: ApartmentsCreate_Pg,
@@ -67,7 +67,7 @@ const router = createRouter({
       name: "Apartments.edit",
       component: ApartmentsEdit_Pg,
       meta: { title:"EDIT APARTMENT: #", apiShowRoutePath:"/apartments/",apiUpdateRoutePath:"/admin/apartments/"}
-    },
+    }, */
     // 404 ................................
     {
       // Cattura qualsiasi altra rotta non definita sopra.
