@@ -32,7 +32,7 @@ const router = createRouter({
       path: "/advancedSearch",
       name: "AdvancedSearch",
       component: AdvancedSearch,
-      meta: { title: "ADVANCED SEARCH", apiRoutePath: "/advancedSearch" },
+      meta: { title: "ADVANCED SEARCH",  apiRoutePath:"/admin/apartments" },
     },
     {
       path: "/about",
