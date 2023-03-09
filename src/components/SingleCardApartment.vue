@@ -60,7 +60,7 @@ export default {
 
 			if (apartmentCoverImg !== null) {
 				return apartmentCoverImg
-			} else if (apartmentImages.length) {
+			} else if (apartmentImages && apartmentImages.length) {
 				return apartmentImages[0].image
 			} else {
 				let defaultImg = '/placeholder-image.png'
