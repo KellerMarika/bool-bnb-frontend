@@ -126,7 +126,7 @@ export default {
           console.log(this.coordinates);
 
 
-          this.api_GET(this.$route.meta.apiRoutePath, this.coordinates);
+          this.api_GET("http://127.0.0.1:8000/api/search", this.coordinates);
 
 
         })
