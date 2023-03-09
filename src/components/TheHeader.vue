@@ -1,52 +1,51 @@
 <template>
-  <nav class="navbar ">
-    <div class="container">
-      <nav class="navbar navbar-expand-md navbar-primary shadow-sm  p-0">
-        <div class="container-fluid px-md-5 d-flex align-items-md-end">
+  <nav class="navbar navbar-expand-md navbar-primary shadow-sm  p-0">
+    <div class="container-fluid px-md-5 d-flex align-items-md-end">
 
-          <a class="navbar-brand d-flex align-items-center" href="/">
-            <div class="logo pt-2 ">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <div class="logo pt-2 ">
 
-              <img src="/BoolBnB_logo.png" alt="LOGO" class="header nav-logo pb-2 mb-2">
-            </div>
-          </a>
+          <img src="/BoolBnB_logo.png" alt="LOGO" class="header nav-logo pb-2 mb-2">
+        </div>
+      </a>
 
-          <div class="flex-fill ps-3 pe-2 pe-lg-3 text-end">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><!-- {{ __('Toggle navigation') }} -->
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="flex-fill ps-3 pe-2 pe-lg-3 text-end">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation"><!-- {{ __('Toggle navigation') }} -->
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-              <!-- Left Side Of Navbar -->
-              <ul class="navbar nav me-md-auto align-items-end py-0 ">
-                <li class="nav-item d-flex flex-column align-items-center">
-                  <a class="nav-link fs-5  pt-md-4 px-2" href="/"> Home</a>
-                  <div class="link-underline m-3 mb-0"></div>
-                </li>
-                <li class="nav-item  d-flex flex-column align-items-center">
-                  <a class="nav-link fs-5  pt-md-4 px-2"
-                      href="/apartments">
-                    Apartments</a>
-                  <div class="link-underline m-3 mb-0"></div>
-                </li>
+          <!-- Left Side Of Navbar -->
+          <ul class="navbar nav me-md-auto align-items-end py-0 ">
+            <li class="nav-item d-flex flex-column align-items-center">
+              <a class="nav-link fs-5  pt-md-4 px-2" href="/"> Home</a>
+              <div class="link-underline m-3 mb-0"></div>
+            </li>
+            <li class="nav-item  d-flex flex-column align-items-center">
+              <a class="nav-link fs-5  pt-md-4 px-2"
+                  href="/apartments">
+                Apartments</a>
+              <div class="link-underline m-3 mb-0"></div>
+            </li>
 
-                <li class="nav-item  d-flex flex-column align-items-center">
-                  <a class="nav-link fs-5  pt-md-4 px-2" href="/about">
-                    About</a>
-                  <div class="link-underline m-3 mb-0"></div>
-                </li>
-                <li class="nav-item  d-flex flex-column align-items-center">
-                  <a class="nav-link fs-5  pt-md-4 px-2" href="/contacts">
-                    Contacts</a>
-                  <div class="link-underline m-3 mb-0"></div>
-                </li>
-              </ul>
-              <!-- Right Side Of Navbar -->
-              <ul class="navbar-nav ml-auto align-items-end">
-                <!-- Authentication Links -->
-                <li class="nav-item  d-flex flex-column align-items-center">
+            <li class="nav-item  d-flex flex-column align-items-center">
+              <a class="nav-link fs-5  pt-md-4 px-2" href="/about">
+                About</a>
+              <div class="link-underline m-3 mb-0"></div>
+            </li>
+            <li class="nav-item  d-flex flex-column align-items-center">
+              <a class="nav-link fs-5  pt-md-4 px-2" href="/contacts">
+                Contacts</a>
+              <div class="link-underline m-3 mb-0"></div>
+            </li>
+          </ul>
+          <!-- Right Side Of Navbar -->
+          <ul class="navbar-nav ml-auto align-items-end">
+
+            <!-- Authentication Links -->
+            <!-- <li class="nav-item  d-flex flex-column align-items-center">
                   <a class="nav-link fs-5  pt-md-4 px-2"
                       :href="store.backedRootUrl + '/login'">Login</a>
                   <div class="link-underline m-3 mb-0"></div>
@@ -57,23 +56,26 @@
                       :href="store.backedRootUrl + '/register'">Register</a>
                   <div class="link-underline m-3 mb-0"></div>
                 </li>
-
-                <li class="nav-item  dropdown">
+ -->
+            <!--       <li class="nav-item  dropdown">
                   <a id="navbarDropdown" class="nav-link dropdown-toggle fs-5" href="#" role="button"
                       data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                   </a>
 
                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item fs-5" :href="store.backedRootUrl + '/Admin/dashboard'">Dashboard</a>
-                    <!--   onclick="event.preventDefault(); -->
+   
                     <a class="dropdown-item fs-5" :href="store.backedRootUrl + '/Admin/logout'">Logout</a>
                   </div>
-                </li>
-              </ul>
-            </div>
-          </div>
+                </li> -->
+
+            <li class="nav-item   d-flex flex-column align-items-center">
+              <a class=" fa-solid fa-user-tie nav-link fs-5 pt-md-4 px-2 fs-2"
+                  :href="store.backedRootUrl + '/Admin/dashboard'"></a>
+            </li>
+          </ul>
         </div>
-      </nav>
+      </div>
     </div>
   </nav>
 </template>
@@ -96,7 +98,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 @use "../styles/generic.scss";
 @use "../styles/partials/variables.scss";
 

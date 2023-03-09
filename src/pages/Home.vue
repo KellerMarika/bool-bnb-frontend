@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <h1 class="text-danger">HOME</h1>
     <div class="d-flex justify-content-center my-5 align-items-center">
 
       <div class="position-relative">
@@ -137,6 +136,7 @@ export default {
   mounted() {
     titles(this.$route.meta.title);
     this.api_GET(this.$route.meta.apiRoutePath);
+
 
 
   },
