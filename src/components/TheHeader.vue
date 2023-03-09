@@ -20,7 +20,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
               <!-- Left Side Of Navbar -->
-              <ul class="navbar nav me-md-auto align-items-end py-0">
+              <ul class="navbar nav me-md-auto align-items-end py-0 ">
                 <li class="nav-item d-flex flex-column align-items-center">
                   <a class="nav-link fs-5  pt-md-4 px-2" href="/"> Home</a>
                   <div class="link-underline m-3 mb-0"></div>
