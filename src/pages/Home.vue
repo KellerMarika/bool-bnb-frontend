@@ -109,7 +109,7 @@ export default {
 					console.log(e);
 				});
 		},
-
+/* CHIAMATA A GEOCODE TOM TOM RECUPERA LAT LONG E ADDRESS DA STRINGA */
 		fetchTomTom() {
 			// axios.get("https://api.tomtom.com/search/2/geocode/De%20Ruijterkade%20154,%201011%20AC,%20Amsterdam.json?key=lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E").then((resp) => {
 			axios.get(this.baseUrl + this.query + this.api_key).then((resp) => {
