@@ -190,7 +190,7 @@ export default {
 
       axios
         .get(`${apiUrl}`, {
-          params: payload,
+          params:{...payload},
         })
         .then((resp) => {
           this.store.submitResult = 'success';

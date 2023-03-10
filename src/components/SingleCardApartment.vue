@@ -59,7 +59,7 @@ export default {
 		fetchImage(apartmentCoverImg, apartmentImages) {
 
 			if (apartmentCoverImg !== null) {
-				return apartmentCoverImg
+				return this.store.backedRootUrl+"/storage/"+apartmentCoverImg
 			} else if (apartmentImages && apartmentImages.length) {
 				return apartmentImages[0].image
 			} else {
