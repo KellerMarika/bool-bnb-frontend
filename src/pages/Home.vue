@@ -11,7 +11,9 @@
 					<i class="fa-solid fa-magnifying-glass"></i>
 				</button>
 			</div>
-			<a class="ms-4 rounded-5 btn-outline-dark btn p-2" href=""
+			<a
+				class="ms-4 rounded-5 btn-outline-dark btn p-2"
+				href="/advancedSearch"
 				>Ad search</a
 			>
 		</div>
@@ -109,7 +111,7 @@ export default {
 					console.log(e);
 				});
 		},
-
+/* CHIAMATA A GEOCODE TOM TOM RECUPERA LAT LONG E ADDRESS DA STRINGA */
 		fetchTomTom() {
 			// axios.get("https://api.tomtom.com/search/2/geocode/De%20Ruijterkade%20154,%201011%20AC,%20Amsterdam.json?key=lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E").then((resp) => {
 			axios.get(this.baseUrl + this.query + this.api_key).then((resp) => {
@@ -122,7 +124,15 @@ export default {
 
 					console.log(this.coordinates);
 
-					this.api_GET('/search', this.coordinates);
+					// this.api_GET('/search', this.coordinates);
+
+					axios
+						.get('http://127.0.0.1:8000/api/search', {
+							params: this.coordinates,
+						})
+						.then((resp) => {
+							this.apartments = resp.data.data;
+						});
 				} else {
 					return alert(
 						'Ricerca non valida, inserisci un indirizzo valido!'
