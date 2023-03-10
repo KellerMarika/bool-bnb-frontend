@@ -105,7 +105,8 @@
 
       <!-- PAGINAZIONE SOTTO -->
 
-      <Pagination :pagination="pagination" @fetchProjectLists="fetchProjectLists"></Pagination>
+       <Pagination :pagination="pagination" @api_GET="api_GET"></Pagination>
+
     </div>
   </section>
 </template>
@@ -114,14 +115,15 @@
 import axios from 'axios';
 import { store, titles } from '../store';
 import SingleCardApartment from '../components/SingleCardApartment.vue';
+import Pagination from '../components/Pagination.vue';
 export default {
-  components: { SingleCardApartment },
+  components: { SingleCardApartment, Pagination },
   name: 'AdvancedSearch',
   data() {
     return {
       store,
       services: [],
-      address: '',
+      address: 'roma',
       querySearch: '',
 
       api_key: '.json?key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE',
@@ -227,6 +229,33 @@ export default {
         }
       });
     },
+    fetchApartmentsLists(payload) {
+
+let apiUrl = `${this.store.backedRootUrl}/api${this.$route.meta.apiRoutePath}`
+
+axios.get(`${apiUrl}`, {
+  params: { ...payload }
+  /*        params: { "page":payload } */
+})
+  .then((resp) => {
+    console.log(resp)
+    this.store.submitResult = "success";
+    this.store.loading = false;
+
+    this.apartments = { ...resp.data.data }
+    this.pagination = { ...this.omitKey(resp.data, "data") }
+    console.log("PAGINATION", this.pagination)
+  })
+  .catch((e) => {
+
+    if (e.response && e.response.data) {
+      this.store.submitResult = e.response.data.message;
+    } else {
+      this.store.submitResult = e.message;
+    }
+    console.log(e);
+  });
+}
   },
   mounted() {
     titles(this.$route.meta.title);
