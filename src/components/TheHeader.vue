@@ -27,13 +27,13 @@
               href="/"> Home</a>
               <div class="link-underline m-3 mb-0"></div>
             </li>
-            <li class="nav-item  d-flex flex-column align-items-center">
+            <!-- <li class="nav-item  d-flex flex-column align-items-center">
               <a class="nav-link fs-5  pt-md-4 px-2"
               :class="this.$route.name=='Apartments.index'? 'active':''" 
                   href="/apartments">
                 Apartments</a>
               <div class="link-underline m-3 mb-0"></div>
-            </li>
+            </li> -->
 
             <li class="nav-item  d-flex flex-column align-items-center">
               <a class="nav-link fs-5  pt-md-4 px-2" 
