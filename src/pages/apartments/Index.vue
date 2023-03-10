@@ -101,6 +101,10 @@ export default {
           console.log(e);
         });
     },
+
+    saveRedirectData(){
+      this.redirectData=this.$route.query
+    }
   },
   mounted() {
 
@@ -108,6 +112,7 @@ export default {
     this.fetchPageList(this.queries)
 
    console.log(this.$route.query)
+   this.saveRedirectData()
  
   },
   watch: {

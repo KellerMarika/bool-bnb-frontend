@@ -9,7 +9,7 @@
 					placeholder="Search Apartment" />
 
 <button class="btn btn-danger"
-@click="handleClick()"
+@click="Redirect(query)"
 					@change="FetchAddressCoordinates()">vaiiiiiiii</button>
 
 
@@ -89,31 +89,8 @@ export default {
 /* questa funzione deve reindirizzarmi in un'altra pagina passando un oggetto,  */
 		Redirect(query){
 
-/* 			this.$router.push({ name: "Apartments.index", params:{ 
-								data:{...this.redirectQueries} }});
-		}, */
-		let 	redirectQueries= {
-				lat: '41.899100',
-				lon: '12.494048',
-				address:'roma',
-			}
-
 			this.$router.push({ name: "Apartments.index",  query: { ...this.redirectQueries }});
 		},
-
-		handleClick() {
-      let a = {
-        id: 25,
-        description: "pass data through params"
-      };
-      this.$router.push({
-        name: "Apartments.index", //use name for router push
-        query: { ...this.redirectQueries }
-      });
-    },
-  
-
-
 
 		/* FUNZIONE ESCLUDI CHIAVE DA OGGETTO (per pagination) */
 		/** omit({ a: 1, b: 2, c: 3 }, 'c')  // {a: 1, b: 2}
