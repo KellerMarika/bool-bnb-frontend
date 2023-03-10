@@ -1,21 +1,21 @@
 <template>
- 
-  
-
 	<div class="container-fluid px-5">
 		<div class="d-flex justify-content-center my-5 align-items-center">
 			<div class="position-relative">
-				<input v-model="query" class="search__input" type="text" @input="getSuggestions" placeholder="Search Apartment" />
+				<input v-model="query" class="search__input" type="text" @input="getSuggestions"
+					placeholder="Search Apartment" />
 
-				<ul class="list-group list-group-flush"  v-if="suggestions && suggestions.length > 0 ">
-      		<li class="list-unstyled list-group-item-action list-group-item" v-for="suggestion in suggestions" :key="suggestion.id" @click="selectSuggestion(suggestion)">
-      		  {{ suggestion.address.freeformAddress + ' ' + suggestion.address.country }}
-      		</li>
-    		</ul>
+				<ul class="list-group list-group-flush" v-if="suggestions && suggestions.length > 0">
+					<li class="list-unstyled list-group-item-action list-group-item" v-for="suggestion in suggestions"
+						:key="suggestion.id" @click="selectSuggestion(suggestion)">
+						{{ suggestion.address.freeformAddress + ' ' + suggestion.address.country }}
+					</li>
+				</ul>
 				<button @click="fetchTomTom()" class="my-btn">
 					<i class="fa-solid fa-magnifying-glass"></i>
 				</button>
 			</div>
+
 
 			<!-- LINK ALLO SHOW -->
 			<router-link
@@ -26,7 +26,7 @@
 					advanced filters</button>
 			</router-link>
 		</div>
-
+		<input type="text" v-model="query" class="w-100">
 		<div class="card-container px-sm-2 px-xl-5">
 			<h2 class="my-3">{{ querySearch ? querySearch : 'Thinked for You:' }}</h2>
 			<small v-if="apartments && apartments.length">({{ apartments.length }})risultati trovati</small>
@@ -53,6 +53,7 @@ import { titles } from '../store';
 import axios from 'axios';
 import { store } from '../store';
 import SingleCardApartment from '../components/SingleCardApartment.vue';
+
 export default {
 	name: 'Home',
 	components: { SingleCardApartment },
@@ -60,8 +61,17 @@ export default {
 		return {
 			store,
 			query: '',
-      suggestions: null,
-      selectedSuggestion: null,
+			suggestions: null,
+			//selectedSuggestion: null,
+			/* 	coordinates: {
+					lat: '',
+					lon: '',
+				}, */
+			dataToRedirect: {
+				selectedSuggestion: null,
+				lat: '',
+				lon: '',
+			},
 			pagination: null,
 			apartments: null,
 
@@ -69,64 +79,44 @@ export default {
 			baseUrl: 'https://api.tomtom.com/search/2/geocode/', // + this.query + '.json?'
 			//url: 'https://api.tomtom.com/search/2/geocode/roma.json?storeResult=false&limit=5&countrySet=IT&view=Unified&key=',
 
-			coordinates: {
-				lat: '',
-				lon: '',
-				radius: 20,
-			},
 			querySearch: '',
 		};
 	},
 	methods: {
 
+		/* questa funzione deve reindirizzarmi in un'altra pagina passando un oggetto,  */
+		Redirect(tomtomResult) {
 
-
-/* questa funzione deve reindirizzarmi in un'altra pagina passando un oggetto,  */
-		Redirect(tomtomResult){
-
-			this.$router.push({ name: "Apartments.index",  query: { ...tomtomResult }});
-		},
-
-		/* FUNZIONE ESCLUDI CHIAVE DA OGGETTO (per pagination) */
-		/** omit({ a: 1, b: 2, c: 3 }, 'c')  // {a: 1, b: 2}
-			*
-			* @param {object} obj
-			* @param {string} omitKey
-			*/
-
-		omitKey(obj, omitKey) {
-			return Object.keys(obj).reduce((result, key) => {
-				if (key !== omitKey) {
-					result[key] = obj[key];
-				}
-				return result;
-			}, {});
+			this.$router.push({ name: "Apartments.index", query: { ...tomtomResult } });
 		},
 
 		// nuova funzione------------------------------------------------------------
 
 		getSuggestions() {
-      if (this.query.length > 0) {
-        axios.get(`https://api.tomtom.com/search/2/geocode/${this.query}.json?storeResult=false&limit=5&countrySet=IT&view=Unified&key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE`)
-          .then((resp) => {
-						console.log(resp.data.results);
-            this.suggestions = resp.data.results;
+			if (this.query.length > 0) {
+				axios.get(`https://api.tomtom.com/search/2/geocode/${this.query}.json?storeResult=false&limit=5&countrySet=IT&view=Unified&key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE`)
+					.then((resp) => {
+						/* 	console.log(resp.data.results); */
+						this.suggestions = resp.data.results;
 						console.log(this.suggestions);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        this.suggestions = [];
-				
-      }
-    },
-    selectSuggestion(suggestion) {
-      this.query = (suggestion.address.freeformAddress);
-      this.selectedSuggestion = suggestion.address.freeformAddress;
-			console.log('QUELLO CHE PASSO NELLA STRINGA TOMTOM', this.selectedSuggestion);
-      this.suggestions = [];
-    },
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			} else {
+				this.suggestions = [];
+
+			}
+		},
+
+		selectSuggestion(suggestion) {
+			//mi è piaciuto sopra e ho aggiunto anche a db il coutry
+			this.query = (suggestion.address.freeformAddress + ', ' + suggestion.address.country);
+/* 			this.dataToRedirect.selectedSuggestion = this.query; */
+			this.dataToRedirect={...suggestion.position, homeSearchAddress:this.query};
+			console.log('QUELLO CHE PASSO NELLA STRINGA TOMTOM', this.dataToRedirect);
+			this.suggestions = [];
+		},
 
 
 		/**FUNZIONE API CALL GET (index).........................
@@ -161,38 +151,53 @@ export default {
 				});
 		},
 
-/* CHIAMATA A GEOCODE TOM TOM RECUPERA LAT LONG E ADDRESS DA STRINGA */
+		/* FUNZIONE ESCLUDI CHIAVE DA OGGETTO (per pagination) */
+		/** omit({ a: 1, b: 2, c: 3 }, 'c')  // {a: 1, b: 2}
+			*
+			* @param {object} obj
+			* @param {string} omitKey
+			*/
+
+		omitKey(obj, omitKey) {
+			return Object.keys(obj).reduce((result, key) => {
+				if (key !== omitKey) {
+					result[key] = obj[key];
+				}
+				return result;
+			}, {});
+		},
+
+		/* CHIAMATA A GEOCODE TOM TOM RECUPERA LAT LONG E ADDRESS DA STRINGA */
 		fetchTomTom() {
 			if (this.selectSuggestion) {
-			// axios.get("https://api.tomtom.com/search/2/geocode/De%20Ruijterkade%20154,%201011%20AC,%20Amsterdam.json?key=lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E").then((resp) => {
-			axios.get(this.baseUrl + encodeURIComponent(this.selectedSuggestion) + this.api_key).then((resp) => {
-				console.log('LOG TOM TOM RESP', resp);
+				// axios.get("https://api.tomtom.com/search/2/geocode/De%20Ruijterkade%20154,%201011%20AC,%20Amsterdam.json?key=lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E").then((resp) => {
+				axios.get(this.baseUrl + encodeURIComponent(this.selectedSuggestion) + this.api_key).then((resp) => {
+					console.log('LOG TOM TOM RESP', resp);
 
-				if (resp.data.results.length) {
-					this.querySearch = resp.data.results[0].address.freeformAddress;
-					this.coordinates.lat = resp.data.results[0].position.lat;
-					this.coordinates.lon = resp.data.results[0].position.lon;
+					if (resp.data.results.length) {
+						this.querySearch = resp.data.results[0].address.freeformAddress;
+						this.coordinates.lat = resp.data.results[0].position.lat;
+						this.coordinates.lon = resp.data.results[0].position.lon;
 
-					console.log( 'LOG COORDINATES E QUERY' ,this.coordinates + this.querySearch);
+						console.log('LOG COORDINATES E QUERY', this.coordinates + this.querySearch);
 
-					// this.api_GET('/search', this.coordinates);
-
-					axios
-						.get('http://127.0.0.1:8000/api/search', {
-							params: this.coordinates,
-						})
-						.then((resp) => {
-							this.apartments = resp.data.data;
-						});
-				} else {
-					return alert(
-						'Ricerca non valida, inserisci un indirizzo valido!'
-					);
-				}
-			});
-		};
+						// this.api_GET('/search', this.coordinates);
+						axios
+							.get('http://127.0.0.1:8000/api/search', {
+								params: this.coordinates,
+							})
+							.then((resp) => {
+								this.apartments = resp.data.data;
+							});
+					} else {
+						return alert(
+							'Ricerca non valida, inserisci un indirizzo valido!'
+						);
+					}
+				});
+			};
+		},
 	},
-},
 	mounted() {
 		titles(this.$route.meta.title);
 		this.api_GET(this.$route.meta.apiRoutePath);
