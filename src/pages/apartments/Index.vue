@@ -17,7 +17,7 @@
 
       <!-- PAGINAZIONE SOTTO -->
 
-      <Pagination :pagination="pagination" @fetchProjectLists="fetchProjectLists"></Pagination>
+      <Pagination :pagination="pagination" @fetchPageList="fetchPageList"></Pagination>
     </div>
   </section>
 </template>
@@ -60,7 +60,7 @@ export default {
      * @param {string} thisRoutePath  es= 'apartments/create'
      * @param {object} payload es=  {pagination:3}
      */
-    fetchProjectLists(payload) {
+    fetchPageList(payload) {
 
       let apiUrl = `${this.store.backedRootUrl}/api${this.$route.meta.apiRoutePath}`
 
@@ -91,7 +91,7 @@ export default {
   mounted() {
 
     titles(this.$route.meta.title);
-    this.fetchProjectLists(this.queries)
+    this.fetchPageList(this.queries)
 
   },
   created() {

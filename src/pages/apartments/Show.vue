@@ -1,4 +1,5 @@
 <template>
+
 	<section
 		class="px-xxl-5 mx-3 mx-sm-5 mx-lg-5"
 		:class="apartment.images && apartment.images.length ? '' : 'd-flex'">
@@ -35,8 +36,23 @@
 				</div>
 			</div>
 
-			<!-- carica solo la cover -->
-			<div
+
+					<!-- carica solo la cover -->
+					<div v-else-if="apartment.cover_img"
+				class="img-container rounded-4 overflow-hidden"
+				:class="apartment.cover_img ? 'w-50' : 'w-25'">
+				<img
+					:src="
+						apartment.cover_img
+							? apartment.cover_img
+							: '/placeholder-image.png'
+					"
+					:alt="apartment.title + '_img_' + apartment.cover_img"
+					class="img-fluid w-100" />
+			</div>
+
+			<!-- carica placeolder -->
+			<div v-else
 				class="img-container rounded-4 overflow-hidden"
 				:class="apartment.cover_img ? 'w-50' : 'w-25'">
 				<img
@@ -90,11 +106,16 @@
 					</span>
 				</div>
 			</div>
-			<a
-				href="http://localhost:5173/apartments"
-				class="mb-3 btn btn-info ms-2 text-light"
-				>RETURN TO INDEX</a
-			>
+
+			<router-link 
+            :to="{ name: 'home'}"
+            class="card-group my-4">
+
+          <!-- CARD -->
+        <button class="mb-3 btn btn-info ms-2 text-light">
+									<i class="fa-solid fa-filter"></i>
+									back to home</button>
+        </router-link>
 		</div>
 	</section>
 </template>

@@ -2,7 +2,7 @@
   <fieldset class="container border rounded px-5" style="margin-top:80px">
     <legend class=" fw-bold text-primary fs-1 pb-0 pt-5 p-3 text-start">Advanced Search:</legend>
 
-    <form @submit.prevent="fetchTomTom" class="px-5 pb-4 text-start" >
+    <form @submit.prevent="fetchTomTom" class="px-5 pb-4 text-start">
 
       <div class="row align-items-center justify-content-between gap-4 p-5">
 
@@ -53,8 +53,9 @@
       <div class="input-container pb-2 col-12">
         <label class="form-label fw-bold d-block pb-3 ">choose serviceses:</label>
         <div class="input-container pb-2 row justify-content-center">
-        
-          <div class=" col row  row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-between align-items-baseline mx-0 ">
+
+          <div
+              class=" col row  row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-between align-items-baseline mx-0 ">
             <div v-for="(service, i) in services" :key="i"
                 class="col text-center d-flex align-items-center py-2">
 
@@ -62,11 +63,11 @@
                   :value="service.id" id="service_{{i}}" v-model="query.services">
               <label
                   for="service_{{i}}">
-                  <i><img :src="'../../public/services-icons/' + service.icon" alt="" /></i>
-                  
-                  {{ service.name == 'Aria Condizionata' ? 'Clima' : service.name }}
+                <i><img :src="'../../public/services-icons/' + service.icon" alt="" /></i>
+
+                {{ service.name == 'Aria Condizionata' ? 'Clima' : service.name }}
               </label>
-              
+
             </div>
           </div>
         </div>
@@ -86,9 +87,9 @@
 
 
 
-  <section>
+  <section v-if="apartments" class="pt-5 mt-5">
     <div class="container-fluid px-5">
-      <h1>Apartments Index</h1>
+      <h1 class="p-5">Appartamenti nel raggio di {{ query.radius }}km da {{ querySearch }}</h1>
 
       <!-- pagination up -->
       <div class="row row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5 g-4 px-md-5">
@@ -105,7 +106,8 @@
 
       <!-- PAGINAZIONE SOTTO -->
 
-      <Pagination :pagination="pagination" @fetchProjectLists="fetchProjectLists"></Pagination>
+<!--       <Pagination :pagination="pagination" @fetchPageList="fetchPageList"></Pagination> -->
+
     </div>
   </section>
 </template>
@@ -114,14 +116,15 @@
 import axios from 'axios';
 import { store, titles } from '../store';
 import SingleCardApartment from '../components/SingleCardApartment.vue';
+import Pagination from '../components/Pagination.vue';
 export default {
-  components: { SingleCardApartment },
+  components: { SingleCardApartment, Pagination },
   name: 'AdvancedSearch',
   data() {
     return {
       store,
       services: [],
-      address: '',
+      address: 'roma',
       querySearch: '',
 
       api_key: '.json?key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE',
@@ -227,11 +230,12 @@ export default {
         }
       });
     },
+    
   },
   mounted() {
     titles(this.$route.meta.title);
     this.fetchServices();
-    this.api_GET(this.$route.meta.apiRouteIndexPath);
+    /* this.api_GET(this.$route.meta.apiRouteIndexPath); */
   },
   beforeUpdate() {
     //reset submitREsult
