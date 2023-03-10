@@ -7,31 +7,38 @@
 					class="search__input"
 					type="text"
 					placeholder="Search Apartment" />
-				<button @click="fetchTomTom()" class="my-btn">
-					<i class="fa-solid fa-magnifying-glass"></i>
+
+<button class="btn btn-danger"
+@click="Redirect(redirectQueries)"
+					@change="FetchAddressCoordinates()">vaiiiiiiii</button>
+
+
+
+    <button class="my-btn"
+			>
 				</button>
 			</div>
 
-			  <!-- LINK ALLO SHOW -->
-					<router-link 
-            :to="{ name: 'AdvancedSearch'}"
-            class="card-group my-4">
-        <button class="ms-4 rounded-5 btn-outline-dark btn px-3 py-2">
-									<i class="fa-solid fa-filter"></i>
-									advanced filters</button>
-        </router-link>
+			<!-- LINK ALLO SHOW -->
+			<router-link
+				:to="{ name: 'AdvancedSearch' }"
+				class="card-group my-4">
+				<button class="ms-4 rounded-5 btn-outline-dark btn px-3 py-2">
+					<i class="fa-solid fa-filter"></i>
+					advanced filters</button>
+			</router-link>
 		</div>
 
 		<div class="card-container px-sm-2 px-xl-5">
 			<h2 class="my-3">{{ querySearch ? querySearch : 'Thinked for You:' }}</h2>
-			<small v-if="apartments && apartments.length">({{apartments.length}})risultati trovati</small>
+			<small v-if="apartments && apartments.length">({{ apartments.length }})risultati trovati</small>
 			<div class="row g-4">
 
 				<!-- LINK ALLO SHOW -->
 				<router-link
 					v-for="apartment in apartments"
-					:to="{name: 'Apartments.show', params: {id: apartment.id}}"
-					v-slot="{singleCard}"
+					:to="{ name: 'Apartments.show', params: { id: apartment.id } }"
+					v-slot="{ singleCard }"
 					class="col-xl-2 col-lg-3 col-md-4 col-sm-6 card-group my-4">
 					<!-- CARD -->
 					<SingleCardApartment :is="singleCard" :apartment="apartment">
@@ -44,13 +51,13 @@
 </template>
 
 <script>
-import {titles} from '../store';
+import { titles } from '../store';
 import axios from 'axios';
-import {store} from '../store';
+import { store } from '../store';
 import SingleCardApartment from '../components/SingleCardApartment.vue';
 export default {
 	name: 'Home',
-	components: {SingleCardApartment},
+	components: { SingleCardApartment },
 	data() {
 		return {
 			store,
@@ -59,7 +66,13 @@ export default {
 			apartments: null,
 
 			api_key: '.json?key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE',
-			baseUrl: 'https://api.tomtom.com/search/2/geocode/', // + this.query + '.json?'
+			baseUrl: 'https://api.tomtom.com/search/2/geocode/', // + this.query + '.json?
+
+			redirectQueries: {
+				lat: '41.899100',
+				lon: '12.494048',
+				address:'roma',
+			},
 
 			coordinates: {
 				lat: '',
@@ -70,12 +83,21 @@ export default {
 		};
 	},
 	methods: {
+
+
+
+/* questa funzione deve reindirizzarmi in un'altra pagina passando un oggetto,  */
+		Redirect(tomtomResult){
+
+			this.$router.push({ name: "Apartments.index",  query: { ...tomtomResult }});
+		},
+
 		/* FUNZIONE ESCLUDI CHIAVE DA OGGETTO (per pagination) */
 		/** omit({ a: 1, b: 2, c: 3 }, 'c')  // {a: 1, b: 2}
-		 *
-		 * @param {object} obj
-		 * @param {string} omitKey
-		 */
+			*
+			* @param {object} obj
+			* @param {string} omitKey
+			*/
 
 		omitKey(obj, omitKey) {
 			return Object.keys(obj).reduce((result, key) => {
@@ -87,10 +109,10 @@ export default {
 		},
 
 		/**FUNZIONE API CALL GET (index).........................
-		 *
-		 * @param {string} thisRoutePath  es= 'apartments/create'
-		 * @param {object} payload es=  {pagination:3}
-		 */
+			*
+			* @param {string} thisRoutePath  es= 'apartments/create'
+			* @param {object} payload es=  {pagination:3}
+			*/
 
 		api_GET(thisRoutePath, payload) {
 			let apiUrl = `${this.store.backedRootUrl}/api${thisRoutePath}`;
@@ -105,8 +127,8 @@ export default {
 					this.store.loading = false;
 
 					/*      console.log("GET", resp.data) */
-					this.apartments = {...resp.data.data};
-					this.pagination = {...this.omitKey(resp.data, 'data')};
+					this.apartments = { ...resp.data.data };
+					this.pagination = { ...this.omitKey(resp.data, 'data') };
 				})
 				.catch((e) => {
 					if (e.response && e.response.data) {
@@ -117,7 +139,7 @@ export default {
 					console.log(e);
 				});
 		},
-/* CHIAMATA A GEOCODE TOM TOM RECUPERA LAT LONG E ADDRESS DA STRINGA */
+		/* CHIAMATA A GEOCODE TOM TOM RECUPERA LAT LONG E ADDRESS DA STRINGA */
 		fetchTomTom() {
 			// axios.get("https://api.tomtom.com/search/2/geocode/De%20Ruijterkade%20154,%201011%20AC,%20Amsterdam.json?key=lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E").then((resp) => {
 			axios.get(this.baseUrl + this.query + this.api_key).then((resp) => {
@@ -151,7 +173,7 @@ export default {
 		titles(this.$route.meta.title);
 		this.api_GET(this.$route.meta.apiRoutePath);
 	},
-	created() {},
+	created() { },
 };
 </script>
 <style lang="scss" scoped>

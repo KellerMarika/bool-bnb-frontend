@@ -25,6 +25,7 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
+      props: true,
       component: Home_Pg,
       meta: { title: "HOME", apiRoutePath: "/apartments" },
     },
@@ -52,6 +53,7 @@ const router = createRouter({
     {
       path: "/apartments",
       name: "Apartments.index",
+      props: true,
       component: ApartmentsIndex_Pg,
       meta: { title: "GALLERY APARTMENTS", apiRoutePath: "/apartments" },
     },

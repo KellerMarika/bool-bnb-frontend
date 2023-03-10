@@ -1,6 +1,13 @@
 <template>
   <section>
     <div class="container-fluid px-5">
+
+
+      <input type="text" v-model="redirectData.address">
+      <input type="text" v-model="redirectData.lat">
+      <input type="text" v-model="redirectData.lon">
+
+
       <h1>Apartments Index</h1>
       <!-- pagination up -->
       <div class="row row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5 g-4 px-md-5">
@@ -28,6 +35,7 @@ import { store } from '../../store';
 import { titles } from '../../store';
 import SingleCardApartment from '../../components/SingleCardApartment.vue';
 import Pagination from '../../components/Pagination.vue';
+
 export default {
   name: "Apartments Index",
   components: { SingleCardApartment, Pagination },
@@ -36,6 +44,12 @@ export default {
       store,
       apartments: null,
       pagination: [],
+      redirectData: {
+        address: 'a',
+        lat: 'b',
+        lon: 'c'
+      }
+
     }
   },
   methods: {
@@ -86,12 +100,22 @@ export default {
           }
           console.log(e);
         });
+    },
+
+    saveRedirectData(){
+      this.redirectData=this.$route.query
     }
   },
   mounted() {
 
     titles(this.$route.meta.title);
     this.fetchPageList(this.queries)
+
+   console.log(this.$route.query)
+   this.saveRedirectData()
+ 
+  },
+  watch: {
 
   },
   created() {
