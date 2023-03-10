@@ -9,7 +9,12 @@
         <div class="input-container mb-2 col-12 ">
           <label class="form-label fw-bold ms-2 fw-bold " for="city">Street and City: </label>
           <input type="text" placeholder="Ex. Via generale cascino 14 Roma" class="form-control" id="streetNameInput"
-              v-model="address" />
+              v-model="address" @input="getSuggestions" />
+              <ul class="list-group list-group-flush"  v-if="suggestions && suggestions.length > 0 ">
+      		<li class="list-unstyled list-group-item-action list-group-item" v-for="suggestion in suggestions" :key="suggestion.id" @click="selectSuggestion(suggestion)">
+      		  {{ suggestion.address.freeformAddress + ' ' + suggestion.address.country }}
+      		</li>
+    		</ul>
         </div>
 
         <!-- rooms -->
@@ -105,8 +110,9 @@
       </div>
 
       <!-- PAGINAZIONE SOTTO -->
-
-<!--       <Pagination :pagination="pagination" @fetchPageList="fetchPageList"></Pagination> -->
+      <Pagination :pagination="pagination"  
+      :query="query"
+      @api_GET="api_GET"></Pagination> 
 
     </div>
   </section>
@@ -124,11 +130,12 @@ export default {
     return {
       store,
       services: [],
-      address: 'roma',
+      address: null,
+      suggestions: null,
+      selectedSuggestion: null,
       querySearch: '',
-
-      api_key: '.json?key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE',
-      baseUrl: 'https://api.tomtom.com/search/2/geocode/',
+      api_key: '.json?storeResult=false&limit=6&countrySet=IT&view=Unified&key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE',
+			baseUrl: 'https://api.tomtom.com/search/2/geocode/',
       pagination: null,
       apartments: null,
       query: {
@@ -142,6 +149,31 @@ export default {
     }
   },
   methods: {
+    // nuova funzione------------------------------------------------------------
+
+		getSuggestions() {
+      if (this.address.length > 0) {
+        axios.get(`https://api.tomtom.com/search/2/geocode/${this.address}.json?storeResult=false&limit=6&countrySet=IT&view=Unified&key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE`)
+          .then((resp) => {
+						console.log(resp.data.results);
+            this.suggestions = resp.data.results;
+						console.log(this.suggestions);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        this.suggestions = [];
+				
+      }
+    },
+    selectSuggestion(suggestion) {
+      this.address = (suggestion.address.freeformAddress);
+      this.selectedSuggestion = suggestion.address.freeformAddress;
+			console.log('QUELLO CHE PASSO NELLA STRINGA TOMTOM', this.selectedSuggestion);
+      this.suggestions = [];
+    },
+
     /* RECUPERA LISTA SERVIZI DISPONIBILI PER APPARTAMENTO */
     fetchServices() {
       let apiUrl = `${this.store.backedRootUrl}/api/services`;
@@ -184,13 +216,19 @@ export default {
      * @param {object} payload es=  {pagination:3}
      */
 
-    api_GET(thisRoutePath, payload) {
+    api_GET(thisRoutePath, payload, page) {
+
+
+
       let apiUrl = `${this.store.backedRootUrl}/api${thisRoutePath}`;
       console.log('URL', apiUrl);
 
       axios
         .get(`${apiUrl}`, {
-          params: payload,
+          params: {
+            ...page,
+            ...payload
+          },
         })
         .then((resp) => {
           this.store.submitResult = 'success';
@@ -211,8 +249,9 @@ export default {
     },
     /* CHIAMATA A GEOCODE TOM TOM RECUPERA LAT LONG E ADDRESS DA STRINGA */
     fetchTomTom() {
+      if (this.selectSuggestion) {
       // axios.get("https://api.tomtom.com/search/2/geocode/De%20Ruijterkade%20154,%201011%20AC,%20Amsterdam.json?key=lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E").then((resp) => {
-      axios.get(this.baseUrl + this.address + this.api_key).then((resp) => {
+      axios.get(this.baseUrl + encodeURIComponent(this.selectedSuggestion) + this.api_key).then((resp) => {
         console.log(resp);
 
         if (resp.data.results.length) {
@@ -229,8 +268,9 @@ export default {
           );
         }
       });
-    },
-    
+    };
+  },
+
   },
   mounted() {
     titles(this.$route.meta.title);
