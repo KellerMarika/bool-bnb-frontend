@@ -9,7 +9,7 @@
 					placeholder="Search Apartment" />
 
 <button class="btn btn-danger"
-@click="Redirect(query)"
+@click="Redirect(redirectQueries)"
 					@change="FetchAddressCoordinates()">vaiiiiiiii</button>
 
 
@@ -87,9 +87,9 @@ export default {
 
 
 /* questa funzione deve reindirizzarmi in un'altra pagina passando un oggetto,  */
-		Redirect(query){
+		Redirect(tomtomResult){
 
-			this.$router.push({ name: "Apartments.index",  query: { ...this.redirectQueries }});
+			this.$router.push({ name: "Apartments.index",  query: { ...tomtomResult }});
 		},
 
 		/* FUNZIONE ESCLUDI CHIAVE DA OGGETTO (per pagination) */
