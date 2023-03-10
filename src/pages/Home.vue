@@ -1,12 +1,17 @@
 <template>
+ 
+  
+
 	<div class="container-fluid px-5">
 		<div class="d-flex justify-content-center my-5 align-items-center">
 			<div class="position-relative">
-				<input
-					v-model="query"
-					class="search__input"
-					type="text"
-					placeholder="Search Apartment" />
+				<input v-model="query" class="search__input" type="text" @input="getSuggestions" placeholder="Search Apartment" />
+
+				<ul class="list-group list-group-flush"  v-if="suggestions && suggestions.length > 0 ">
+      		<li class="list-unstyled list-group-item-action list-group-item" v-for="suggestion in suggestions" :key="suggestion.id" @click="selectSuggestion(suggestion)">
+      		  {{ suggestion.address.freeformAddress + ' ' + suggestion.address.country }}
+      		</li>
+    		</ul>
 				<button @click="fetchTomTom()" class="my-btn">
 					<i class="fa-solid fa-magnifying-glass"></i>
 				</button>
@@ -55,11 +60,14 @@ export default {
 		return {
 			store,
 			query: '',
+      suggestions: null,
+      selectedSuggestion: null,
 			pagination: null,
 			apartments: null,
 
-			api_key: '.json?key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE',
+			api_key: '.json?storeResult=false&limit=5&countrySet=IT&view=Unified&key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE',
 			baseUrl: 'https://api.tomtom.com/search/2/geocode/', // + this.query + '.json?'
+			//url: 'https://api.tomtom.com/search/2/geocode/roma.json?storeResult=false&limit=5&countrySet=IT&view=Unified&key=',
 
 			coordinates: {
 				lat: '',
@@ -85,6 +93,32 @@ export default {
 				return result;
 			}, {});
 		},
+
+		// nuova funzione------------------------------------------------------------
+
+		getSuggestions() {
+      if (this.query.length > 0) {
+        axios.get(`https://api.tomtom.com/search/2/geocode/${this.query}.json?storeResult=false&limit=5&countrySet=IT&view=Unified&key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE`)
+          .then((resp) => {
+						console.log(resp.data.results);
+            this.suggestions = resp.data.results;
+						console.log(this.suggestions);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        this.suggestions = [];
+				
+      }
+    },
+    selectSuggestion(suggestion) {
+      this.query = (suggestion.address.freeformAddress);
+      this.selectedSuggestion = suggestion.address.freeformAddress;
+			console.log('QUELLO CHE PASSO NELLA STRINGA TOMTOM', this.selectedSuggestion);
+      this.suggestions = [];
+    },
+
 
 		/**FUNZIONE API CALL GET (index).........................
 		 *
@@ -117,18 +151,20 @@ export default {
 					console.log(e);
 				});
 		},
+
 /* CHIAMATA A GEOCODE TOM TOM RECUPERA LAT LONG E ADDRESS DA STRINGA */
 		fetchTomTom() {
+			if (this.selectSuggestion) {
 			// axios.get("https://api.tomtom.com/search/2/geocode/De%20Ruijterkade%20154,%201011%20AC,%20Amsterdam.json?key=lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E").then((resp) => {
-			axios.get(this.baseUrl + this.query + this.api_key).then((resp) => {
-				console.log(resp);
+			axios.get(this.baseUrl + encodeURIComponent(this.selectedSuggestion) + this.api_key).then((resp) => {
+				console.log('LOG TOM TOM RESP', resp);
 
 				if (resp.data.results.length) {
 					this.querySearch = resp.data.results[0].address.freeformAddress;
 					this.coordinates.lat = resp.data.results[0].position.lat;
 					this.coordinates.lon = resp.data.results[0].position.lon;
 
-					console.log(this.coordinates);
+					console.log( 'LOG COORDINATES E QUERY' ,this.coordinates + this.querySearch);
 
 					// this.api_GET('/search', this.coordinates);
 
@@ -145,8 +181,9 @@ export default {
 					);
 				}
 			});
-		},
+		};
 	},
+},
 	mounted() {
 		titles(this.$route.meta.title);
 		this.api_GET(this.$route.meta.apiRoutePath);
