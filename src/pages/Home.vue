@@ -1,12 +1,17 @@
 <template>
+ 
+  
+
 	<div class="container-fluid px-5">
 		<div class="d-flex justify-content-center my-5 align-items-center">
 			<div class="position-relative">
-				<input
-					v-model="query"
-					class="search__input"
-					type="text"
-					placeholder="Search Apartment" />
+				<input v-model="query" class="search__input" type="text" @input="getSuggestions" placeholder="Search Apartment" />
+
+				<ul  v-if="suggestions && suggestions.length > 0 ">
+      		<li v-for="suggestion in suggestions" :key="suggestion.id" @click="selectSuggestion(suggestion)">
+      		  {{ suggestion.address.freeformAddress }}
+      		</li>
+    		</ul>
 				<button @click="fetchTomTom()" class="my-btn">
 					<i class="fa-solid fa-magnifying-glass"></i>
 				</button>
@@ -58,6 +63,8 @@ export default {
 		return {
 			store,
 			query: '',
+      suggestions: null,
+      selectedSuggestion: null,
 			pagination: null,
 			apartments: null,
 
@@ -88,6 +95,31 @@ export default {
 				return result;
 			}, {});
 		},
+
+		// nuova funzione------------------------------------------------------------
+
+		getSuggestions() {
+      if (this.query.length > 0) {
+        axios.get(`https://api.tomtom.com/search/2/geocode/${this.query}.json?key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE`)
+          .then((resp) => {
+						console.log(resp.data.results);
+            this.suggestions = resp.data.results;
+						console.log(this.suggestions);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        this.suggestions = [];
+				
+      }
+    },
+    selectSuggestion(suggestion) {
+      this.query = suggestion.address.freeformAddress;
+      this.selectedSuggestion = suggestion;
+      this.suggestions = [];
+    },
+
 
 		/**FUNZIONE API CALL GET (index).........................
 		 *
@@ -120,10 +152,12 @@ export default {
 					console.log(e);
 				});
 		},
+		
 /* CHIAMATA A GEOCODE TOM TOM RECUPERA LAT LONG E ADDRESS DA STRINGA */
 		fetchTomTom() {
+			if (this.selectSuggestion) {
 			// axios.get("https://api.tomtom.com/search/2/geocode/De%20Ruijterkade%20154,%201011%20AC,%20Amsterdam.json?key=lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E").then((resp) => {
-			axios.get(this.baseUrl + this.query + this.api_key).then((resp) => {
+			axios.get(this.baseUrl + encodeURIComponent(this.selectedSuggestion.id) + this.api_key).then((resp) => {
 				console.log(resp);
 
 				if (resp.data.results.length) {
@@ -148,8 +182,9 @@ export default {
 					);
 				}
 			});
-		},
+		};
 	},
+},
 	mounted() {
 		titles(this.$route.meta.title);
 		this.api_GET(this.$route.meta.apiRoutePath);
