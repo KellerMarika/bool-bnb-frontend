@@ -90,11 +90,16 @@
 					</span>
 				</div>
 			</div>
-			<a
-				href="http://localhost:5173/apartments"
-				class="mb-3 btn btn-info ms-2 text-light"
-				>RETURN TO INDEX</a
-			>
+
+			<router-link 
+            :to="{ name: 'home'}"
+            class="card-group my-4">
+
+          <!-- CARD -->
+        <button class="mb-3 btn btn-info ms-2 text-light">
+									<i class="fa-solid fa-filter"></i>
+									back to home</button>
+        </router-link>
 		</div>
 	</section>
 </template>

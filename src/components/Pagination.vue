@@ -1,10 +1,10 @@
 <template>
-  <nav aria-label="..." class="d-flex justify-content-end">
+  <nav v-if="pagination" aria-label="..." class="d-flex justify-content-end">
     <ul class="pagination">
-      <!--     @click="fetchProjectLists(getPageNumber(link, pagination))" -->
+      <!--     @click="fetchPageList(getPageNumber(link, pagination))" -->
       <li v-for="link in pagination.links"
 
-          @click="fetchProjectLists(getPageNumber(link, pagination))"
+          @click="fetchPageList(getPageNumber(link, pagination))"
 
           class="page-item">
 
@@ -16,7 +16,6 @@
   </nav>
 </template>
 <script>
-import axios from 'axios';
 import { store } from '../store';
 export default {
   props: {
@@ -51,8 +50,8 @@ export default {
   methods: {
 
     /* EMIT */
-    fetchProjectLists(page) {
-      this.$emit("fetchProjectLists", page)
+    fetchPageList(page) {
+      this.$emit("fetchPageList", page)
     },
     /* COMPUTED CHE NON VANNO COL THIS */
 

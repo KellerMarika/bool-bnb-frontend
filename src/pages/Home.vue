@@ -11,11 +11,20 @@
 					<i class="fa-solid fa-magnifying-glass"></i>
 				</button>
 			</div>
-			<a
+
+			  <!-- LINK ALLO SHOW -->
+					<router-link 
+            :to="{ name: 'AdvancedSearch'}"
+            class="card-group my-4">
+        <button class="ms-4 rounded-5 btn-outline-dark btn px-3 py-2">
+									<i class="fa-solid fa-filter"></i>
+									advanced filters</button>
+        </router-link>
+<!-- 			<a
 				class="ms-4 rounded-5 btn-outline-dark btn p-2"
 				href="/advancedSearch"
-				>Ad search</a
-			>
+				>go advanced search</a
+			> -->
 		</div>
 
 		<div class="card-container px-sm-2 px-xl-5">
