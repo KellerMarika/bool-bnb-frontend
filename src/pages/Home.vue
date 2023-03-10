@@ -20,16 +20,13 @@
 									<i class="fa-solid fa-filter"></i>
 									advanced filters</button>
         </router-link>
-<!-- 			<a
-				class="ms-4 rounded-5 btn-outline-dark btn p-2"
-				href="/advancedSearch"
-				>go advanced search</a
-			> -->
 		</div>
 
 		<div class="card-container px-sm-2 px-xl-5">
-			<h4 class="my-3">{{ querySearch ? querySearch : 'Think for You' }}</h4>
+			<h2 class="my-3">{{ querySearch ? querySearch : 'Thinked for You:' }}</h2>
+			<small v-if="apartments && apartments.length">({{apartments.length}})risultati trovati</small>
 			<div class="row g-4">
+
 				<!-- LINK ALLO SHOW -->
 				<router-link
 					v-for="apartment in apartments"

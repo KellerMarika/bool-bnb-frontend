@@ -105,8 +105,9 @@
       </div>
 
       <!-- PAGINAZIONE SOTTO -->
-
-<!--       <Pagination :pagination="pagination" @fetchPageList="fetchPageList"></Pagination> -->
+      <Pagination :pagination="pagination"  
+      :query="query"
+      @api_GET="api_GET"></Pagination> 
 
     </div>
   </section>
@@ -184,13 +185,19 @@ export default {
      * @param {object} payload es=  {pagination:3}
      */
 
-    api_GET(thisRoutePath, payload) {
+    api_GET(thisRoutePath, payload, page) {
+
+
+
       let apiUrl = `${this.store.backedRootUrl}/api${thisRoutePath}`;
       console.log('URL', apiUrl);
 
       axios
         .get(`${apiUrl}`, {
-          params: payload,
+          params: {
+            ...page,
+            ...payload
+          },
         })
         .then((resp) => {
           this.store.submitResult = 'success';
@@ -230,7 +237,7 @@ export default {
         }
       });
     },
-    
+
   },
   mounted() {
     titles(this.$route.meta.title);

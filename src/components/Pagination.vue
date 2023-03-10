@@ -1,10 +1,10 @@
 <template>
   <nav v-if="pagination" aria-label="..." class="d-flex justify-content-end">
     <ul class="pagination">
-      <!--     @click="fetchPageList(getPageNumber(link, pagination))" -->
+      <!--     @click="api_GET(getPageNumber(link, pagination))" -->
       <li v-for="link in pagination.links"
 
-          @click="fetchPageList(getPageNumber(link, pagination))"
+          @click="api_GET('/search', query, getPageNumber(link, pagination))"
 
           class="page-item">
 
@@ -35,6 +35,18 @@ export default {
     pagination: {
       required: true,
       type: Object
+    },
+    /**
+    *@param {int} min_rooms
+     *@param {int} min_beds
+     *@param {int} radius
+     *@param {array}  services
+     *@param {string} lat
+    *@param {string} lon
+       */
+    query: {
+      required: true,
+      type: Object
     }
   },
   data() {
@@ -50,8 +62,8 @@ export default {
   methods: {
 
     /* EMIT */
-    fetchPageList(page) {
-      this.$emit("fetchPageList", page)
+    api_GET(thisRoutePath, payload, page) {
+      this.$emit("api_GET", thisRoutePath, payload, page)
     },
     /* COMPUTED CHE NON VANNO COL THIS */
 
@@ -117,28 +129,6 @@ export default {
   },
 
   computed: {
-    /*   getPageName() {
-       if (isNan(this.link.label)) {
-        if (this.link.label.includes('Previous')) {
-    
-         return 'previous'
-        } else if (this.link.label.includes('Next')) {
-         return 'next'
-        } else {
-         return this.link.label
-        }
-       }
-      },
-      SetPageDisabled() {
-       if (this.pagination.current_page <= 1 || this.pagination.current_page >= this.pagination.last_page) {
-        return 'true'
-       }
-    
-      },
-      setPageActive() {
-       if (this.link.active === true)
-        return "active"
-      } */
   },
   mounted() {
   }
@@ -154,6 +144,7 @@ export default {
 .pagination {
   li a {
     color: variables.$dark_color;
+
     &.active {
       background-color: variables.$primary_color;
     }
