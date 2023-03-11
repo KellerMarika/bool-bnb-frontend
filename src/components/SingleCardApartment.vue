@@ -1,9 +1,18 @@
 <template>
 	<div class="card text-dark border-0">
-		<img
-			class="card-img-top mb-2 card-img rounded-4"
-			:src="fetchImage(apartment.cover_img, apartment.images)"
-			alt="" />
+		<div class="card text-dark border-0">
+      <img class="card-img-top mb-2 card-img rounded-4" :src="fetchImage(apartment.cover_img, apartment.images)" alt="" />
+      <div class="carousel-controls position-absolute top-50 translate-middle-y">
+        <button class="carousel-control-prev " >
+          <i @click.stop="prevImage" :class="{ 'disabled': currentImageIndex === 0 }" class="fa-solid fa-circle-chevron-left"></i>
+        </button>
+        <button class="carousel-control-next" >
+          <i @click.stop="nextImage" :class="{ 'disabled': currentImageIndex === apartment.images.length - 1 }" class="fa-solid fa-circle-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  
+		
 		<span class="mt-1 fw-semibold">{{ apartment.title }}</span>
 
 		<div v-if="apartment.description.length > 70">
@@ -42,6 +51,7 @@ export default {
 			*@param {float} daily_price => required|decimal:2,
 			*@param {bool} visible => nullable|boolean,
 			*@param {array} services => 'nullable|array',
+			*@param {array} images => ''nullable|array',
 			*/
 		apartment: {
 			required: true,
@@ -51,29 +61,80 @@ export default {
 	data() {
 		return {
 			store,
+			currentImageIndex: 0,
 		};
 	},
 	methods: {
-		
-/* FUNZIONE FETCH COVER IMG  */
 		fetchImage(apartmentCoverImg, apartmentImages) {
+      if (apartmentCoverImg !== null) {
+        return this.store.backedRootUrl + "/storage/" + apartmentCoverImg;
+      } else if (apartmentImages && apartmentImages.length) {
+				console.log(apartmentImages[this.currentImageIndex].image);
+        return apartmentImages[this.currentImageIndex].image;
+      } else {
+        let defaultImg = "/placeholder-image.png";
+        return defaultImg;
+      }
+    },
+    nextImage() {
+      if (this.currentImageIndex < this.apartment.images.length - 1) {
+        this.currentImageIndex++;
+      }
+    },
+    prevImage() {
+      if (this.currentImageIndex > 0) {
+        this.currentImageIndex--;
+      }
+    },
+  },
+/* FUNZIONE FETCH COVER IMG  */
+	// 	fetchImage(apartmentCoverImg, apartmentImages) {
 
-			if (apartmentCoverImg !== null) {
-				return this.store.backedRootUrl+"/storage/"+apartmentCoverImg
-			} else if (apartmentImages && apartmentImages.length) {
-				return apartmentImages[0].image
-			} else {
-				let defaultImg = '/placeholder-image.png'
-				return defaultImg
-			}
-		}
-	},
+	// 		if (apartmentCoverImg !== null) {
+	// 			return this.store.backedRootUrl+"/storage/"+apartmentCoverImg
+	// 		} else if (apartmentImages && apartmentImages.length) {
+	// 			return apartmentImages[0].image
+	// 		} else {
+	// 			let defaultImg = '/placeholder-image.png'
+	// 			return defaultImg
+	// 		}
+	// 	}
+	// },
+
+	
 	mounted() {
- },
+ }
 };
 </script>
 
 <style lang="scss" scoped>
+
+.carousel-controls {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  background: transparent;
+  border: 1px whitesmoke;
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+	padding: 0.5rem;
+}
+
+.carousel-control-prev:disabled,
+.carousel-control-next:disabled {
+  color: #ccc;
+  cursor: default;
+}
+
 .card-text-truncate {
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -87,4 +148,6 @@ img {
 	aspect-ratio: 1 / 1;
 	box-shadow: 3px 5px 4px black;
 }
+
+
 </style>
