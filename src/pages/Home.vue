@@ -2,7 +2,7 @@
 	<div class="container-fluid px-5">
 		<div class="d-flex justify-content-center my-5 align-items-center">
 			<div class="position-relative">
-				<input v-model="query" class="search__input" type="text" @input="getSuggestions"
+				<input v-model="querySearchText" class="search__input" type="text" @input="getSuggestions"
 					placeholder="Search Apartment" />
 
 				<ul class="list-group list-group-flush" v-if="suggestions && suggestions.length > 0">
@@ -11,23 +11,23 @@
 						{{ suggestion.address.freeformAddress + ' ' + suggestion.address.country }}
 					</li>
 				</ul>
-				<button @click="fetchTomTom()" class="my-btn">
+				<button class="my-btn">
 					<i class="fa-solid fa-magnifying-glass"></i>
 				</button>
 			</div>
 
-
 			<!-- LINK ALLO SHOW -->
-			<router-link
+			<!-- 		<router-link
 				:to="{ name: 'AdvancedSearch' }"
 				class="card-group my-4">
 				<button class="ms-4 rounded-5 btn-outline-dark btn px-3 py-2">
 					<i class="fa-solid fa-filter"></i>
 					advanced filters</button>
-			</router-link>
+			</router-link> -->
 		</div>
-		<input type="text" v-model="query" class="w-100">
 		<div class="card-container px-sm-2 px-xl-5">
+
+			<!-- non dovrebbe servire perchè avviene il redirect -->
 			<h2 class="my-3">{{ querySearch ? querySearch : 'Thinked for You:' }}</h2>
 			<small v-if="apartments && apartments.length">({{ apartments.length }})risultati trovati</small>
 			<div class="row g-4">
@@ -60,13 +60,14 @@ export default {
 	data() {
 		return {
 			store,
-			query: '',
-			suggestions: null,
+
 			//selectedSuggestion: null,
 			/* 	coordinates: {
 					lat: '',
 					lon: '',
 				}, */
+			querySearchText: '',
+			suggestions: null,
 			dataToRedirect: {
 				selectedSuggestion: null,
 				lat: '',
@@ -79,22 +80,23 @@ export default {
 			baseUrl: 'https://api.tomtom.com/search/2/geocode/', // + this.query + '.json?'
 			//url: 'https://api.tomtom.com/search/2/geocode/roma.json?storeResult=false&limit=5&countrySet=IT&view=Unified&key=',
 
+			// non dovrebbe servire perchè avviene il redirect 
 			querySearch: '',
 		};
 	},
 	methods: {
 
 		/* questa funzione deve reindirizzarmi in un'altra pagina passando un oggetto,  */
-		Redirect(tomtomResult) {
-
-			this.$router.push({ name: "Apartments.index", query: { ...tomtomResult } });
-		},
-
+		/* 		Redirect(tomtomResult) {
+		
+					this.$router.push({ name: "Apartments.index", query: { ...tomtomResult } });
+				},
+			*/
 		// nuova funzione------------------------------------------------------------
 
 		getSuggestions() {
-			if (this.query.length > 0) {
-				axios.get(`https://api.tomtom.com/search/2/geocode/${this.query}.json?storeResult=false&limit=5&countrySet=IT&view=Unified&key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE`)
+			if (this.querySearchText.length > 0) {
+				axios.get(`https://api.tomtom.com/search/2/geocode/${this.querySearchText}.json?storeResult=false&limit=5&countrySet=IT&view=Unified&key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE`)
 					.then((resp) => {
 						/* 	console.log(resp.data.results); */
 						this.suggestions = resp.data.results;
@@ -105,17 +107,21 @@ export default {
 					});
 			} else {
 				this.suggestions = [];
-
 			}
 		},
 
 		selectSuggestion(suggestion) {
 			//mi è piaciuto sopra e ho aggiunto anche a db il coutry
-			this.query = (suggestion.address.freeformAddress + ', ' + suggestion.address.country);
-/* 			this.dataToRedirect.selectedSuggestion = this.query; */
-			this.dataToRedirect={...suggestion.position, homeSearchAddress:this.query};
-			console.log('QUELLO CHE PASSO NELLA STRINGA TOMTOM', this.dataToRedirect);
+			this.querySearchText = (suggestion.address.freeformAddress + ', ' + suggestion.address.country);
+			/* 			this.dataToRedirect.selectedSuggestion = this.querySearchText; */
+			this.dataToRedirect = { ...suggestion.position, homeSearchAddress: this.querySearchText };
+			console.log('QUELLO CHE PASSO IN ADVANCED SEARCH E SU CUI FACCIO LA CALL TOMTOM', this.dataToRedirect);
+			//reset list sparisce dropdown!
+
 			this.suggestions = [];
+
+			//REDIRECT
+			this.$router.push({ name: "AdvancedSearch", query: { ...this.dataToRedirect } });
 		},
 
 
