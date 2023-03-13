@@ -1,15 +1,12 @@
 <template>
 	<div class="card text-dark border-0">
 		<div class="card text-dark border-0">
-      <img class="card-img-top mb-2 card-img rounded-4" :src="fetchImage(apartment.cover_img, apartment.images)" alt="" />
-      <div class="carousel-controls position-absolute top-50 translate-middle-y">
-        <button class="carousel-control-prev " >
-          <i @click.stop="prevImage" :class="{ 'disabled': currentImageIndex === 0 }" class="fa-solid fa-circle-chevron-left"></i>
-        </button>
-        <button class="carousel-control-next" >
-          <i @click.stop="nextImage" :class="{ 'disabled': currentImageIndex === apartment.images.length - 1 }" class="fa-solid fa-circle-chevron-right"></i>
-        </button>
-      </div>
+      <img class="card-img-top mb-2 card-img rounded-4" :src="fetchImage(apartment.cover_img, apartment.images)" alt="" 
+			@mouseover="startSlideShow"
+			@mouseleave="stopSlideShow"
+			
+			/>
+     
     </div>
   
 		
@@ -76,16 +73,21 @@ export default {
         return defaultImg;
       }
     },
-    nextImage() {
-      if (this.currentImageIndex < this.apartment.images.length - 1) {
-        this.currentImageIndex++;
-      }
-    },
-    prevImage() {
-      if (this.currentImageIndex > 0) {
-        this.currentImageIndex--;
-      }
-    },
+
+		startSlideShow() {
+  		this.slideShow = setInterval(() => {
+    	this.currentImageIndex++;
+    	if (this.currentImageIndex >= this.apartment.images.length) {
+      this.currentImageIndex = 0;
+    }
+  }, 1500);
+},
+stopSlideShow() {
+	this.currentImageIndex = 0;
+  clearInterval(this.slideShow);
+	
+},
+    
   },
 /* FUNZIONE FETCH COVER IMG  */
 	// 	fetchImage(apartmentCoverImg, apartmentImages) {
@@ -109,31 +111,6 @@ export default {
 
 <style lang="scss" scoped>
 
-.carousel-controls {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.carousel-control-prev,
-.carousel-control-next {
-  background: transparent;
-  border: 1px whitesmoke;
-  font-size: 24px;
-  font-weight: bold;
-  color: #000;
-  cursor: pointer;
-	padding: 0.5rem;
-}
-
-.carousel-control-prev:disabled,
-.carousel-control-next:disabled {
-  color: #ccc;
-  cursor: default;
-}
 
 .card-text-truncate {
 	overflow: hidden;
