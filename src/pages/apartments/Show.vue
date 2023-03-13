@@ -1,5 +1,4 @@
 <template>
-
 	<section
 		class="px-xxl-5 mx-3 mx-sm-5 mx-lg-5"
 		:class="apartment.images && apartment.images.length ? '' : 'd-flex'">
@@ -36,9 +35,9 @@
 				</div>
 			</div>
 
-
-					<!-- carica solo la cover -->
-					<div v-else-if="apartment.cover_img"
+			<!-- carica solo la cover -->
+			<div
+				v-else-if="apartment.cover_img"
 				class="img-container rounded-4 overflow-hidden"
 				:class="apartment.cover_img ? 'w-50' : 'w-25'">
 				<img
@@ -52,7 +51,8 @@
 			</div>
 
 			<!-- carica placeolder -->
-			<div v-else
+			<div
+				v-else
 				class="img-container rounded-4 overflow-hidden"
 				:class="apartment.cover_img ? 'w-50' : 'w-25'">
 				<img
@@ -107,15 +107,96 @@
 				</div>
 			</div>
 
-			<router-link 
-            :to="{ name: 'home'}"
-            class="card-group my-4">
+			<router-link :to="{name: 'home'}" class="card-group my-4">
+				<!-- CARD -->
+				<button class="mb-3 btn btn-info ms-2 text-light">
+					<i class="fa-solid fa-filter"></i>
+					back to home
+				</button>
+			</router-link>
+		</div>
+		<div
+			v-if="this.submitResult === 'success'"
+			class="alert alert-success m-3">
+			L'invio è andato a buon fine! Grazie per avermi contattato.
+		</div>
+		<div v-else-if="this.submitResult" class="alert alert-danger m-3">
+			<p>There was a problem with your request:</p>
+			<p v-if="!errors">
+				{{ this.submitResult }}
+			</p>
+			<ul v-else v-for="(error, i) in this.errors">
+				<li>{{ `${i}: ${error}` }}</li>
+			</ul>
+		</div>
 
-          <!-- CARD -->
-        <button class="mb-3 btn btn-info ms-2 text-light">
-									<i class="fa-solid fa-filter"></i>
-									back to home</button>
-        </router-link>
+		<div>
+			<h1 class="my-3">Chiedi maggiori info:</h1>
+			<!-- <div class="contacts-links">
+				<a
+					href="mailto:mail.prove@gmail.com?subject=Contatto da portfolio"
+					class="link-dark">
+					<i class="fa-solid fa-envelope-open fs-2 mx-3"></i>
+				</a>
+			</div> -->
+
+			<form
+				v-if="submitResult !== 'success'"
+				@submit.prevent="onMessageFormSubmit">
+				<div class="row">
+					<div class="col-6">
+						<div class="form-floating mb-3">
+							<input
+								type="text"
+								class="form-control"
+								v-model="messageFormInput.name"
+								placeholder="Enter your fulll name" />
+							<label for="floatingInput">Name</label>
+							<!-- <div class="invalid-feedback">Please choose a name.</div> -->
+						</div>
+						<div class="form-floating mb-3">
+							<input
+								type="email"
+								class="form-control"
+								v-model="messageFormInput.email"
+								placeholder="name@example.com" />
+							<label for="floatingPassword">Email address</label>
+						</div>
+						<div class="form-floating mb-3">
+							<input
+								type="text"
+								class="form-control"
+								v-model="messageFormInput.object"
+								id="floatingInput"
+								placeholder="name@example.com" />
+							<label for="floatingInput">Object</label>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="mb-3">
+							<textarea
+								class="form-control"
+								v-model="messageFormInput.message"
+								rows="8"
+								placeholder="Message"></textarea>
+						</div>
+					</div>
+				</div>
+				<button
+					type="reset"
+					:disabled="loading"
+					class="btn btn-secondary me-3">
+					Cancel
+				</button>
+				<button type="submit" :disabled="loading" class="btn btn-success">
+					<span
+						v-if="loading"
+						class="spinner-border spinner-border-sm"
+						role="status"
+						aria-hidden="true"></span>
+					Send
+				</button>
+			</form>
 		</div>
 	</section>
 </template>
@@ -156,6 +237,15 @@ export default {
 		return {
 			store,
 			apartment: {},
+			loading: false,
+			submitResult: '',
+			errors: [],
+			messageFormInput: {
+				name: '',
+				email: '',
+				object: '',
+				message: '',
+			},
 		};
 	},
 	methods: {
@@ -177,6 +267,9 @@ export default {
 					params: payload,
 				})
 				.then((resp) => {
+					if (resp.data === 'error') {
+						this.$router.push('http://localhost:5173/error');
+					}
 					this.store.submitResult = 'success';
 					this.store.loading = false;
 
@@ -191,6 +284,37 @@ export default {
 						this.store.submitResult = e.message;
 					}
 					console.log(e);
+				});
+		},
+		onMessageFormSubmit() {
+			this.loading = true;
+
+			const formData = new FormData();
+			formData.append('apartment_id', this.$route.params.id);
+			formData.append('sender', this.messageFormInput.name);
+			formData.append('email', this.messageFormInput.email);
+			formData.append('subject', this.messageFormInput.object);
+			formData.append('message', this.messageFormInput.message);
+
+			console.log(this.messageFormInput);
+
+			axios
+				.post(store.backedRootUrl + '/api/messages', formData)
+				.then((resp) => {
+					this.submitResult = 'success';
+					this.loading = false;
+				})
+				.catch((error) => {
+					this.loading = false;
+
+					if (error.response && error.response.data) {
+						this.submitResult = error.response.data.message;
+						var errorsArray = error.response.data.errors;
+						this.errors = errorsArray;
+						console.log(this.errors);
+					} else {
+						this.submitResult = error.message;
+					}
 				});
 		},
 	},
