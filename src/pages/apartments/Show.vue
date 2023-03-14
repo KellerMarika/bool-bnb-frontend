@@ -1,4 +1,12 @@
 <template>
+
+<!-- <div id="map" class="map"></div>
+ -->
+	<div id="map" class="map border" style="width: 400px; height: 400px"
+  >
+  </div>
+
+
 	<section
 		class="px-xxl-5 mx-3 mx-sm-5 mx-lg-5"
 		:class="apartment.images && apartment.images.length ? '' : 'd-flex'">
@@ -202,6 +210,7 @@
 </template>
 
 <script>
+import tt from '@tomtom-international/web-sdk-maps';
 import axios from 'axios';
 import {titles} from '../../store';
 import {api_DELETE, store} from '../../store';
@@ -255,6 +264,24 @@ export default {
 			);
 		},
 
+/* MAP :::::::::::::::::::::::::::::::::::::::::::*/
+
+
+ createMap(lon,lat){
+		// mappa 
+	this.map = tt.map({
+        key: 'lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E',
+        container: 'map',
+								center:[lon,lat],
+								zoom:10,
+    });
+
+
+
+console.log()
+},
+
+
 		/**FUNZIONE API CALL SHOW (show).........................
 		 *
 		 * @param {string} thisRoutePath  es= 'apartments/create'
@@ -276,6 +303,10 @@ export default {
 					console.log('APPARTAMENTO', resp.data);
 					this.apartment = resp.data;
 					console.log(resp.data);
+
+					/* MAPPA */
+					this.createMap(this.apartment.longitude,this.apartment.latitude)
+				
 				})
 				.catch((e) => {
 					if (e.response && e.response.data) {
