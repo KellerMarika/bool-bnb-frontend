@@ -107,13 +107,27 @@
 				</div>
 			</div>
 
-			<router-link :to="{name: 'home'}" class="card-group my-4">
-				<!-- CARD -->
-				<button class="mb-3 btn btn-info ms-2 text-light">
-					<i class="fa-solid fa-filter"></i>
-					back to home
-				</button>
-			</router-link>
+			<div class="my-3 d-flex align-items-baseline justify-content-between">
+				<router-link :to="{name: 'home'}" class="btn btn-info">
+					<!-- CARD -->
+					<h5 class="my-3 mx-4">
+						<i class="fa-solid fa-home"></i>
+						Back to home
+					</h5>
+				</router-link>
+				<a
+					:href="
+						store.backedRootUrl +
+						'/apartments/messages/' +
+						this.apartment.id
+					"
+					class="btn btn-primary">
+					<h5 class="my-3 mx-4">
+						Chiedi maggiori informazioni
+						<i class="fa-solid fa-envelope"></i>
+					</h5>
+				</a>
+			</div>
 		</div>
 		<div
 			v-if="this.submitResult === 'success'"
@@ -128,17 +142,6 @@
 			<ul v-else v-for="(error, i) in this.errors">
 				<li>{{ `${i}: ${error}` }}</li>
 			</ul>
-		</div>
-
-		<div>
-			<h1 class="my-3">Chiedi maggiori info:</h1>
-			<a
-				class="btn btn-primary"
-				:href="
-					store.backedRootUrl + '/apartments/messages/' + this.apartment.id
-				"
-				>Apri form messaggi</a
-			>
 		</div>
 	</section>
 </template>
