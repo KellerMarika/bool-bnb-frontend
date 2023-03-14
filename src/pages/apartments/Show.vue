@@ -1,11 +1,5 @@
 <template>
-	<!-- <div id="map" class="map"></div>
- -->
-	<div id="map" class="map border" style="width: 400px; height: 400px">
-	</div>
-
-
-	<section
+		<section
 		class="px-xxl-5 mx-3 mx-sm-5 mx-lg-5"
 		:class="apartment.images && apartment.images.length ? '' : 'd-flex'">
 		<div class="container.fluid px-md-3 px-xl-5">
@@ -149,6 +143,9 @@
 				<li>{{ `${i}: ${error}` }}</li>
 			</ul>
 		</div>
+		<div id="map" class="map border" style="width: 600px; height: 600px">
+	</div>
+
 	</section>
 </template>
 
