@@ -1,10 +1,8 @@
 <template>
-
-<!-- <div id="map" class="map"></div>
+	<!-- <div id="map" class="map"></div>
  -->
-	<div id="map" class="map border" style="width: 400px; height: 400px"
-  >
-  </div>
+	<div id="map" class="map border" style="width: 400px; height: 400px">
+	</div>
 
 
 	<section
@@ -115,7 +113,7 @@
 				</div>
 			</div>
 
-			<router-link :to="{name: 'home'}" class="card-group my-4">
+			<router-link :to="{ name: 'home' }" class="card-group my-4">
 				<!-- CARD -->
 				<button class="mb-3 btn btn-info ms-2 text-light">
 					<i class="fa-solid fa-filter"></i>
@@ -212,31 +210,31 @@
 <script>
 import tt from '@tomtom-international/web-sdk-maps';
 import axios from 'axios';
-import {titles} from '../../store';
-import {api_DELETE, store} from '../../store';
+import { titles } from '../../store';
+import { api_DELETE, store } from '../../store';
 import ButtonDelete from '../../components/ButtonDelete.vue';
 
 export default {
 	name: 'Apartments Show',
-	components: {ButtonDelete},
+	components: { ButtonDelete },
 	props: {
 		/**
-		 *@param {int} id
-		 *@param {int} user_id
-		 *@param {string} title
-		 *@param {string} address
-		 *@param {string} latitude
-		 *@param {string} longitude
-		 *@param {string} cover_img
-		 *@param {string} description
-		 *@param {int} rooms_qty
-		 *@param {int} beds_qty
-		 *@param {int} bathrooms_qty
-		 *@param {int} mq
-		 *@param {float} daily_price
-		 *@param {boolean} visible
-		 *@param {array} services
-		 */
+			*@param {int} id
+			*@param {int} user_id
+			*@param {string} title
+			*@param {string} address
+			*@param {string} latitude
+			*@param {string} longitude
+			*@param {string} cover_img
+			*@param {string} description
+			*@param {int} rooms_qty
+			*@param {int} beds_qty
+			*@param {int} bathrooms_qty
+			*@param {int} mq
+			*@param {float} daily_price
+			*@param {boolean} visible
+			*@param {array} services
+			*/
 		apartment: {
 			required: true,
 			type: Object,
@@ -254,6 +252,9 @@ export default {
 				email: '',
 				object: '',
 				message: '',
+
+				map:null,
+				marker:null,
 			},
 		};
 	},
@@ -264,96 +265,100 @@ export default {
 			);
 		},
 
-/* MAP :::::::::::::::::::::::::::::::::::::::::::*/
+		/* MAP :::::::::::::::::::::::::::::::::::::::::::*/
 
 
- createMap(lon,lat){
-		// mappa 
-	this.map = tt.map({
-        key: 'lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E',
-        container: 'map',
-								center:[lon,lat],
-								zoom:10,
-    });
+		createMap(lon, lat, popName) {
+			// mappa 
+			this.map = tt.map({
+				key: 'lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E',
+				container: 'map',
+				center: [lon, lat],
+				zoom: 10,
+			});
+
+			//marker
+			this.marker = new tt.Marker().setLngLat([lon, lat])
+			.setPopup(new tt.Popup({ offset: 35 }).setHTML( popName))
+			.addTo(this.map);
+		
+    
+ 
+	},
 
 
+	/**FUNZIONE API CALL SHOW (show).........................
+		*
+		* @param {string} thisRoutePath  es= 'apartments/create'
+		* @param {object} payload es=  {pagination:3}
+		*/
+	api_SHOW(thisRoutePath, payload) {
+		let apiUrl = `${this.store.backedRootUrl}/api${thisRoutePath}${this.$route.params.id}`;
+		axios
+			.get(`${apiUrl}`, {
+				params: payload,
+			})
+			.then((resp) => {
+				if (resp.data === 'error') {
+					this.$router.push('http://localhost:5173/error');
+				}
+				this.store.submitResult = 'success';
+				this.store.loading = false;
 
-console.log()
+				console.log('APPARTAMENTO', resp.data);
+				this.apartment = resp.data;
+				console.log(resp.data);
+
+				/* MAPPA */
+				this.createMap(this.apartment.longitude, this.apartment.latitude, this.apartment.title+ '<br/>'+ this.apartment.address )
+
+			})
+			.catch((e) => {
+				if (e.response && e.response.data) {
+					this.store.submitResult = e.response.data.message;
+				} else {
+					this.store.submitResult = e.message;
+				}
+				console.log(e);
+			});
+	},
+	onMessageFormSubmit() {
+		this.loading = true;
+
+		const formData = new FormData();
+		formData.append('apartment_id', this.$route.params.id);
+		formData.append('sender', this.messageFormInput.name);
+		formData.append('email', this.messageFormInput.email);
+		formData.append('subject', this.messageFormInput.object);
+		formData.append('message', this.messageFormInput.message);
+
+		console.log(this.messageFormInput);
+
+		axios
+			.post(store.backedRootUrl + '/api/messages', formData)
+			.then((resp) => {
+				this.submitResult = 'success';
+				this.loading = false;
+			})
+			.catch((error) => {
+				this.loading = false;
+
+				if (error.response && error.response.data) {
+					this.submitResult = error.response.data.message;
+					var errorsArray = error.response.data.errors;
+					this.errors = errorsArray;
+					console.log(this.errors);
+				} else {
+					this.submitResult = error.message;
+				}
+			});
+	},
 },
-
-
-		/**FUNZIONE API CALL SHOW (show).........................
-		 *
-		 * @param {string} thisRoutePath  es= 'apartments/create'
-		 * @param {object} payload es=  {pagination:3}
-		 */
-		api_SHOW(thisRoutePath, payload) {
-			let apiUrl = `${this.store.backedRootUrl}/api${thisRoutePath}${this.$route.params.id}`;
-			axios
-				.get(`${apiUrl}`, {
-					params: payload,
-				})
-				.then((resp) => {
-					if (resp.data === 'error') {
-						this.$router.push('http://localhost:5173/error');
-					}
-					this.store.submitResult = 'success';
-					this.store.loading = false;
-
-					console.log('APPARTAMENTO', resp.data);
-					this.apartment = resp.data;
-					console.log(resp.data);
-
-					/* MAPPA */
-					this.createMap(this.apartment.longitude,this.apartment.latitude)
-				
-				})
-				.catch((e) => {
-					if (e.response && e.response.data) {
-						this.store.submitResult = e.response.data.message;
-					} else {
-						this.store.submitResult = e.message;
-					}
-					console.log(e);
-				});
-		},
-		onMessageFormSubmit() {
-			this.loading = true;
-
-			const formData = new FormData();
-			formData.append('apartment_id', this.$route.params.id);
-			formData.append('sender', this.messageFormInput.name);
-			formData.append('email', this.messageFormInput.email);
-			formData.append('subject', this.messageFormInput.object);
-			formData.append('message', this.messageFormInput.message);
-
-			console.log(this.messageFormInput);
-
-			axios
-				.post(store.backedRootUrl + '/api/messages', formData)
-				.then((resp) => {
-					this.submitResult = 'success';
-					this.loading = false;
-				})
-				.catch((error) => {
-					this.loading = false;
-
-					if (error.response && error.response.data) {
-						this.submitResult = error.response.data.message;
-						var errorsArray = error.response.data.errors;
-						this.errors = errorsArray;
-						console.log(this.errors);
-					} else {
-						this.submitResult = error.message;
-					}
-				});
-		},
-	},
-	mounted() {
-		titles(this.$route.meta.title + this.$route.params.id);
-		this.api_SHOW(this.$route.meta.apiRoutePath, this.$route.params);
-	},
-	created() {},
+mounted() {
+	titles(this.$route.meta.title + this.$route.params.id);
+	this.api_SHOW(this.$route.meta.apiRoutePath, this.$route.params);
+},
+created() { },
 };
 </script>
 
@@ -376,7 +381,6 @@ console.log()
 			transform: scaleY(120%) translateY(5%);
 		}
 	}
-
 	.row-dx {
 		transform: scaleY(115%) scaleX(102%) translate(10px);
 		position: relative;
@@ -384,10 +388,10 @@ console.log()
 		left: 0;
 	}
 }
-
 .my-services {
 	img {
 		width: 20px;
 	}
 }
+
 </style>
