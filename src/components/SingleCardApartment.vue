@@ -1,7 +1,7 @@
 <template>
 	<div class="card text-dark border-0">
 		<img
-			class="card-img-top mb-2 card-img rounded-4"
+			:class="'card-img-top mb-2 card-img rounded-4'"
 			:src="fetchImage(apartment.cover_img, apartment.images)"
 			alt="" />
 		<span class="mt-1 fw-semibold">{{ apartment.title }}</span>
