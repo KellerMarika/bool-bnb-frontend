@@ -113,13 +113,27 @@
 				</div>
 			</div>
 
-			<router-link :to="{ name: 'home' }" class="card-group my-4">
-				<!-- CARD -->
-				<button class="mb-3 btn btn-info ms-2 text-light">
-					<i class="fa-solid fa-filter"></i>
-					back to home
-				</button>
-			</router-link>
+			<div class="my-3 d-flex align-items-baseline justify-content-between">
+				<router-link :to="{name: 'home'}" class="btn btn-info">
+					<!-- CARD -->
+					<h5 class="my-3 mx-4">
+						<i class="fa-solid fa-home"></i>
+						Back to home
+					</h5>
+				</router-link>
+				<a
+					:href="
+						store.backedRootUrl +
+						'/apartments/messages/' +
+						this.apartment.id
+					"
+					class="btn btn-primary">
+					<h5 class="my-3 mx-4">
+						Chiedi maggiori informazioni
+						<i class="fa-solid fa-envelope"></i>
+					</h5>
+				</a>
+			</div>
 		</div>
 		<div
 			v-if="this.submitResult === 'success'"
@@ -134,75 +148,6 @@
 			<ul v-else v-for="(error, i) in this.errors">
 				<li>{{ `${i}: ${error}` }}</li>
 			</ul>
-		</div>
-
-		<div>
-			<h1 class="my-3">Chiedi maggiori info:</h1>
-			<!-- <div class="contacts-links">
-				<a
-					href="mailto:mail.prove@gmail.com?subject=Contatto da portfolio"
-					class="link-dark">
-					<i class="fa-solid fa-envelope-open fs-2 mx-3"></i>
-				</a>
-			</div> -->
-
-			<form
-				v-if="submitResult !== 'success'"
-				@submit.prevent="onMessageFormSubmit">
-				<div class="row">
-					<div class="col-6">
-						<div class="form-floating mb-3">
-							<input
-								type="text"
-								class="form-control"
-								v-model="messageFormInput.name"
-								placeholder="Enter your fulll name" />
-							<label for="floatingInput">Name</label>
-							<!-- <div class="invalid-feedback">Please choose a name.</div> -->
-						</div>
-						<div class="form-floating mb-3">
-							<input
-								type="email"
-								class="form-control"
-								v-model="messageFormInput.email"
-								placeholder="name@example.com" />
-							<label for="floatingPassword">Email address</label>
-						</div>
-						<div class="form-floating mb-3">
-							<input
-								type="text"
-								class="form-control"
-								v-model="messageFormInput.object"
-								id="floatingInput"
-								placeholder="name@example.com" />
-							<label for="floatingInput">Object</label>
-						</div>
-					</div>
-					<div class="col-6">
-						<div class="mb-3">
-							<textarea
-								class="form-control"
-								v-model="messageFormInput.message"
-								rows="8"
-								placeholder="Message"></textarea>
-						</div>
-					</div>
-				</div>
-				<button
-					type="reset"
-					:disabled="loading"
-					class="btn btn-secondary me-3">
-					Cancel
-				</button>
-				<button type="submit" :disabled="loading" class="btn btn-success">
-					<span
-						v-if="loading"
-						class="spinner-border spinner-border-sm"
-						role="status"
-						aria-hidden="true"></span>
-					Send
-				</button>
-			</form>
 		</div>
 	</section>
 </template>
@@ -244,8 +189,6 @@ export default {
 		return {
 			store,
 			apartment: {},
-			loading: false,
-			submitResult: '',
 			errors: [],
 			messageFormInput: {
 				name: '',
