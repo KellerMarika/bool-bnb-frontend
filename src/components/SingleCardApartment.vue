@@ -1,9 +1,15 @@
 <template>
 	<div class="card text-dark border-0">
-		<img
-			class="card-img-top mb-2 card-img rounded-4"
-			:src="fetchImage(apartment.cover_img, apartment.images)"
-			alt="" />
+		<div class="card text-dark border-0">
+      <img class="card-img-top mb-2 card-img rounded-4" :src="fetchImage(apartment.cover_img, apartment.images)" alt="" 
+			@mouseover="startSlideShow"
+			@mouseleave="stopSlideShow"
+			
+			/>
+     
+    </div>
+  
+		
 		<span class="mt-1 fw-semibold">{{ apartment.title }}</span>
 
 		<div v-if="apartment.description.length > 70">
@@ -42,6 +48,7 @@ export default {
 			*@param {float} daily_price => required|decimal:2,
 			*@param {bool} visible => nullable|boolean,
 			*@param {array} services => 'nullable|array',
+			*@param {array} images => ''nullable|array',
 			*/
 		apartment: {
 			required: true,
@@ -51,29 +58,60 @@ export default {
 	data() {
 		return {
 			store,
+			currentImageIndex: 0,
 		};
 	},
 	methods: {
-		
-/* FUNZIONE FETCH COVER IMG  */
 		fetchImage(apartmentCoverImg, apartmentImages) {
+      if (apartmentCoverImg !== null) {
+        return this.store.backedRootUrl + "/storage/" + apartmentCoverImg;
+      } else if (apartmentImages && apartmentImages.length) {
+				console.log(apartmentImages[this.currentImageIndex].image);
+        return apartmentImages[this.currentImageIndex].image;
+      } else {
+        let defaultImg = "/placeholder-image.png";
+        return defaultImg;
+      }
+    },
 
-			if (apartmentCoverImg !== null) {
-				return this.store.backedRootUrl+"/storage/"+apartmentCoverImg
-			} else if (apartmentImages && apartmentImages.length) {
-				return apartmentImages[0].image
-			} else {
-				let defaultImg = '/placeholder-image.png'
-				return defaultImg
-			}
-		}
-	},
+		startSlideShow() {
+  		this.slideShow = setInterval(() => {
+    	this.currentImageIndex++;
+    	if (this.currentImageIndex >= this.apartment.images.length) {
+      this.currentImageIndex = 0;
+    }
+  }, 1500);
+},
+stopSlideShow() {
+	this.currentImageIndex = 0;
+  clearInterval(this.slideShow);
+	
+},
+    
+  },
+/* FUNZIONE FETCH COVER IMG  */
+	// 	fetchImage(apartmentCoverImg, apartmentImages) {
+
+	// 		if (apartmentCoverImg !== null) {
+	// 			return this.store.backedRootUrl+"/storage/"+apartmentCoverImg
+	// 		} else if (apartmentImages && apartmentImages.length) {
+	// 			return apartmentImages[0].image
+	// 		} else {
+	// 			let defaultImg = '/placeholder-image.png'
+	// 			return defaultImg
+	// 		}
+	// 	}
+	// },
+
+	
 	mounted() {
- },
+ }
 };
 </script>
 
 <style lang="scss" scoped>
+
+
 .card-text-truncate {
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -87,4 +125,6 @@ img {
 	aspect-ratio: 1 / 1;
 	box-shadow: 3px 5px 4px black;
 }
+
+
 </style>
