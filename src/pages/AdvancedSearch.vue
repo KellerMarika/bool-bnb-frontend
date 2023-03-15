@@ -91,6 +91,9 @@
   </fieldset>
 
 
+  <div id="map" class="map  border rounded-3 mb-5 m-auto ms-3 " style="width: 500px; height: 350px; ">
+				</div>
+
 
 
   <section v-if=" selectedSuggestion &&  apartments" class="pt-5 mt-5">
@@ -121,6 +124,7 @@
 </template>
 
 <script>
+import tt from '@tomtom-international/web-sdk-maps';
 import axios from 'axios';
 import { store, titles } from '../store';
 import SingleCardApartment from '../components/SingleCardApartment.vue';
@@ -142,6 +146,7 @@ export default {
       baseUrl: 'https://api.tomtom.com/search/2/geocode/',
       pagination: null,
       apartments: null,
+      appartamenti: null,
 
       query: {
         lat: '',
@@ -150,7 +155,15 @@ export default {
         min_rooms: 1,
         min_beds: 1,
         services: [],
-      }
+      },
+
+        map: null,
+				marker: null,
+
+        lng: {},
+        lat: {},
+        markertitle: null,
+       
     }
   },
   methods: {
@@ -177,10 +190,48 @@ export default {
       this.querySearchText = (suggestion.address.freeformAddress + ', ' + suggestion.address.country);
       this.query.lat = suggestion.position.lat;
       this.query.lon = suggestion.position.lon;
-      console.log(this.query)
+      console.log('suggestion: ', this.query, this.suggestion)
 
       this.suggestions = [];
     },
+    
+    createMap(lon, lat, appartamenti) {
+			// mappa 
+			this.map = tt.map({
+				key: 'lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E',
+				container: 'map',
+				center: [lon, lat],
+				zoom: 10,
+			});
+      
+      console.log('dentro al createmap', appartamenti[0].longitude, appartamenti[0].latitude, appartamenti);
+      
+         
+
+      Object.keys(appartamenti).forEach((apartment) => {
+
+      console.log(appartamenti[apartment].longitude, appartamenti[apartment].latitude,appartamenti[apartment].title);
+      
+      this.lng = appartamenti[apartment].longitude;
+      this.lat = appartamenti[apartment].latitude;
+      this.markertitle = appartamenti[apartment].title;
+
+      
+
+    this.marker = new tt.Marker().setLngLat([this.lng, this.lat])
+      .setPopup(new tt.Popup({ offset: 35 }).setHTML(this.markertitle))
+      .addTo(this.map);
+        //  //marker
+        console.log(this.lng , this.lat);
+
+    });
+    
+    
+
+    
+			
+		},
+    
 
     /* RECUPERA LISTA SERVIZI DISPONIBILI PER APPARTAMENTO */
     fetchServices() {
@@ -242,6 +293,19 @@ export default {
           console.log("GET", resp.data)
           this.apartments = { ...resp.data.data };
           this.pagination = { ...this.omitKey(resp.data, 'data') };
+
+          //ad ogni invio ricarica la mappa con la chiamata axios
+          //prendendo le coordinate
+          let appartamenti = { ...resp.data.data };
+          
+          console.log('CREATE MAP: ', this.query.lon, this.query.lat,  appartamenti );
+
+          this.createMap(this.query.lon, this.query.lat, appartamenti);
+
+          
+          
+
+          
         })
         .catch((e) => {
           if (e.response && e.response.data) {
@@ -252,6 +316,19 @@ export default {
           console.log(e);
         });
     },
+    
+
+      // createMap(apartments){
+			//       // mappa 
+      //       console.log(apartmets);
+      //       apartments.forEach((apartment)  => {
+      //         this.marker = new tt.Marker().setLngLat([apartment.longitude, apartment.latitude])
+			//       	.setPopup(new tt.Popup({ offset: 35 }).setHTML(apartment.title))
+			//       	.addTo(this.map);
+      //       })
+			//       //marker
+		  // },
+  
     /* CHIAMATA A GEOCODE TOM TOM RECUPERA LAT LONG E ADDRESS DA STRINGA */
     fetchTomTom() {
       if (this.selectSuggestion) {
@@ -282,10 +359,13 @@ export default {
       this.query.lat = this.$route.query.lat;
       this.query.lon = this.$route.query.lon;
       console.log(this.query);
+      
       //faccio partire il get sui dati che ho aggiornato al redirect
   
      this.api_GET('/search', this.query); 
-    }
+    },
+    
+
   },
   mounted() {
     //asssegno titolo
