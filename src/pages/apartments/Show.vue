@@ -65,169 +65,126 @@
 					class="img-fluid w-100" />
 			</div>
 
-			<!-- MESSAGGIO TRISTE -->
+			<div class="row row-cols-1 row-cols-lg-2 my-4">
+				<div class="col">
+					<!-- MESSAGGIO TRISTE -->
 
-			<div class="my-2">
-				<i class="h5 me-2 fa-solid fa-map-location-dot"></i>
-				{{ apartment.address }}
-			</div>
-			<hr />
-			<div class="d-flex mb-3">
-				<div class="mb-2 mx-2">Rooms {{ apartment.rooms_qty }} |</div>
+					<div class="my-2">
+						<i class="h5 me-2 fa-solid fa-map-location-dot"></i>
+						{{ apartment.address }}
+					</div>
+					<hr />
+					<div class="d-flex mb-3">
+						<div class="mb-2 mx-2">Rooms {{ apartment.rooms_qty }} |</div>
 
-				<div class="mb-2 mx-2">
-					<i class="fa-solid fa-bed"></i> {{ apartment.beds_qty }} |
-				</div>
-
-				<div class="mb-2 mx-2">
-					<i class="fa-solid fa-bath"></i> {{ apartment.bathrooms_qty }} |
-				</div>
-
-				<div class="mb-2 mx-2">MQ {{ apartment.mq }} |</div>
-				<div class="mx-2">
-					<i class="fa-solid fa-euro-sign"></i>
-					{{ apartment.daily_price }} night
-				</div>
-			</div>
-			<hr />
-			<div class="mb-2 mx-2">
-				<p>{{ apartment.description }}</p>
-			</div>
-			<hr />
-
-			<div class="mb-4 mx-2 col-8">
-				<div class="fw-semibold">Cosa troverai:</div>
-				<div class="d-flex gap-3">
-					<span
-						class="d-flex gap-2 my-services"
-						v-for="service in apartment.services">
-						<img :src="'/public/services-icons/' + service.icon" alt="" />
-						{{ service.name }}
-					</span>
-				</div>
-			</div>
-
-			<router-link :to="{name: 'home'}" class="card-group my-4">
-				<!-- CARD -->
-				<button class="mb-3 btn btn-info ms-2 text-light">
-					<i class="fa-solid fa-filter"></i>
-					back to home
-				</button>
-			</router-link>
-		</div>
-		<div
-			v-if="this.submitResult === 'success'"
-			class="alert alert-success m-3">
-			L'invio è andato a buon fine! Grazie per avermi contattato.
-		</div>
-		<div v-else-if="this.submitResult" class="alert alert-danger m-3">
-			<p>There was a problem with your request:</p>
-			<p v-if="!errors">
-				{{ this.submitResult }}
-			</p>
-			<ul v-else v-for="(error, i) in this.errors">
-				<li>{{ `${i}: ${error}` }}</li>
-			</ul>
-		</div>
-
-		<div>
-			<h1 class="my-3">Chiedi maggiori info:</h1>
-			<!-- <div class="contacts-links">
-				<a
-					href="mailto:mail.prove@gmail.com?subject=Contatto da portfolio"
-					class="link-dark">
-					<i class="fa-solid fa-envelope-open fs-2 mx-3"></i>
-				</a>
-			</div> -->
-
-			<form
-				v-if="submitResult !== 'success'"
-				@submit.prevent="onMessageFormSubmit">
-				<div class="row">
-					<div class="col-6">
-						<div class="form-floating mb-3">
-							<input
-								type="text"
-								class="form-control"
-								v-model="messageFormInput.name"
-								placeholder="Enter your fulll name" />
-							<label for="floatingInput">Name</label>
-							<!-- <div class="invalid-feedback">Please choose a name.</div> -->
+						<div class="mb-2 mx-2">
+							<i class="with-icon fa-solid fa-bed"></i> {{ apartment.beds_qty }} |
 						</div>
-						<div class="form-floating mb-3">
-							<input
-								type="email"
-								class="form-control"
-								v-model="messageFormInput.email"
-								placeholder="name@example.com" />
-							<label for="floatingPassword">Email address</label>
+
+						<div class="mb-2 mx-2">
+							<i class="with-icon fa-solid fa-bath"></i> {{ apartment.bathrooms_qty }} |
 						</div>
-						<div class="form-floating mb-3">
-							<input
-								type="text"
-								class="form-control"
-								v-model="messageFormInput.object"
-								id="floatingInput"
-								placeholder="name@example.com" />
-							<label for="floatingInput">Object</label>
+
+						<div class="mb-2 mx-2">MQ {{ apartment.mq }} |</div>
+						<div class="mx-2">
+							<i class="with-icon fa-solid fa-euro-sign"></i>
+							{{ apartment.daily_price }} night
 						</div>
 					</div>
-					<div class="col-6">
-						<div class="mb-3">
-							<textarea
-								class="form-control"
-								v-model="messageFormInput.message"
-								rows="8"
-								placeholder="Message"></textarea>
+					<hr />
+					<div class="mb-2 mx-2">
+						<p>{{ apartment.description }}</p>
+					</div>
+					<hr />
+
+					<div class="mb-4 mx-2 col-8">
+						<div class="fw-semibold">Cosa troverai:</div>
+						<div class="d-flex gap-3">
+							<span
+								class="d-flex gap-2 my-services"
+								v-for="service in apartment.services">
+								<img class="with-icon" :src="'/public/services-icons/' + service.icon" alt="" />
+								{{ service.name }}
+							</span>
 						</div>
 					</div>
+
+					<div class="my-3 d-flex align-items-baseline justify-content-between">
+						<router-link :to="{ name: 'home' }" class="btn btn-info">
+							<!-- CARD -->
+							<h5 class="my-3 mx-4">
+								<i class="fa-solid fa-home"></i>
+								Back to home
+							</h5>
+						</router-link>
+						<a
+							:href="
+								store.backedRootUrl +
+								'/apartments/messages/' +
+								this.apartment.id
+							"
+							class="btn btn-primary">
+							<h5 class="my-3 mx-4">
+								Chiedi maggiori informazioni
+								<i class="fa-solid fa-envelope"></i>
+							</h5>
+						</a>
+					</div>
 				</div>
-				<button
-					type="reset"
-					:disabled="loading"
-					class="btn btn-secondary me-3">
-					Cancel
-				</button>
-				<button type="submit" :disabled="loading" class="btn btn-success">
-					<span
-						v-if="loading"
-						class="spinner-border spinner-border-sm"
-						role="status"
-						aria-hidden="true"></span>
-					Send
-				</button>
-			</form>
+				<div
+					v-if="this.submitResult === 'success'"
+					class="alert alert-success m-3">
+					L'invio è andato a buon fine! Grazie per avermi contattato.
+				</div>
+				<div v-else-if="this.submitResult" class="alert alert-danger m-3">
+					<p>There was a problem with your request:</p>
+					<p v-if="!errors">
+						{{ this.submitResult }}
+					</p>
+					<ul v-else v-for="(error, i) in this.errors">
+						<li>{{ `${i}: ${error}` }}</li>
+					</ul>
+				</div>
+				<div class="col ">
+					<div>
+				<div id="map" class="map  border rounded-3 mb-5 m-auto ms-3 " style="width: 500px; height: 350px; ">
+				</div>
+			</div>
+			</div>
+			</div>
+			
 		</div>
 	</section>
 </template>
 
 <script>
+import tt from '@tomtom-international/web-sdk-maps';
 import axios from 'axios';
-import {titles} from '../../store';
-import {api_DELETE, store} from '../../store';
+import { titles } from '../../store';
+import { api_DELETE, store } from '../../store';
 import ButtonDelete from '../../components/ButtonDelete.vue';
 
 export default {
 	name: 'Apartments Show',
-	components: {ButtonDelete},
+	components: { ButtonDelete },
 	props: {
 		/**
-		 *@param {int} id
-		 *@param {int} user_id
-		 *@param {string} title
-		 *@param {string} address
-		 *@param {string} latitude
-		 *@param {string} longitude
-		 *@param {string} cover_img
-		 *@param {string} description
-		 *@param {int} rooms_qty
-		 *@param {int} beds_qty
-		 *@param {int} bathrooms_qty
-		 *@param {int} mq
-		 *@param {float} daily_price
-		 *@param {boolean} visible
-		 *@param {array} services
-		 */
+			*@param {int} id
+			*@param {int} user_id
+			*@param {string} title
+			*@param {string} address
+			*@param {string} latitude
+			*@param {string} longitude
+			*@param {string} cover_img
+			*@param {string} description
+			*@param {int} rooms_qty
+			*@param {int} beds_qty
+			*@param {int} bathrooms_qty
+			*@param {int} mq
+			*@param {float} daily_price
+			*@param {boolean} visible
+			*@param {array} services
+			*/
 		apartment: {
 			required: true,
 			type: Object,
@@ -237,14 +194,15 @@ export default {
 		return {
 			store,
 			apartment: {},
-			loading: false,
-			submitResult: '',
 			errors: [],
 			messageFormInput: {
 				name: '',
 				email: '',
 				object: '',
 				message: '',
+
+				map: null,
+				marker: null,
 			},
 		};
 	},
@@ -255,11 +213,33 @@ export default {
 			);
 		},
 
+		/* MAP :::::::::::::::::::::::::::::::::::::::::::*/
+
+
+		createMap(lon, lat, popName) {
+			// mappa 
+			this.map = tt.map({
+				key: 'lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E',
+				container: 'map',
+				center: [lon, lat],
+				zoom: 10,
+			});
+
+			//marker
+			this.marker = new tt.Marker().setLngLat([lon, lat])
+				.setPopup(new tt.Popup({ offset: 35 }).setHTML(popName))
+				.addTo(this.map);
+
+
+
+		},
+
+
 		/**FUNZIONE API CALL SHOW (show).........................
-		 *
-		 * @param {string} thisRoutePath  es= 'apartments/create'
-		 * @param {object} payload es=  {pagination:3}
-		 */
+			*
+			* @param {string} thisRoutePath  es= 'apartments/create'
+			* @param {object} payload es=  {pagination:3}
+			*/
 		api_SHOW(thisRoutePath, payload) {
 			let apiUrl = `${this.store.backedRootUrl}/api${thisRoutePath}${this.$route.params.id}`;
 			axios
@@ -276,6 +256,10 @@ export default {
 					console.log('APPARTAMENTO', resp.data);
 					this.apartment = resp.data;
 					console.log(resp.data);
+
+					/* MAPPA */
+					this.createMap(this.apartment.longitude, this.apartment.latitude, this.apartment.title + '<br/>' + this.apartment.address)
+
 				})
 				.catch((e) => {
 					if (e.response && e.response.data) {
@@ -322,7 +306,7 @@ export default {
 		titles(this.$route.meta.title + this.$route.params.id);
 		this.api_SHOW(this.$route.meta.apiRoutePath, this.$route.params);
 	},
-	created() {},
+	created() { },
 };
 </script>
 
@@ -359,4 +343,6 @@ export default {
 		width: 20px;
 	}
 }
+
+
 </style>
