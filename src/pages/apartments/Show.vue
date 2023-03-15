@@ -234,40 +234,51 @@ export default {
 
 						function recursiveControl(index, apartment, duration) {
 
-							console.log('sto ricorrendo!');
+							if (index !== 0) {
+								console.log('sto ricorrendo!');
+								console.log("INDEX PASSATO", index)
+								const currentSubscription = apartment.subscriptions[index];
+								const prevSubscription = apartment.subscriptions[index - 1];
+								console.log("CURRENT", currentSubscription);
+								console.log("PREV", prevSubscription);
 
-							const currentSubscription = apartment.subscriptions[index];
-							const prevSubscription = apartment.subscriptions[index - 1];
-							console.log("CURRENT", currentSubscription);
-							console.log("PREV", prevSubscription);
 
+								console.log("created curr", currentSubscription.pivot.created_at);
+								console.log("expedit prev", prevSubscription.pivot.expiration_date);
 
-							console.log("created curr", currentSubscription.pivot.created_at);
-							console.log("expedit prev", prevSubscription.pivot.expiration_date);
-							/* VOLEVO UNA FUNZIONE GENERICA COME SOPRA MA NON GLI VA*/
-							/* 		console.log("created curr", new Date(currentSubscription.pivot.created_at).getTime()); */
-							/* 		console.log("expedit prev", new Date(prevSubscription.pivot.expiration_date).getTime()); */
-							const currentStartDate = new Date(currentSubscription.pivot.created_at).getTime();
-							const prevEndDate = new Date(prevSubscription.pivot.expiration_date).getTime();
+								const currentStartDate = new Date(currentSubscription.pivot.created_at).getTime();
+								const prevEndDate = new Date(prevSubscription.pivot.expiration_date).getTime();
 
-							console.log("CuStart", currentStartDate);
-							console.log("PrevEnd", prevEndDate);
-							console.log(currentStartDate < prevEndDate);//data più piccola c'è meno tempo dentro
-							if (currentStartDate < prevEndDate) {
-								console.log('è cumulativo');
-								console.log(prevEndDate - currentStartDate);
-								duration + prevEndDate - currentStartDate
-								console.log(duration + prevEndDate - currentStartDate);
+								console.log("CuStart", currentStartDate);
+								console.log("PrevEnd", prevEndDate);
+								console.log(currentStartDate < prevEndDate);//data più piccola c'è meno tempo dentro
 
-								recursiveControl(index-1, apartment,duration);
+								if (currentStartDate < prevEndDate) {
+									console.log('è cumulativo');
+									console.log(prevEndDate - currentStartDate);
+									duration += prevEndDate - currentStartDate;
+									console.log(duration + prevEndDate - currentStartDate);
+									/* reinvoco la funzione */
+									recursiveControl(index - 1, apartment, duration);
 
+								} else {
+									console.log('return=', duration += currentStartDate)
+									return duration += currentStartDate
+								}
+							} else {
+								console.log(index)
+								console.log('ultimo giro');
+
+								const currentSubscription = apartment.subscriptions[index];
+								console.assert.log("last:", currentSubscription);
+
+								const lastStartDate = new Date(currentSubscription.pivot.created_at).getTime();
+								return duration += lastStartDate
 							}
 						}
 
 						/* RICORSIVA */
 						recursiveControl(index, this.apartment, this.duration);
-
-
 
 					}
 				}
