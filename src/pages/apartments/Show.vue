@@ -209,109 +209,110 @@ export default {
 		getSponsorizedFrame() {
 
 			this.duration = 0;
-			/* ciclo reverse */
+
+
+			//se è stato sponsorizzato almeno una volta
 			if (this.apartment.subscriptions.length > 0) {
 
 				console.log("ALL", this.apartment.subscriptions)
-				for (let index = this.apartment.subscriptions.length - 1; index >= 0; index--) {
-					const subscription = this.apartment.subscriptions[index];
-					console.log(index);
-					/* 	console.log(subscription)
-						console.log("created", subscription.pivot.created_at)
-						console.log("expedit", subscription.pivot.expiration_date) */
 
-					if (index === this.apartment.subscriptions.length - 1) {
-						console.log("primo giro");
-						/* 		console.log(new Date(subscription.pivot.expiration_date).getTime()); */
-						let startSubscription = this.fromDateToMillisecond(subscription.pivot.created_at);
-						let endSubscription = this.fromDateToMillisecond(subscription.pivot.expiration_date);
-						/* 		console.log("PAGAMENTO:", startSubscription);
-								console.log("SCADENZA:", endSubscription); */
+				//se ha solo una sponsorizzazione:
+				if (this.apartment.subscriptions.length === 1) {
+					"solo una sub"
 
-						/* a questa addizziono */
-						this.duration = endSubscription - startSubscription
-						console.log(this.duration)
+					console.log(
+						"una sola sub data di scadenza sub",
+						new Date(this.apartment.subscriptions[0].pivot.expiration_date).getTime(),
+						this.apartment.subscriptions[0].pivot.expiration_date);
 
-						function recursiveControl(index, apartment, duration) {
+					//data di scadenza della sub espressa in millisecondi
+					this.duration = new Date(this.apartment.subscriptions[0].pivot.expiration_date).getTime()
 
-							if (index !== 0) {
-								console.log('sto ricorrendo!');
-								console.log("INDEX PASSATO", index)
-								const currentSubscription = apartment.subscriptions[index];
-								const prevSubscription = apartment.subscriptions[index - 1];
-								console.log("CURRENT", currentSubscription);
-								console.log("PREV", prevSubscription);
+				} else {
+					//SE HA PIU' DI UNA SPONSORIZZAZIONE FACCIO UN CICLO AL CONTRARIO DALLA PRIMA ALLA PENULTIMA (sennò mi da errore quandoindex===0 e creco nella ricorsiva la prev con index-1)
+					//prendo in esame l'array dalla più recente
+					for (let index = this.apartment.subscriptions.length - 1; index >= 0; index--) {
 
+						const subscription = this.apartment.subscriptions[index];
 
-								console.log("created curr", currentSubscription.pivot.created_at);
-								console.log("expedit prev", prevSubscription.pivot.expiration_date);
+						/* 	console.log(subscription)
+							console.log("created", subscription.pivot.created_at)
+							console.log("expedit", subscription.pivot.expiration_date) */
 
-								const currentStartDate = new Date(currentSubscription.pivot.created_at).getTime();
-								const prevEndDate = new Date(prevSubscription.pivot.expiration_date).getTime();
+						//se sto guardando la sub più recente
+						if (index === this.apartment.subscriptions.length - 1) {
+							console.log("primo giro");
 
-								console.log("CuStart", currentStartDate);
-								console.log("PrevEnd", prevEndDate);
-								console.log(currentStartDate < prevEndDate);//data più piccola c'è meno tempo dentro
+							let startSubscription = this.fromDateToMillisecond(subscription.pivot.created_at);
+							let endSubscription = this.fromDateToMillisecond(subscription.pivot.expiration_date);
 
-								if (currentStartDate < prevEndDate) {
-									console.log('è cumulativo');
-									console.log(prevEndDate - currentStartDate);
-									duration += prevEndDate - currentStartDate;
-									console.log(duration + prevEndDate - currentStartDate);
-									/* reinvoco la funzione */
-									recursiveControl(index - 1, apartment, duration);
+							/*recupero la differenza tra inizio e fine validità della subscription. a questo dato andrò a sommare eventuali altri intervalli di tempo e una data di creazione da confrontare in fine con la data attuale per capire se l'appartamento risulta ancora sponsorizzato o no!*/
+							this.duration = endSubscription - startSubscription;
+							console.log("durata base inizio", this.duration);
 
-								} else {
-									console.log('return=', duration += currentStartDate)
-									return duration += currentStartDate
-								}
-							} else {
-								console.log(index)
-								console.log('ultimo giro');
-
-								const currentSubscription = apartment.subscriptions[index];
-								console.assert.log("last:", currentSubscription);
-
-								const lastStartDate = new Date(currentSubscription.pivot.created_at).getTime();
-								return duration += lastStartDate
-							}
+							/* RICORSIVA */
+							recursiveControl(index, this.apartment, this.duration);//ritorna la durata da confrontare con la data attuale.
+							/* 	let apartmentTotalSubTime = this.duration
+								console.log("TOTAL TIME SUB", apartmentTotalSubTime) */
 						}
 
-						/* RICORSIVA */
-						recursiveControl(index, this.apartment, this.duration);
+						/* FUNZIONE RICORSIVA CHE CONTOLLA SE LA SUB CHE SI PRENDE IN ESAME E' STATA ATTIVATA MENTRE NON ERA ANCORA SCADUTA LA PRECEDENTE, RICORSIVAMENTE. RITORNA LA SOMMA DELL'AMMONTARE DI TEMPO RESIDUO ACCUMULATO DA TUTTE LE SUB FATTE CONTEMPORANEAMENTE + LA DATA DI CREAZIONE MENO RECENTE(cioè dell'ultima esaminata) */
+						function recursiveControl(index, apartment, duration) {
 
+
+							//se non è l'ultimo elemento(il ciclo è al contrario (length-1))
+							/* if (index !== 0) { */
+							console.log('sto ricorrendo!');
+							console.log("index", index);
+							//recupero current e prev sub
+							const currentSubscription = apartment.subscriptions[index];
+							const prevSubscription = apartment.subscriptions[index - 1];
+							/* 			console.log("CURRENT", currentSubscription);
+													console.log("PREV", prevSubscription);*/
+
+							//recupero data creazione di current e data di fine di prev
+							const currentStartDate = new Date(currentSubscription.pivot.created_at).getTime();
+							const prevEndDate = new Date(prevSubscription.pivot.expiration_date).getTime();
+
+							console.log("CuStart", currentStartDate, currentSubscription.pivot.created_at);
+							console.log("PrevEnd", prevEndDate, prevSubscription.pivot.expiration_date);
+							console.log(currentStartDate < prevEndDate);//data più piccola c'è meno tempo dentro
+
+							//SE la sub che sto esaminando inizia prima della fine della precedente
+							if (currentStartDate < prevEndDate) {
+								console.log('è cumulativo');
+								console.log("differenza", prevEndDate - currentStartDate);
+								duration += prevEndDate - currentStartDate;
+								console.log("duration + duration", duration);
+								/* reinvoco la funzione */
+
+								//controllo sull'index da passare in ricorsiva
+								if (index - 1 > 0) {
+									console.log("controllo se è il penultimo elemento")
+									console.log("index:", index, "parte ricorsiva, duration", duration)
+									recursiveControl(index - 1, apartment, this.duration);
+								} else {
+									//se il successivo è l'ultimo ma il corrente è stato fatto allinterno del successivo
+
+									let lastSubCeationDate= new Date(prevSubscription.pivot.created_at).getTime()
+									console.log("last created")
+									console.log(lastSubCeationDate)
+									duration += lastSubCeationDate
+									console.log("index:", index, "duration + current=", duration)
+								}
+
+							} else {
+								//fine giro
+								console.log(currentStartDate)
+								duration += currentStartDate
+								console.log('fine giro: duration + created', duration)
+							}
+						}
 					}
 				}
 			}
 
-			/* 			this.apartment.subscriptions.forEach((element, index) => {
-										
-							console.log(element, index) 
-						
-						
-						
-						}) */
-			/* 
-						if (this.apartment.subscriptions.length) {
-						//	 console.log("SUB",this.apartment.subscriptions[this.apartment.subscriptions.length-1].created_at) 
-							//DATA CREAZIONE DELL'ULTIMA SUBSCRIPTION
-							this.apartment.subscriptions.forEach(subscription => {
-							//	 	subscription.pivot.expiration_date 
-								let expiration_date = new Date(subscription.pivot.expiration_date).getTime()
-								if (new Date().getTime() < expiration_date){
-									return  "subsctiption_"+subscription.pivot.subscription_id 
-									}
-			});
-						}
-						let today = new Date();
-						console.log(today)
-						console.log(today.getTime())
-				*/
-
-			/* console.log (this.apartment.created_at)
-			console.log (new Date(this.apartment.created_at))
-			
-			console.log (new Date(this.apartment.created_at).getTime()) */
+			console .log("TOTAL DURATION",this.duration)
 		},
 
 
