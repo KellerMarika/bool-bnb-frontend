@@ -158,7 +158,7 @@
 </template>
 
 <script>
-import tt from '@tomtom-international/web-sdk-maps';
+// import tt from '@tomtom-international/web-sdk-maps';
 import axios from 'axios';
 import { titles } from '../../store';
 import { api_DELETE, store } from '../../store';
