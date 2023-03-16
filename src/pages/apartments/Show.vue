@@ -209,7 +209,13 @@ export default {
 		getSponsorizedFrame() {
 
 			let duration = 0;
-			let currentDate = new Date().getTime()
+			let currentDate = new Date().getTime();
+			let subInfos = {
+				isActive: false,
+				expiration_date: null
+
+
+			}
 
 			//se è stato sponsorizzato almeno una volta
 			if (this.apartment.subscriptions.length > 0) {
@@ -221,9 +227,15 @@ export default {
 
 					//data di scadenza della sub espressa in millisecondi
 					duration = new Date(this.apartment.subscriptions[0].pivot.expiration_date).getTime()
-					console.log("DURATION NO RECURSIVE", duration);
-					console.log(	"	currentDate > duration"	,currentDate > duration)
-					return(	currentDate > duration)
+					console.log("	duration > currentDate", duration > currentDate)
+
+					if (duration > currentDate) {
+						console.log("durata maggiore")
+						subInfos.isActive = true,
+							subInfos.expiration_date = new Date(duration);
+					}
+					console.log(subInfos)
+					return subInfos
 
 				} else {
 
@@ -254,8 +266,15 @@ export default {
 							console.log("DURATION RECURSIVE", duration);
 							console.log("OGGI", currentDate)
 
-	console.log(	"	currentDate > duration"	,currentDate > duration)
-					return(	currentDate > duration)
+							console.log("	duration > currentDate", duration > currentDate)
+
+							if (duration > currentDate) {
+								subInfos.isActive = true,
+									subInfos.expiration_date = new Date(duration);
+							}
+							console.log(subInfos)
+							return subInfos
+							/* 	return(	currentDate > duration) */
 
 
 							/* 	let apartmentTotalSubTime = this.duration
@@ -319,6 +338,9 @@ export default {
 					}
 				}
 				/* 				console .log("TOTAL DURATION",duration) */
+			} else {
+				console.log(subInfos)
+				return subInfos
 			}
 		},
 
