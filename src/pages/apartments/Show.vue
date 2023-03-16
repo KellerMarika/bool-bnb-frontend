@@ -210,11 +210,11 @@ export default {
 
 			let duration = 0;
 			let currentDate = new Date().getTime();
+
+			//devo ritornare subInfos
 			let subInfos = {
 				isActive: false,
 				expiration_date: null
-
-
 			}
 
 			//se è stato sponsorizzato almeno una volta
@@ -233,9 +233,9 @@ export default {
 						console.log("durata maggiore")
 						subInfos.isActive = true,
 							subInfos.expiration_date = new Date(duration);
+						console.log(subInfos)
+						return subInfos
 					}
-					console.log(subInfos)
-					return subInfos
 
 				} else {
 
@@ -271,14 +271,11 @@ export default {
 							if (duration > currentDate) {
 								subInfos.isActive = true,
 									subInfos.expiration_date = new Date(duration);
+								console.log(subInfos)
+								return subInfos
 							}
 							console.log(subInfos)
 							return subInfos
-							/* 	return(	currentDate > duration) */
-
-
-							/* 	let apartmentTotalSubTime = this.duration
-								console.log("TOTAL TIME SUB", apartmentTotalSubTime) */
 						}
 
 						/* FUNZIONE RICORSIVA CHE CONTOLLA SE LA SUB CHE SI PRENDE IN ESAME E' STATA ATTIVATA MENTRE NON ERA ANCORA SCADUTA LA PRECEDENTE, RICORSIVAMENTE. RITORNA LA SOMMA DELL'AMMONTARE DI TEMPO RESIDUO ACCUMULATO DA TUTTE LE SUB FATTE CONTEMPORANEAMENTE + LA DATA DI CREAZIONE MENO RECENTE(cioè dell'ultima esaminata) */
@@ -335,6 +332,8 @@ export default {
 								return duration
 							}
 						}
+						/* ********************************************************************************************** */
+
 					}
 				}
 				/* 				console .log("TOTAL DURATION",duration) */
@@ -342,6 +341,7 @@ export default {
 				console.log(subInfos)
 				return subInfos
 			}
+			/* 	return subInfos */
 		},
 
 
@@ -393,6 +393,7 @@ export default {
 										console.log('APPARTAMENTO', resp.data); */
 					this.apartment = resp.data;
 					this.getSponsorizedFrame()
+					console.log("SUB-INFOS", this.getSponsorizedFrame())
 
 					/* MAPPA */
 					this.createMap(this.apartment.longitude, this.apartment.latitude, this.apartment.title + '<br/>' + this.apartment.address)
