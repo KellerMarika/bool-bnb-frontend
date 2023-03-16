@@ -65,87 +65,95 @@
 					class="img-fluid w-100" />
 			</div>
 
-			<!-- MESSAGGIO TRISTE -->
+			<div class="row row-cols-1 row-cols-lg-2 my-4 ">
+				<div class="col">
+					<!-- MESSAGGIO TRISTE -->
 
-			<div class="my-2">
-				<i class="h5 me-2 fa-solid fa-map-location-dot"></i>
-				{{ apartment.address }}
-			</div>
-			<hr />
-			<div class="d-flex mb-3">
-				<div class="mb-2 mx-2">Rooms {{ apartment.rooms_qty }} |</div>
+					<div class="my-2">
+						<i class="h5 me-2 fa-solid fa-map-location-dot"></i>
+						{{ apartment.address }}
+					</div>
+					<hr />
+					<div class="d-flex mb-3">
+						<div class="mb-2 mx-2">Rooms {{ apartment.rooms_qty }} |</div>
 
-				<div class="mb-2 mx-2">
-					<i class="fa-solid fa-bed"></i> {{ apartment.beds_qty }} |
+						<div class="mb-2 mx-2">
+							<i class="with-icon fa-solid fa-bed"></i> {{ apartment.beds_qty }} |
+						</div>
+
+						<div class="mb-2 mx-2">
+							<i class="with-icon fa-solid fa-bath"></i> {{ apartment.bathrooms_qty }} |
+						</div>
+
+						<div class="mb-2 mx-2">MQ {{ apartment.mq }} |</div>
+						<div class="mx-2">
+							<i class="with-icon fa-solid fa-euro-sign"></i>
+							{{ apartment.daily_price }} night
+						</div>
+					</div>
+					<hr />
+					<div class="mb-2 mx-2">
+						<p>{{ apartment.description }}</p>
+					</div>
+					<hr />
+
+					<div class="mb-4 mx-2 col-8">
+						<div class="fw-semibold">Cosa troverai:</div>
+						<div class="d-flex gap-3">
+							<span
+								class="d-flex gap-2 my-services"
+								v-for="service in apartment.services">
+								<img class="with-icon" :src="'/public/services-icons/' + service.icon" alt="" />
+								{{ service.name }}
+							</span>
+						</div>
+					</div>
+
+					<div class="my-3 d-flex align-items-baseline justify-content-between">
+						<router-link :to="{ name: 'home' }" class="btn btn-info me-3 ">
+							<!-- CARD -->
+							<h5 class="my-2 mx-3 my-md-1 mx-md-3">
+								<i class="fa-solid fa-home"></i>
+								Back to home
+							</h5>
+						</router-link>
+						<a
+							:href="
+								store.backedRootUrl +
+								'/apartments/messages/' +
+								this.apartment.id
+							"
+							class="btn btn-primary">
+							<h5 class="my-2 mx-3 my-md-1 mx-md-3">
+								Chiedi maggiori informazioni
+								<i class="fa-solid fa-envelope"></i>
+							</h5>
+						</a>
+					</div>
 				</div>
-
-				<div class="mb-2 mx-2">
-					<i class="fa-solid fa-bath"></i> {{ apartment.bathrooms_qty }} |
+				<div
+					v-if="this.submitResult === 'success'"
+					class="alert alert-success m-3">
+					L'invio è andato a buon fine! Grazie per avermi contattato.
 				</div>
-
-				<div class="mb-2 mx-2">MQ {{ apartment.mq }} |</div>
-				<div class="mx-2">
-					<i class="fa-solid fa-euro-sign"></i>
-					{{ apartment.daily_price }} night
+				<div v-else-if="this.submitResult" class="alert alert-danger m-3">
+					<p>There was a problem with your request:</p>
+					<p v-if="!errors">
+						{{ this.submitResult }}
+					</p>
+					<ul v-else v-for="(error, i) in this.errors">
+						<li>{{ `${i}: ${error}` }}</li>
+					</ul>
 				</div>
-			</div>
-			<hr />
-			<div class="mb-2 mx-2">
-				<p>{{ apartment.description }}</p>
-			</div>
-			<hr />
+				<div class="col" style="margin-left: -15px">
 
-			<div class="mb-4 mx-2 col-8">
-				<div class="fw-semibold">Cosa troverai:</div>
-				<div class="d-flex gap-3">
-					<span
-						class="d-flex gap-2 my-services"
-						v-for="service in apartment.services">
-						<img :src="'/public/services-icons/' + service.icon" alt="" />
-						{{ service.name }}
-					</span>
+						<div id="map" class="map  border rounded-3 mb-5 m-auto ms-3 w-100">
+
+					</div>
 				</div>
 			</div>
 
-			<div class="my-3 d-flex align-items-baseline justify-content-between">
-				<router-link :to="{ name: 'home' }" class="btn btn-info">
-					<!-- CARD -->
-					<h5 class="my-3 mx-4">
-						<i class="fa-solid fa-home"></i>
-						Back to home
-					</h5>
-				</router-link>
-				<a
-					:href="
-						store.backedRootUrl +
-						'/apartments/messages/' +
-						this.apartment.id
-					"
-					class="btn btn-primary">
-					<h5 class="my-3 mx-4">
-						Chiedi maggiori informazioni
-						<i class="fa-solid fa-envelope"></i>
-					</h5>
-				</a>
-			</div>
 		</div>
-		<div
-			v-if="this.submitResult === 'success'"
-			class="alert alert-success m-3">
-			L'invio è andato a buon fine! Grazie per avermi contattato.
-		</div>
-		<div v-else-if="this.submitResult" class="alert alert-danger m-3">
-			<p>There was a problem with your request:</p>
-			<p v-if="!errors">
-				{{ this.submitResult }}
-			</p>
-			<ul v-else v-for="(error, i) in this.errors">
-				<li>{{ `${i}: ${error}` }}</li>
-			</ul>
-		</div>
-		<div id="map" class="map border" style="width: 600px; height: 600px">
-		</div>
-
 	</section>
 </template>
 
@@ -195,8 +203,6 @@ export default {
 
 				map: null,
 				marker: null,
-
-				totalDuration: 0,
 			},
 		};
 	},
@@ -211,7 +217,6 @@ export default {
 
 		/* MAP :::::::::::::::::::::::::::::::::::::::::::*/
 
-
 		createMap(lon, lat, popName) {
 			// mappa 
 			this.map = tt.map({
@@ -224,6 +229,8 @@ export default {
 			this.marker = new tt.Marker().setLngLat([lon, lat])
 				.setPopup(new tt.Popup({ offset: 35 }).setHTML(popName))
 				.addTo(this.map);
+
+
 
 		},
 
@@ -246,9 +253,9 @@ export default {
 					this.store.submitResult = 'success';
 					this.store.loading = false;
 
-					console.log('APPARTAMENTO', resp.data); 
+					console.log('APPARTAMENTO', resp.data);
 					this.apartment = resp.data;
-
+					console.log(resp.data);
 
 					/* MAPPA */
 					this.createMap(this.apartment.longitude, this.apartment.latitude, this.apartment.title + '<br/>' + this.apartment.address)
@@ -298,7 +305,6 @@ export default {
 	mounted() {
 		titles(this.$route.meta.title + this.$route.params.id);
 		this.api_SHOW(this.$route.meta.apiRoutePath, this.$route.params);
-
 	},
 	created() { },
 };
@@ -311,9 +317,17 @@ export default {
 @import 'bootstrap/scss/_variables';
 @import 'bootstrap/scss/mixins/_breakpoints';
 
+
+
+#map{
+
+	aspect-ratio: 1/1;
+	/* @include media-breakpoint-up() {
+			transform: scaleY(120%) translateY(8%);
+		} */
+}
 .img-container {
 	height: 1/3vh;
-
 	.img-row-left img {
 		@include media-breakpoint-up(lg) {
 			transform: scaleY(120%) translateY(8%);
@@ -323,7 +337,6 @@ export default {
 			transform: scaleY(120%) translateY(5%);
 		}
 	}
-
 	.row-dx {
 		transform: scaleY(115%) scaleX(102%) translate(10px);
 		position: relative;
