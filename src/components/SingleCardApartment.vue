@@ -19,7 +19,7 @@
  <small>{{getSponsorizedFrame().expiration_date }}</small> 
 		<span class="mt-1 fw-semibold">{{ apartment.title }}</span>
 
-		<div v-if="apartment.description.length > 70">
+		<div v-if="apartment.description && apartment.description.length > 70">
 			<div class="px-1 mt-0 card-text opacity-50">
 				{{ apartment.description.substring(0, 50) + '...' }}
 			</div>
@@ -88,7 +88,7 @@ export default {
 			}
 
 			//se è stato sponsorizzato almeno una volta
-			if (this.apartment.subscriptions.length > 0) {
+			if ( this.apartment.subscriptions && this.apartment.subscriptions.length > 0) {
 				console.log("ALL apartment sub", this.apartment.subscriptions)
 
 				//se ha solo una sponsorizzazione:
@@ -252,7 +252,7 @@ export default {
 
 
 	mounted() {
-		this.getSponsorizedFrame()
+	 	this.getSponsorizedFrame() 
 		console.log("APARTMENT",this.apartment)
 	}
 };
