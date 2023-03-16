@@ -196,7 +196,7 @@ export default {
 				map: null,
 				marker: null,
 
-				duration: 0,
+				totalDuration: 0,
 			},
 		};
 	},
@@ -208,7 +208,7 @@ export default {
 		/* SUBSCRIPTION */
 		getSponsorizedFrame() {
 
-			this.duration = 0;
+			let duration = 0;
 
 
 			//se è stato sponsorizzato almeno una volta
@@ -226,7 +226,7 @@ export default {
 						this.apartment.subscriptions[0].pivot.expiration_date);
 
 					//data di scadenza della sub espressa in millisecondi
-					this.duration = new Date(this.apartment.subscriptions[0].pivot.expiration_date).getTime()
+					duration = new Date(this.apartment.subscriptions[0].pivot.expiration_date).getTime()
 
 				} else {
 					//SE HA PIU' DI UNA SPONSORIZZAZIONE FACCIO UN CICLO AL CONTRARIO DALLA PRIMA ALLA PENULTIMA (sennò mi da errore quandoindex===0 e creco nella ricorsiva la prev con index-1)
@@ -246,12 +246,19 @@ export default {
 							let startSubscription = this.fromDateToMillisecond(subscription.pivot.created_at);
 							let endSubscription = this.fromDateToMillisecond(subscription.pivot.expiration_date);
 
+
+
 							/*recupero la differenza tra inizio e fine validità della subscription. a questo dato andrò a sommare eventuali altri intervalli di tempo e una data di creazione da confrontare in fine con la data attuale per capire se l'appartamento risulta ancora sponsorizzato o no!*/
-							this.duration = endSubscription - startSubscription;
-							console.log("durata base inizio", this.duration);
+							duration = endSubscription - startSubscription;
+							console.log("durata base inizio", duration);
 
 							/* RICORSIVA */
-							recursiveControl(index, this.apartment, this.duration);//ritorna la durata da confrontare con la data attuale.
+
+							/* 		console.log("RETURN",recursiveControl(index, this.apartment,duration)) */
+							duration = recursiveControl(index, this.apartment, duration);//ritorna la durata da confrontare con la data attuale.
+							console.log("DURATION RECURSIVE", duration);
+							
+
 							/* 	let apartmentTotalSubTime = this.duration
 								console.log("TOTAL TIME SUB", apartmentTotalSubTime) */
 						}
@@ -290,15 +297,16 @@ export default {
 								if (index - 1 > 0) {
 									console.log("controllo se è il penultimo elemento")
 									console.log("index:", index, "parte ricorsiva, duration", duration)
-									recursiveControl(index - 1, apartment, this.duration);
+									return recursiveControl(index - 1, apartment, duration);
 								} else {
 									//se il successivo è l'ultimo ma il corrente è stato fatto allinterno del successivo
 
-									let lastSubCeationDate= new Date(prevSubscription.pivot.created_at).getTime()
+									let lastSubCeationDate = new Date(prevSubscription.pivot.created_at).getTime()
 									console.log("last created")
 									console.log(lastSubCeationDate)
 									duration += lastSubCeationDate
 									console.log("index:", index, "duration + current=", duration)
+									return duration
 								}
 
 							} else {
@@ -306,13 +314,13 @@ export default {
 								console.log(currentStartDate)
 								duration += currentStartDate
 								console.log('fine giro: duration + created', duration)
+								return duration
 							}
 						}
 					}
 				}
+				/* 				console .log("TOTAL DURATION",duration) */
 			}
-
-			console .log("TOTAL DURATION",this.duration)
 		},
 
 
