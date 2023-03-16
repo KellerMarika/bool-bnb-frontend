@@ -43,7 +43,9 @@
 				<img
 					:src="
 						apartment.cover_img
-							? apartment.cover_img
+							? this.store.backedRootUrl +
+							  '/storage/' +
+							  apartment.cover_img
 							: '/placeholder-image.png'
 					"
 					:alt="apartment.title + '_img_' + apartment.cover_img"
@@ -65,7 +67,7 @@
 					class="img-fluid w-100" />
 			</div>
 
-			<div class="row row-cols-1 row-cols-lg-2 my-4">
+			<div class="row row-cols-1 row-cols-lg-2 my-4 ">
 				<div class="col">
 					<!-- MESSAGGIO TRISTE -->
 
@@ -78,11 +80,13 @@
 						<div class="mb-2 mx-2">Rooms {{ apartment.rooms_qty }} |</div>
 
 						<div class="mb-2 mx-2">
-							<i class="with-icon fa-solid fa-bed"></i> {{ apartment.beds_qty }} |
+							<i class="with-icon fa-solid fa-bed"></i>
+							{{ apartment.beds_qty }} |
 						</div>
 
 						<div class="mb-2 mx-2">
-							<i class="with-icon fa-solid fa-bath"></i> {{ apartment.bathrooms_qty }} |
+							<i class="with-icon fa-solid fa-bath"></i>
+							{{ apartment.bathrooms_qty }} |
 						</div>
 
 						<div class="mb-2 mx-2">MQ {{ apartment.mq }} |</div>
@@ -103,16 +107,20 @@
 							<span
 								class="d-flex gap-2 my-services"
 								v-for="service in apartment.services">
-								<img class="with-icon" :src="'/public/services-icons/' + service.icon" alt="" />
+								<img
+									class="with-icon"
+									:src="'/public/services-icons/' + service.icon"
+									alt="" />
 								{{ service.name }}
 							</span>
 						</div>
 					</div>
 
-					<div class="my-3 d-flex align-items-baseline justify-content-between">
-						<router-link :to="{ name: 'home' }" class="btn btn-info">
+					<div
+						class="my-3 d-flex align-items-baseline justify-content-between">
+						<router-link :to="{name: 'home'}" class="btn btn-info">
 							<!-- CARD -->
-							<h5 class="my-3 mx-4">
+							<h5 class="my-2 mx-3 my-md-1 mx-md-3">
 								<i class="fa-solid fa-home"></i>
 								Back to home
 							</h5>
@@ -124,7 +132,7 @@
 								this.apartment.id
 							"
 							class="btn btn-primary">
-							<h5 class="my-3 mx-4">
+							<h5 class="my-2 mx-3 my-md-1 mx-md-3">
 								Chiedi maggiori informazioni
 								<i class="fa-solid fa-envelope"></i>
 							</h5>
@@ -145,14 +153,14 @@
 						<li>{{ `${i}: ${error}` }}</li>
 					</ul>
 				</div>
-				<div class="col ">
-					<div>
-				<div id="map" class="map  border rounded-3 mb-5 m-auto ms-3 " style="width: 500px; height: 350px; ">
+				<div class="col" style="margin-left: -15px">
+
+						<div id="map" class="map  border rounded-3 mb-5 m-auto ms-3 w-100">
+
+					</div>
 				</div>
 			</div>
-			</div>
-			</div>
-			
+
 		</div>
 	</section>
 </template>
@@ -160,31 +168,31 @@
 <script>
 import tt from '@tomtom-international/web-sdk-maps';
 import axios from 'axios';
-import { titles } from '../../store';
-import { api_DELETE, store } from '../../store';
+import {titles} from '../../store';
+import {api_DELETE, store} from '../../store';
 import ButtonDelete from '../../components/ButtonDelete.vue';
 
 export default {
 	name: 'Apartments Show',
-	components: { ButtonDelete },
+	components: {ButtonDelete},
 	props: {
 		/**
-			*@param {int} id
-			*@param {int} user_id
-			*@param {string} title
-			*@param {string} address
-			*@param {string} latitude
-			*@param {string} longitude
-			*@param {string} cover_img
-			*@param {string} description
-			*@param {int} rooms_qty
-			*@param {int} beds_qty
-			*@param {int} bathrooms_qty
-			*@param {int} mq
-			*@param {float} daily_price
-			*@param {boolean} visible
-			*@param {array} services
-			*/
+		 *@param {int} id
+		 *@param {int} user_id
+		 *@param {string} title
+		 *@param {string} address
+		 *@param {string} latitude
+		 *@param {string} longitude
+		 *@param {string} cover_img
+		 *@param {string} description
+		 *@param {int} rooms_qty
+		 *@param {int} beds_qty
+		 *@param {int} bathrooms_qty
+		 *@param {int} mq
+		 *@param {float} daily_price
+		 *@param {boolean} visible
+		 *@param {array} services
+		 */
 		apartment: {
 			required: true,
 			type: Object,
@@ -207,6 +215,8 @@ export default {
 		};
 	},
 	methods: {
+
+		/* DELETE */
 		onDeleteClick() {
 			api_DELETE(
 				this.$route.meta.apiRouteDeletePath + this.$route.params.id
@@ -215,31 +225,26 @@ export default {
 
 		/* MAP :::::::::::::::::::::::::::::::::::::::::::*/
 
-
 		createMap(lon, lat, popName) {
-			// mappa 
+			// mappa
 			this.map = tt.map({
 				key: 'lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E',
 				container: 'map',
 				center: [lon, lat],
 				zoom: 10,
 			});
-
 			//marker
-			this.marker = new tt.Marker().setLngLat([lon, lat])
-				.setPopup(new tt.Popup({ offset: 35 }).setHTML(popName))
+			this.marker = new tt.Marker()
+				.setLngLat([lon, lat])
+				.setPopup(new tt.Popup({offset: 35}).setHTML(popName))
 				.addTo(this.map);
-
-
-
 		},
 
-
 		/**FUNZIONE API CALL SHOW (show).........................
-			*
-			* @param {string} thisRoutePath  es= 'apartments/create'
-			* @param {object} payload es=  {pagination:3}
-			*/
+		 *
+		 * @param {string} thisRoutePath  es= 'apartments/create'
+		 * @param {object} payload es=  {pagination:3}
+		 */
 		api_SHOW(thisRoutePath, payload) {
 			let apiUrl = `${this.store.backedRootUrl}/api${thisRoutePath}${this.$route.params.id}`;
 			axios
@@ -258,8 +263,11 @@ export default {
 					console.log(resp.data);
 
 					/* MAPPA */
-					this.createMap(this.apartment.longitude, this.apartment.latitude, this.apartment.title + '<br/>' + this.apartment.address)
-
+					this.createMap(
+						this.apartment.longitude,
+						this.apartment.latitude,
+						this.apartment.title + '<br/>' + this.apartment.address
+					);
 				})
 				.catch((e) => {
 					if (e.response && e.response.data) {
@@ -306,7 +314,7 @@ export default {
 		titles(this.$route.meta.title + this.$route.params.id);
 		this.api_SHOW(this.$route.meta.apiRoutePath, this.$route.params);
 	},
-	created() { },
+	created() {},
 };
 </script>
 
@@ -317,9 +325,17 @@ export default {
 @import 'bootstrap/scss/_variables';
 @import 'bootstrap/scss/mixins/_breakpoints';
 
+
+
+#map{
+
+	aspect-ratio: 1/1;
+	/* @include media-breakpoint-up() {
+			transform: scaleY(120%) translateY(8%);
+		} */
+}
 .img-container {
 	height: 1/3vh;
-
 	.img-row-left img {
 		@include media-breakpoint-up(lg) {
 			transform: scaleY(120%) translateY(8%);
@@ -329,7 +345,6 @@ export default {
 			transform: scaleY(120%) translateY(5%);
 		}
 	}
-
 	.row-dx {
 		transform: scaleY(115%) scaleX(102%) translate(10px);
 		position: relative;
@@ -343,6 +358,4 @@ export default {
 		width: 20px;
 	}
 }
-
-
 </style>
