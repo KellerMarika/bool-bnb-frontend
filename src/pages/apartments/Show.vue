@@ -209,30 +209,27 @@ export default {
 		getSponsorizedFrame() {
 
 			let duration = 0;
-
+			let currentDate = new Date().getTime()
 
 			//se è stato sponsorizzato almeno una volta
 			if (this.apartment.subscriptions.length > 0) {
-
 				console.log("ALL", this.apartment.subscriptions)
 
 				//se ha solo una sponsorizzazione:
 				if (this.apartment.subscriptions.length === 1) {
 					"solo una sub"
 
-					console.log(
-						"una sola sub data di scadenza sub",
-						new Date(this.apartment.subscriptions[0].pivot.expiration_date).getTime(),
-						this.apartment.subscriptions[0].pivot.expiration_date);
-
 					//data di scadenza della sub espressa in millisecondi
 					duration = new Date(this.apartment.subscriptions[0].pivot.expiration_date).getTime()
+					console.log("DURATION NO RECURSIVE", duration);
+					console.log(	"	currentDate > duration"	,currentDate > duration)
+					return(	currentDate > duration)
 
 				} else {
+
 					//SE HA PIU' DI UNA SPONSORIZZAZIONE FACCIO UN CICLO AL CONTRARIO DALLA PRIMA ALLA PENULTIMA (sennò mi da errore quandoindex===0 e creco nella ricorsiva la prev con index-1)
 					//prendo in esame l'array dalla più recente
 					for (let index = this.apartment.subscriptions.length - 1; index >= 0; index--) {
-
 						const subscription = this.apartment.subscriptions[index];
 
 						/* 	console.log(subscription)
@@ -246,8 +243,6 @@ export default {
 							let startSubscription = this.fromDateToMillisecond(subscription.pivot.created_at);
 							let endSubscription = this.fromDateToMillisecond(subscription.pivot.expiration_date);
 
-
-
 							/*recupero la differenza tra inizio e fine validità della subscription. a questo dato andrò a sommare eventuali altri intervalli di tempo e una data di creazione da confrontare in fine con la data attuale per capire se l'appartamento risulta ancora sponsorizzato o no!*/
 							duration = endSubscription - startSubscription;
 							console.log("durata base inizio", duration);
@@ -257,7 +252,11 @@ export default {
 							/* 		console.log("RETURN",recursiveControl(index, this.apartment,duration)) */
 							duration = recursiveControl(index, this.apartment, duration);//ritorna la durata da confrontare con la data attuale.
 							console.log("DURATION RECURSIVE", duration);
-							
+							console.log("OGGI", currentDate)
+
+	console.log(	"	currentDate > duration"	,currentDate > duration)
+					return(	currentDate > duration)
+
 
 							/* 	let apartmentTotalSubTime = this.duration
 								console.log("TOTAL TIME SUB", apartmentTotalSubTime) */
