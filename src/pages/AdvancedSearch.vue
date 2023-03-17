@@ -9,10 +9,10 @@
         <div class="input-container mb-2 col-12 ">
           <label class="form-label fw-bold ms-2 fw-bold " for="city">Street and City: </label>
           <input type="text" placeholder="Ex. Via generale cascino 14 Roma" class="form-control" id="streetNameInput"
-            v-model="querySearchText" @input="getSuggestions" />
+              v-model="querySearchText" @input="getSuggestions" />
           <ul class="list-group list-group-flush" v-if="suggestions && suggestions.length > 0">
             <li class="list-unstyled list-group-item-action list-group-item" v-for="suggestion in suggestions"
-              :key="suggestion.id" @click="selectSuggestion(suggestion)">
+                :key="suggestion.id" @click="selectSuggestion(suggestion)">
               {{ suggestion.address.freeformAddress + ' ' + suggestion.address.country }}
             </li>
           </ul>
@@ -57,7 +57,7 @@
         <div class="input-container pb-2 row justify-content-center">
 
           <div
-            class=" col row  row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-between align-items-baseline mx-0 ">
+              class=" col row  row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-between align-items-baseline mx-0 ">
             <div v-for="(service, i) in services" :key="i" class="col text-center d-flex align-items-center py-2">
 
               <input class="form-check" type="checkbox" :value="service.id" id="service_{{i}}" v-model="query.services">
@@ -84,28 +84,36 @@
   </fieldset>
 
 
-  <div id="map" class="map  border rounded-3 mb-5 m-auto ms-3 " style="width: 500px; height: 350px; ">
-				</div>
 
 
 
-  <section v-if=" selectedSuggestion &&  apartments" class="pt-5 mt-5">
+  <section v-if="selectedSuggestion && apartments" class="pt-5 mt-5">
     <div class="container-fluid px-5">
-      <h1 class="p-5" >Appartamenti nel raggio di {{ query.radius }}km da {{ selectedSuggestion }}</h1>
- 
+      <h1 class="p-5">Appartamenti nel raggio di {{ query.radius }}km da {{ selectedSuggestion }}</h1>
+
+      <div class="container row justify-content-center">
+
+        <div class="col-8 offset-2 ">
+          <div id="map" class="map  border rounded-3 mb-5 m-auto ms-3">
+        </div>
+        </div>
+       
+      </div>
+
 
       <!-- pagination up -->
       <div class="row row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5 g-4 px-md-5">
 
         <!-- LINK ALLO SHOW -->
         <router-link v-for="apartment in apartments" :to="{ name: 'Apartments.show', params: { id: apartment.id } }"
-          v-slot="{ singleCard }" class="card-group my-4">
+            v-slot="{ singleCard }" class="card-group my-4">
 
           <!-- CARD -->
           <div>
             <SingleCardApartment :is="singleCard" :apartment='apartment'> </SingleCardApartment>
             <div class="px-1 mt-0 fw-bolder">
-              <span class="text-black" > Distance: </span> {{ apartment.distance }} <span class="card-text text-black opacity-25 ">Km</span>
+              <span class="text-black"> Distance: </span> {{ apartment.distance }} <span
+                  class="card-text text-black opacity-25 ">Km</span>
             </div>
             <!-- <div class="px-1 mt-0 fw-bolder">
               <span class="text-black" > Total services: </span> {{ apartment.services.length }}
@@ -157,12 +165,12 @@ export default {
         services: [],
       },
 
-        
+
       marker: [],
-        lng: {},
-        lat: {},
-        markertitle: null,
-       
+      lng: {},
+      lat: {},
+      markertitle: null,
+
     }
   },
   methods: {
@@ -193,32 +201,32 @@ export default {
 
       this.suggestions = [];
     },
-    
+
     createMap(lon, lat, appartamenti) {
-			// mappa 
-			this.map = tt.map({
-				key: 'lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E',
-				container: 'map',
-				center: [lon, lat],
-				zoom: 10,
-			});
-      
+      // mappa 
+      this.map = tt.map({
+        key: 'lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E',
+        container: 'map',
+        center: [lon, lat],
+        zoom: 10,
+      });
+
       /* console.log('dentro al createmap', appartamenti[0].longitude, appartamenti[0].latitude, appartamenti); */
 
       Object.keys(appartamenti).forEach((apartment) => {
 
-   /*    console.log('dentro ciclo foreach', appartamenti[apartment].longitude, appartamenti[apartment].latitude,appartamenti[apartment].title); */
+        /*    console.log('dentro ciclo foreach', appartamenti[apartment].longitude, appartamenti[apartment].latitude,appartamenti[apartment].title); */
 
-      this.Marker = new tt.Marker().setLngLat([appartamenti[apartment].longitude, appartamenti[apartment].latitude]).setPopup(new tt.Popup({ offset: 35 }).setHTML(appartamenti[apartment].title + '<br/>' + appartamenti[apartment].address)).addTo(this.map);
+        this.Marker = new tt.Marker().setLngLat([appartamenti[apartment].longitude, appartamenti[apartment].latitude]).setPopup(new tt.Popup({ offset: 35 }).setHTML(appartamenti[apartment].title + '<br/>' + appartamenti[apartment].address)).addTo(this.map);
         //  //marker
-    });
-    
-    
+      });
 
-    
-			
-		},
-    
+
+
+
+
+    },
+
 
     /* RECUPERA LISTA SERVIZI DISPONIBILI PER APPARTAMENTO */
     fetchServices() {
@@ -274,11 +282,11 @@ export default {
           },
         })
         .then((resp) => {
-       /*    this.$route.query={}
-          this.$route.query={...payload, ...page} */
+          /*    this.$route.query={}
+             this.$route.query={...payload, ...page} */
 
           this.$router.replace({ query: { ...payload, ...page } })
-          console.log("this dopo invio",this.$route.query)
+          console.log("this dopo invio", this.$route.query)
           this.store.submitResult = 'success';
           this.store.loading = false;
 
@@ -289,15 +297,15 @@ export default {
           //ad ogni invio ricarica la mappa con la chiamata axios
           //prendendo le coordinate
           let appartamenti = { ...resp.data.data };
-          
-         /*  console.log('CREATE MAP: ', this.query.lon, this.query.lat,  appartamenti ); */
+
+          /*  console.log('CREATE MAP: ', this.query.lon, this.query.lat,  appartamenti ); */
 
           this.createMap(this.query.lon, this.query.lat, appartamenti);
 
-          
-          
 
-          
+
+
+
         })
         .catch((e) => {
           if (e.response && e.response.data) {
@@ -308,19 +316,19 @@ export default {
           console.log(e);
         });
     },
-    
 
-      // createMap(apartments){
-			//       // mappa 
-      //       console.log(apartmets);
-      //       apartments.forEach((apartment)  => {
-      //         this.marker = new tt.Marker().setLngLat([apartment.longitude, apartment.latitude])
-			//       	.setPopup(new tt.Popup({ offset: 35 }).setHTML(apartment.title))
-			//       	.addTo(this.map);
-      //       })
-			//       //marker
-		  // },
-  
+
+    // createMap(apartments){
+    //       // mappa 
+    //       console.log(apartmets);
+    //       apartments.forEach((apartment)  => {
+    //         this.marker = new tt.Marker().setLngLat([apartment.longitude, apartment.latitude])
+    //       	.setPopup(new tt.Popup({ offset: 35 }).setHTML(apartment.title))
+    //       	.addTo(this.map);
+    //       })
+    //       //marker
+    // },
+
     /* CHIAMATA A GEOCODE TOM TOM RECUPERA LAT LONG E ADDRESS DA STRINGA */
     fetchTomTom() {
       if (this.selectSuggestion) {
@@ -351,12 +359,12 @@ export default {
       this.query.lat = this.$route.query.lat;
       this.query.lon = this.$route.query.lon;
       console.log(this.query);
-      
+
       //faccio partire il get sui dati che ho aggiornato al redirect
-  
-     this.api_GET('/search', this.query); 
+
+      this.api_GET('/search', this.query);
     },
-    
+
 
   },
   mounted() {
@@ -366,7 +374,7 @@ export default {
     this.fetchServices();
     //recupero i dati del redirect se c'è (modifica url!!)
     this.fechRedirectData();
-    console.log("THIS ROUTER",this.$route.query) 
+    console.log("THIS ROUTER", this.$route.query)
   },
   beforeUpdate() {
     //reset submitREsult
@@ -386,7 +394,8 @@ i {
     margin-left: 0.7rem;
   }
 }
-#map{ 
+
+#map {
   aspect-ratio: 16/9;
 }
 </style>
