@@ -2,10 +2,7 @@
   <section>
     <div class="container-fluid px-5">
 
-
-      <input type="text" v-model="redirectData.address">
-      <input type="text" v-model="redirectData.lat">
-      <input type="text" v-model="redirectData.lon">
+      <div id="map" class="map  border rounded-3 mb-5 m-auto ms-3" style="width:800px; height:800px"> </div>
 
 
       <h1>Apartments Index</h1>
@@ -30,6 +27,7 @@
 </template>
 
 <script>
+import tt from '@tomtom-international/web-sdk-maps';
 import axios from 'axios';
 import { store } from '../../store';
 import { titles } from '../../store';
@@ -48,11 +46,46 @@ export default {
         address: 'a',
         lat: 'b',
         lon: 'c'
-      }
+      },
+
+
+      center: [12.49427, 41.89056],
+      markers: [],
 
     }
   },
   methods: {
+
+    /* MAP :::::::::::::::::::::::::::::::::::::::::::*/
+    createMap(center, array) {
+      // mappa
+      this.map = tt.map({
+        key: 'lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E',
+        container: 'map',
+        center: center,
+        zoom: 10,
+      });
+
+      /* questo va per uno */
+      this.marker = new tt.Marker()
+        .setLngLat(center)
+        .setPopup(new tt.Popup({ offset: 35 }).setHTML("center"))
+        .addTo(this.map);
+
+      Object.keys(array).forEach(key => {
+        console.log(array[key])
+
+        new tt.Marker().setLngLat([array[key].longitude, array[key].latitude]).addTo(this.map)
+          .setPopup(new tt.Popup({ offset: 35 }).setHTML(array[key].title + '<br/>' + array[key].address))
+        /*  console.log(marker) */
+      });
+
+
+
+
+
+
+    },
 
     /* FUNZIONE ESCLUDI CHIAVE DA OGGETTO (per pagination) */
     /** omit({ a: 1, b: 2, c: 3 }, 'c')  // {a: 1, b: 2}
@@ -83,13 +116,16 @@ export default {
         /*        params: { "page":payload } */
       })
         .then((resp) => {
-          console.log(resp)
+          /*  console.log(resp) */
           this.store.submitResult = "success";
           this.store.loading = false;
 
           this.apartments = { ...resp.data.data }
           this.pagination = { ...this.omitKey(resp.data, "data") }
-          console.log("PAGINATION", this.pagination)
+
+          /* MAP */
+          this.createMap(this.center, this.apartments);
+          /*  console.log("PAGINATION", this.pagination) */
         })
         .catch((e) => {
 
@@ -98,22 +134,22 @@ export default {
           } else {
             this.store.submitResult = e.message;
           }
-          console.log(e);
+          /*   console.log(e); */
         });
     },
 
-    saveRedirectData(){
-      this.redirectData=this.$route.query
+    saveRedirectData() {
+      this.redirectData = this.$route.query
     }
   },
   mounted() {
 
     titles(this.$route.meta.title);
     this.fetchPageList(this.queries)
+    /*  this.createMap(this.center); */
 
-   console.log(this.$route.query)
-   this.saveRedirectData()
- 
+    /*  console.log(this.$route.query) */
+    this.saveRedirectData();
   },
   watch: {
 
