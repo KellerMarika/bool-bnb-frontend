@@ -9,6 +9,11 @@
 
 
       <h1>Apartments Index</h1>
+
+
+      <div class="col-8 m-auto my-5">
+        <div class="map" id="map" style="width: 500px; height: 500px;"></div>
+      </div>
       <!-- pagination up -->
       <div class="row row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5 g-4 px-md-5">
 
@@ -30,6 +35,7 @@
 </template>
 
 <script>
+import tt from '@tomtom-international/web-sdk-maps';
 import axios from 'axios';
 import { store } from '../../store';
 import { titles } from '../../store';
@@ -48,12 +54,38 @@ export default {
         address: 'a',
         lat: 'b',
         lon: 'c'
-      }
+      },
+
+      
+      
+      
+			
 
     }
   },
   methods: {
 
+    createMegaMap() {
+
+      
+			// mappa
+			this.map = tt.map({
+				key: 'lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E',
+				container: 'map',
+				center: [12.49427, 41.89056 ],
+				zoom: 10,
+			});
+			//marker
+			 this.marker = new tt.Marker().setLngLat([12.49427, 41.89056]).setPopup(new tt.Popup({offset: 20}).setHTML('roma centro')).addTo(this.map);
+			 this.marker = new tt.Marker().setLngLat([12.48427, 41.87056]).setPopup(new tt.Popup({offset: 20}).setHTML('roma centro')).addTo(this.map);
+				
+			 	
+				
+		
+       
+
+
+    },
     /* FUNZIONE ESCLUDI CHIAVE DA OGGETTO (per pagination) */
     /** omit({ a: 1, b: 2, c: 3 }, 'c')  // {a: 1, b: 2}
      * 
@@ -107,6 +139,9 @@ export default {
     }
   },
   mounted() {
+
+    this.createMegaMap();
+    console.log('REF ' , this.mapRef);
 
     titles(this.$route.meta.title);
     this.fetchPageList(this.queries)

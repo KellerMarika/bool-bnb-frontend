@@ -67,7 +67,7 @@
 					class="img-fluid w-100" />
 			</div>
 
-			<div class="row row-cols-1 row-cols-lg-2 my-4">
+			<div class="row row-cols-1 row-cols-lg-2 my-4 ">
 				<div class="col">
 					<!-- MESSAGGIO TRISTE -->
 
@@ -120,7 +120,7 @@
 						class="my-3 d-flex align-items-baseline justify-content-between">
 						<router-link :to="{name: 'home'}" class="btn btn-info">
 							<!-- CARD -->
-							<h5 class="my-3 mx-4">
+							<h5 class="my-2 mx-3 my-md-1 mx-md-3">
 								<i class="fa-solid fa-home"></i>
 								Back to home
 							</h5>
@@ -132,7 +132,7 @@
 								this.apartment.id
 							"
 							class="btn btn-primary">
-							<h5 class="my-3 mx-4">
+							<h5 class="my-2 mx-3 my-md-1 mx-md-3">
 								Chiedi maggiori informazioni
 								<i class="fa-solid fa-envelope"></i>
 							</h5>
@@ -153,15 +153,14 @@
 						<li>{{ `${i}: ${error}` }}</li>
 					</ul>
 				</div>
-				<div class="col">
-					<div>
-						<div
-							id="map"
-							class="map border rounded-3 mb-5 m-auto ms-3"
-							style="width: 500px; height: 350px"></div>
+				<div class="col" style="margin-left: -15px">
+
+						<div id="map" class="map  border rounded-3 mb-5 m-auto ms-3 w-100">
+
 					</div>
 				</div>
 			</div>
+
 		</div>
 	</section>
 </template>
@@ -216,6 +215,8 @@ export default {
 		};
 	},
 	methods: {
+
+		/* DELETE */
 		onDeleteClick() {
 			api_DELETE(
 				this.$route.meta.apiRouteDeletePath + this.$route.params.id
@@ -232,7 +233,6 @@ export default {
 				center: [lon, lat],
 				zoom: 10,
 			});
-
 			//marker
 			this.marker = new tt.Marker()
 				.setLngLat([lon, lat])
@@ -325,9 +325,17 @@ export default {
 @import 'bootstrap/scss/_variables';
 @import 'bootstrap/scss/mixins/_breakpoints';
 
+
+
+#map{
+
+	aspect-ratio: 1/1;
+	/* @include media-breakpoint-up() {
+			transform: scaleY(120%) translateY(8%);
+		} */
+}
 .img-container {
 	height: 1/3vh;
-
 	.img-row-left img {
 		@include media-breakpoint-up(lg) {
 			transform: scaleY(120%) translateY(8%);
@@ -337,7 +345,6 @@ export default {
 			transform: scaleY(120%) translateY(5%);
 		}
 	}
-
 	.row-dx {
 		transform: scaleY(115%) scaleX(102%) translate(10px);
 		position: relative;
