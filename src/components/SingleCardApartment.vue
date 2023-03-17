@@ -27,7 +27,7 @@
 		</div>
 
 		<div class="px-1 mt-0 fw-bolder">
-			{{ apartment.daily_price }} € <small class="opacity-50">night</small>
+			{{ apartment.daily_price }} € <small class="opacity-50">Notte</small>
 		</div>
 	</div>
 </template>

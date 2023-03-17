@@ -77,7 +77,7 @@
 					</div>
 					<hr />
 					<div class="d-flex mb-3">
-						<div class="mb-2 mx-2">Rooms {{ apartment.rooms_qty }} |</div>
+						<div class="mb-2 mx-2">Camere: {{ apartment.rooms_qty }} |</div>
 
 						<div class="mb-2 mx-2">
 							<i class="with-icon fa-solid fa-bed"></i>
@@ -92,7 +92,7 @@
 						<div class="mb-2 mx-2">MQ {{ apartment.mq }} |</div>
 						<div class="mx-2">
 							<i class="with-icon fa-solid fa-euro-sign"></i>
-							{{ apartment.daily_price }} night
+							{{ apartment.daily_price }} Notte
 						</div>
 					</div>
 					<hr />
@@ -122,7 +122,7 @@
 							<!-- CARD -->
 							<h5 class="my-2 mx-3 my-md-1 mx-md-3">
 								<i class="fa-solid fa-home"></i>
-								Back to home
+								Ritorna alla Home
 							</h5>
 						</router-link>
 						<a

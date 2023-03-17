@@ -3,7 +3,7 @@
 		<div class="d-flex justify-content-center my-5 align-items-center">
 			<div class="position-relative">
 				<input v-model="querySearchText" class="search__input" type="text" @input="getSuggestions"
-					placeholder="Search Apartment" />
+					placeholder="Cerca Appartamento" />
 
 				<ul class="list-group list-group-flush" v-if="suggestions && suggestions.length > 0">
 					<li class="list-unstyled list-group-item-action list-group-item" v-for="suggestion in suggestions"
@@ -28,7 +28,7 @@
 		<div class="card-container px-sm-2 px-xl-5">
 
 			<!-- non dovrebbe servire perchè avviene il redirect -->
-			<h2 class="my-3">{{ querySearch ? querySearch : 'Thinked for You:' }}</h2>
+			<h2 class="my-3">{{ querySearch ? querySearch : 'Pensati per Te' }}</h2>
 			<small v-if="apartments && apartments.length">({{ apartments.length }})risultati trovati</small>
 			<div class="row g-4">
 
@@ -231,7 +231,7 @@ export default {
 .search {
 	&__input {
 		width: 100%;
-		padding: 12px 24px;
+		padding: 12px 28px;
 
 		background-color: transparent;
 		transition: transform 250ms ease-in-out;
@@ -254,7 +254,6 @@ export default {
 
 		&::placeholder {
 			color: color(#575756 a(0.8));
-			text-transform: uppercase;
 			letter-spacing: 1px;
 		}
 	}
