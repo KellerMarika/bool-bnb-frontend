@@ -1,14 +1,14 @@
 <template >
   <fieldset class="container border rounded px-5" style="margin-top:80px">
-    <legend class=" fw-bold text-primary fs-1 pb-0 pt-5 p-3 text-start">Advanced Search:</legend>
+    <legend class=" fw-bold text-primary fs-1 pb-0 pt-5 p-3 text-start">Ricerca Avanzata:</legend>
 
     <form @submit.prevent="api_GET('/search', this.query)" class="px-5 pb-4 text-start">
 
       <div class="row align-items-center justify-content-between gap-4 p-5">
 
         <div class="input-container mb-2 col-12 ">
-          <label class="form-label fw-bold ms-2 fw-bold " for="city">Street and City: </label>
-          <input type="text" placeholder="Ex. Via generale cascino 14 Roma" class="form-control" id="streetNameInput"
+          <label class="form-label fw-bold ms-2 fw-bold " for="city">Citta e Indirizzo: </label>
+          <input type="text" placeholder="Es. Via generale cascino 14 Roma" class="form-control" id="streetNameInput"
               v-model="querySearchText" @input="getSuggestions" />
           <ul class="list-group list-group-flush" v-if="suggestions && suggestions.length > 0">
             <li class="list-unstyled list-group-item-action list-group-item" v-for="suggestion in suggestions"
@@ -21,7 +21,7 @@
         <!-- rooms -->
 
         <div class="input-container pb-2 col-3 text-start ">
-          <label class="form-label fw-bold fw-bold" for="min_rooms">min Rooms number: </label>
+          <label class="form-label fw-bold fw-bold" for="min_rooms">min Camere: </label>
           <select v-model="query.min_rooms" class="form-control" id="min_rooms" name="min_rooms">
             <option v-for="i in 5" :key="i" :value="i">
               {{ i == 5 ? i + ' +' : i }}
@@ -32,7 +32,7 @@
         <!--     {{-- BEDROOMS QTY ------------- --}} -->
 
         <div class="input-container text-start pb-2 col-3">
-          <label class="form-label fw-bold" for="min_beads ">min Beds number</label>
+          <label class="form-label fw-bold" for="min_beads ">min Posti Letto</label>
           <select v-model="query.min_beds" class="form-control" id="min_beads" name="min_beads">
             <option v-for="i in 5" :key="i" :value="i">
               {{ i == 5 ? i + ' +' : i }}
@@ -43,7 +43,7 @@
         <!-- radius --------->
 
         <div class="mb-2 col-3">
-          <label class="form-label fw-bold me-2 text-start" for="radiusInput">Radius (km)</label>
+          <label class="form-label fw-bold me-2 text-start" for="radiusInput">Raggio (km)</label>
           <select v-model="query.radius" class="form-control " name="radiusInput" value="20">
             <option value="20">20</option>
             <option value="10">10</option>
@@ -53,7 +53,7 @@
 
       </div>
       <div class="input-container pb-2 col-12">
-        <label class="form-label fw-bold d-block pb-3 ">choose serviceses:</label>
+        <label class="form-label fw-bold d-block pb-3 ">Scegli i Servizi:</label>
         <div class="input-container pb-2 row justify-content-center">
 
           <div
@@ -112,7 +112,7 @@
           <div>
             <SingleCardApartment :is="singleCard" :apartment='apartment'> </SingleCardApartment>
             <div class="px-1 mt-0 fw-bolder">
-              <span class="text-black"> Distance: </span> {{ apartment.distance }} <span
+              <span class="text-black"> Distanza: </span> {{ apartment.distance }} <span
                   class="card-text text-black opacity-25 ">Km</span>
             </div>
             <!-- <div class="px-1 mt-0 fw-bolder">
