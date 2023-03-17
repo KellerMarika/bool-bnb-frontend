@@ -157,9 +157,8 @@ export default {
         services: [],
       },
 
-        map: null,
-				marker: null,
-
+        
+      marker: [],
         lng: {},
         lat: {},
         markertitle: null,
@@ -210,19 +209,13 @@ export default {
 
       Object.keys(appartamenti).forEach((apartment) => {
 
-      console.log(appartamenti[apartment].longitude, appartamenti[apartment].latitude,appartamenti[apartment].title);
+      console.log('dentro ciclo foreach', appartamenti[apartment].longitude, appartamenti[apartment].latitude,appartamenti[apartment].title);
       
-      this.lng = appartamenti[apartment].longitude;
-      this.lat = appartamenti[apartment].latitude;
-      this.markertitle = appartamenti[apartment].title;
-
       
 
-    this.marker = new tt.Marker().setLngLat([this.lng, this.lat])
-      .setPopup(new tt.Popup({ offset: 35 }).setHTML(this.markertitle))
-      .addTo(this.map);
+      this.Marker = new tt.Marker().setLngLat([appartamenti[apartment].longitude, appartamenti[apartment].latitude]).setPopup(new tt.Popup({ offset: 35 }).setHTML(appartamenti[apartment].title + '<br/>' + appartamenti[apartment].address)).addTo(this.map);
         //  //marker
-        console.log(this.lng , this.lat);
+       
 
     });
     
