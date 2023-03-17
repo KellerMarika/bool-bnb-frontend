@@ -6,7 +6,7 @@
 	<div class="card text-dark border-0">
 		<div class="card text-dark border-0">
 			<div class="sponsorized-frame rounded-4"
-				:class="getSponsorizedFrame().isActive ? 'bg-primary' : 'bg-info'">
+				:class="getSponsorizedFrame().isActive ? 'bg-primary' : ''">
 				<img class="card-img-top mb-2 card-img rounded-4"
 					:src="fetchImage(apartment.cover_img, apartment.images)"
 					alt=""
