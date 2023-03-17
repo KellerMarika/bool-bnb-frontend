@@ -89,7 +89,7 @@ export default {
 
 			//se è stato sponsorizzato almeno una volta
 			if ( this.apartment.subscriptions && this.apartment.subscriptions.length > 0) {
-				console.log("ALL apartment sub", this.apartment.subscriptions)
+				/* console.log("ALL apartment sub", this.apartment.subscriptions) */
 
 				//se ha solo una sponsorizzazione:
 				if (this.apartment.subscriptions.length === 1) {
@@ -166,7 +166,7 @@ export default {
 
 					/* 		console.log("CuStart", currentStartDate, currentSubscription.pivot.created_at);
 							console.log("PrevEnd", prevEndDate, prevSubscription.pivot.expiration_date); */
-							console.log(currentStartDate < prevEndDate);//data più piccola c'è meno tempo dentro
+						/* 	console.log(currentStartDate < prevEndDate); *///data più piccola c'è meno tempo dentro
 
 							//SE la sub che sto esaminando inizia prima della fine della precedente
 							if (currentStartDate < prevEndDate) {
@@ -203,7 +203,7 @@ export default {
 					}
 				}
 			} else {
-				console.log(subInfos)
+		/* 		console.log(subInfos) */
 				return subInfos
 			}
 		},
@@ -253,7 +253,7 @@ export default {
 
 	mounted() {
 	 	this.getSponsorizedFrame() 
-		console.log("APARTMENT",this.apartment)
+	/* 	console.log("APARTMENT",this.apartment) */
 	}
 };
 </script>
