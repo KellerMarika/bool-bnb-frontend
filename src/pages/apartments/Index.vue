@@ -9,7 +9,7 @@
 
 
       <div class="col-8 m-auto my-5">
-        <div class="map" id="map" style="width: 500px; height: 500px;"></div>
+        <div class="map" id="map" style="width: 800px; height: 800px;"></div>
       </div>
       <!-- pagination up -->
       <div class="row row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5 g-4 px-md-5">
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import tt from '@tomtom-international/web-sdk-maps';
+
 import tt from '@tomtom-international/web-sdk-maps';
 import axios from 'axios';
 import { store } from '../../store';
@@ -150,7 +150,7 @@ export default {
   },
   mounted() {
 
-    this.createMegaMap();
+/*     this.createMegaMap(); */
     console.log('REF ' , this.mapRef);
 
     titles(this.$route.meta.title);

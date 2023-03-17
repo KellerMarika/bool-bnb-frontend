@@ -89,10 +89,10 @@
 
 
 
-  <section v-if="selectedSuggestion && apartments" class="pt-5 mt-5">
+  <section v-if=" selectedSuggestion &&  apartments" class="pt-5 mt-5">
     <div class="container-fluid px-5">
-      <h1 class="p-5">Appartamenti nel raggio di {{ query.radius }}km da {{ selectedSuggestion }}</h1>
-
+      <h1 class="p-5" >Appartamenti nel raggio di {{ query.radius }}km da {{ selectedSuggestion }}</h1>
+ 
 
       <!-- pagination up -->
       <div class="row row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5 g-4 px-md-5">
@@ -115,7 +115,9 @@
       </div>
 
       <!-- PAGINAZIONE SOTTO -->
-      <Pagination :pagination="pagination" :query="query" @api_GET="api_GET"></Pagination>
+      <Pagination :pagination="pagination"
+          :query="query"
+          @api_GET="api_GET"></Pagination>
 
     </div>
   </section>
@@ -201,20 +203,14 @@ export default {
 				zoom: 10,
 			});
       
-      console.log('dentro al createmap', appartamenti[0].longitude, appartamenti[0].latitude, appartamenti);
-      
-         
+      /* console.log('dentro al createmap', appartamenti[0].longitude, appartamenti[0].latitude, appartamenti); */
 
       Object.keys(appartamenti).forEach((apartment) => {
 
-      console.log('dentro ciclo foreach', appartamenti[apartment].longitude, appartamenti[apartment].latitude,appartamenti[apartment].title);
-      
-      
+   /*    console.log('dentro ciclo foreach', appartamenti[apartment].longitude, appartamenti[apartment].latitude,appartamenti[apartment].title); */
 
       this.Marker = new tt.Marker().setLngLat([appartamenti[apartment].longitude, appartamenti[apartment].latitude]).setPopup(new tt.Popup({ offset: 35 }).setHTML(appartamenti[apartment].title + '<br/>' + appartamenti[apartment].address)).addTo(this.map);
         //  //marker
-       
-
     });
     
     
@@ -278,6 +274,11 @@ export default {
           },
         })
         .then((resp) => {
+       /*    this.$route.query={}
+          this.$route.query={...payload, ...page} */
+
+          this.$router.replace({ query: { ...payload, ...page } })
+          console.log("this dopo invio",this.$route.query)
           this.store.submitResult = 'success';
           this.store.loading = false;
 
@@ -289,7 +290,7 @@ export default {
           //prendendo le coordinate
           let appartamenti = { ...resp.data.data };
           
-          console.log('CREATE MAP: ', this.query.lon, this.query.lat,  appartamenti );
+         /*  console.log('CREATE MAP: ', this.query.lon, this.query.lat,  appartamenti ); */
 
           this.createMap(this.query.lon, this.query.lat, appartamenti);
 
@@ -365,6 +366,7 @@ export default {
     this.fetchServices();
     //recupero i dati del redirect se c'è (modifica url!!)
     this.fechRedirectData();
+    console.log("THIS ROUTER",this.$route.query) 
   },
   beforeUpdate() {
     //reset submitREsult
@@ -373,6 +375,7 @@ export default {
   created() { },
 };
 </script>
+
 <style lang="scss" scoped>
 @use '../styles/generic.scss';
 @use '../styles/partials/variables' as *;
@@ -382,5 +385,8 @@ i {
     width: 25px;
     margin-left: 0.7rem;
   }
+}
+#map{ 
+  aspect-ratio: 16/9;
 }
 </style>
