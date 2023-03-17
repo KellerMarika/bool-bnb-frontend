@@ -15,8 +15,8 @@
 			</div>
 		</div>
 
-		<h2>{{getSponsorizedFrame().isActive }}</h2>
- <small>{{getSponsorizedFrame().expiration_date }}</small> 
+	<!-- 	<h2>{{getSponsorizedFrame().isActive }}</h2>
+ <small>{{getSponsorizedFrame().expiration_date }}</small>  -->
 		<span class="mt-1 fw-semibold">{{ apartment.title }}</span>
 
 		<div v-if="apartment.description && apartment.description.length > 70">
