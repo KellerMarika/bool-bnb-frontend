@@ -1,8 +1,8 @@
 <template>
 	<section
-		class="px-xxl-5 mx-3 mx-sm-5 mx-lg-5"
+		class="px-xxl-5 mx-sm-1 mx-md-3 mx-lg-5"
 		:class="apartment.images && apartment.images.length ? '' : 'd-flex'">
-		<div class="container.fluid px-md-3 px-xl-5">
+		<div class="container  px-md-3 px-xl-5">
 			<!--Apartments Show -->
 
 			<h1 class="mb-4">{{ apartment.title }}</h1>
@@ -153,9 +153,9 @@
 						<li>{{ `${i}: ${error}` }}</li>
 					</ul>
 				</div>
-				<div class="col" style="padding: 1.5rem; margin-bottom: 2rem; margin-left: -15px">     <!--  style="margin-left: -15px"-->
+				<div class="col" style="padding: 1.5rem; margin-left: -15px">     <!--  style="margin-left: -15px"-->
 
-						<div id="map" class="map  border rounded-3 mb-5 m-auto ms-3 w-100">
+						<div id="map" class="map  border rounded-3 m-auto ms-3 w-100">
 
 					</div>
 				</div>

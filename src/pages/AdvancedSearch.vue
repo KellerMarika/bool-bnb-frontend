@@ -87,14 +87,14 @@
 
 
 
-  <section v-if="selectedSuggestion && apartments" class="pt-5 mt-5">
+  <section v-if="selectedSuggestion && apartments" class="pt-lg-5 pt-sm-2 mt-3">
     <div class="container-fluid px-5">
       <h1 class="p-lg-5 p-sm-0 p-md-1">Appartamenti nel raggio di {{ query.radius }}km da {{ selectedSuggestion }}</h1>
 
       <div class="container row justify-content-center">
 
-        <div class="col-8-lg col-8-md col-12-sm offset-2 mt-4">
-          <div id="map" class="map  border rounded-3 mb-5 m-auto">
+        <div class="col-8-lg col-8-md col-12-sm offset-2 ">
+          <div id="map" class="map  border rounded-3 mb-5 m-auto me-3">
         </div>
         </div>
        

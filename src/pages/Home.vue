@@ -37,7 +37,7 @@
 					v-for="apartment in apartments"
 					:to="{ name: 'Apartments.show', params: { id: apartment.id } }"
 					v-slot="{ singleCard }"
-					class="col-xl-2 col-lg-3 col-md-4 col-sm-6 card-group my-4">
+					class="col-xl-2 col-lg-3 col-md-4 col-sm-6 card-group my-lg-4 my-md-2 my-sm-0">
 					<!-- CARD -->
 					<SingleCardApartment :is="singleCard" :apartment="apartment">
 					</SingleCardApartment>
