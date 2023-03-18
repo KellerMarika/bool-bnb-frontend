@@ -1,15 +1,15 @@
 <template >
-  <fieldset class="container border rounded px-5" style="margin-top:80px">
+  <fieldset class="container border rounded" style="margin-top:80px">
     <legend class=" fw-bold text-primary fs-1 pb-0 pt-5 p-3 text-start">Ricerca Avanzata:</legend>
 
     <form @submit.prevent="api_GET('/search', this.query)" class="px-5 pb-4 text-start">
 
-      <div class="row align-items-center justify-content-between gap-4 p-5">
+      <div class="row align-items-center justify-content-between gap-4">
 
-        <div class="input-container mb-2 col-12 ">
+        <div class="input-container mb-2 col-12  ">
           <label class="form-label fw-bold ms-2 fw-bold " for="city">Citta e Indirizzo: </label>
           <input type="text" placeholder="Es. Via generale cascino 14 Roma" class="form-control" id="streetNameInput"
-              v-model="querySearchText" @input="getSuggestions" />
+              v-model="querySearchText" @input="getSuggestions" style="max-width: 100%;" />
           <ul class="list-group list-group-flush" v-if="suggestions && suggestions.length > 0">
             <li class="list-unstyled list-group-item-action list-group-item" v-for="suggestion in suggestions"
                 :key="suggestion.id" @click="selectSuggestion(suggestion)">
@@ -32,7 +32,7 @@
         <!--     {{-- BEDROOMS QTY ------------- --}} -->
 
         <div class="input-container text-start pb-2 col-3">
-          <label class="form-label fw-bold" for="min_beads ">min Posti Letto</label>
+          <label class="form-label fw-bold" for="min_beads ">min Letti</label>
           <select v-model="query.min_beds" class="form-control" id="min_beads" name="min_beads">
             <option v-for="i in 5" :key="i" :value="i">
               {{ i == 5 ? i + ' +' : i }}
@@ -89,12 +89,12 @@
 
   <section v-if="selectedSuggestion && apartments" class="pt-5 mt-5">
     <div class="container-fluid px-5">
-      <h1 class="p-5">Appartamenti nel raggio di {{ query.radius }}km da {{ selectedSuggestion }}</h1>
+      <h1 class="p-lg-5 p-sm-0 p-md-1">Appartamenti nel raggio di {{ query.radius }}km da {{ selectedSuggestion }}</h1>
 
       <div class="container row justify-content-center">
 
-        <div class="col-8 offset-2 ">
-          <div id="map" class="map  border rounded-3 mb-5 m-auto ms-3">
+        <div class="col-8-lg col-8-md col-12-sm offset-2 mt-4">
+          <div id="map" class="map  border rounded-3 mb-5 m-auto">
         </div>
         </div>
        
