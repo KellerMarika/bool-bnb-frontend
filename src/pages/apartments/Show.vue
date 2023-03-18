@@ -79,17 +79,17 @@
 					<div class="d-flex mb-3">
 						<div class="mb-2 mx-2">Camere: {{ apartment.rooms_qty }} |</div>
 
-						<div class="mb-2 mx-2">
+						<div class="mb-2 mx-lg-2 mx-md-1 mx-sm-0">
 							<i class="with-icon fa-solid fa-bed"></i>
 							{{ apartment.beds_qty }} |
 						</div>
 
-						<div class="mb-2 mx-2">
-							<i class="with-icon fa-solid fa-bath"></i>
+						<div class="mb-2 mx-lg-2 mx-md-1 mx-sm-0">
+							<i class="with-icon fa-solid fa-bath "></i>
 							{{ apartment.bathrooms_qty }} |
 						</div>
 
-						<div class="mb-2 mx-2">MQ {{ apartment.mq }} |</div>
+						<div class="mb-2 mx-lg-2 mx-md-1 mx-sm-0">MQ {{ apartment.mq }} |</div>
 						<div class="mx-2">
 							<i class="with-icon fa-solid fa-euro-sign"></i>
 							{{ apartment.daily_price }} Notte
@@ -117,10 +117,10 @@
 					</div>
 
 					<div
-						class="my-3 d-flex align-items-baseline justify-content-between">
+						class="my-3 d-flex gap-4 align-items-baseline justify-content-between">
 						<router-link :to="{name: 'home'}" class="btn btn-info">
 							<!-- CARD -->
-							<h5 class="my-2 mx-3 my-md-1 mx-md-3">
+							<h5 class="fs-5 my-2 mx-3 my-md-1 mx-sm-1 mx-md-3">
 								<i class="fa-solid fa-home"></i>
 								Ritorna alla Home
 							</h5>
@@ -132,7 +132,7 @@
 								this.apartment.id
 							"
 							class="btn btn-primary">
-							<h5 class="my-2 mx-3 my-md-1 mx-md-3">
+							<h5 class="fs-5 my-2  my-md-1 mx-sm-1 mx-md-3">
 								Chiedi maggiori informazioni
 								<i class="fa-solid fa-envelope"></i>
 							</h5>
@@ -145,7 +145,7 @@
 					L'invio è andato a buon fine! Grazie per avermi contattato.
 				</div>
 				<div v-else-if="this.submitResult" class="alert alert-danger m-3">
-					<p>There was a problem with your request:</p>
+					<p>C'é stato un problema con la tua richiesta:</p>
 					<p v-if="!errors">
 						{{ this.submitResult }}
 					</p>
@@ -153,7 +153,7 @@
 						<li>{{ `${i}: ${error}` }}</li>
 					</ul>
 				</div>
-				<div class="col" style="margin-left: -15px">
+				<div class="col" style="padding: 1.5rem; margin-bottom: 2rem; margin-left: -15px">     <!--  style="margin-left: -15px"-->
 
 						<div id="map" class="map  border rounded-3 mb-5 m-auto ms-3 w-100">
 
