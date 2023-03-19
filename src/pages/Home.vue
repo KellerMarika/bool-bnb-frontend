@@ -31,27 +31,28 @@
 				</ul>
 			</div>
 		</div>
-		<div class="card-container px-sm-2 px-xl-5">
-			<!-- non dovrebbe servire perchè avviene il redirect -->
-			<h2 class="my-3">
-				{{ querySearch ? querySearch : 'Pensati per Te' }}
-			</h2>
-			<small v-if="apartments && apartments.length"
-				>({{ apartments.length }})risultati trovati</small
-			>
-			<div class="row g-4">
-				<!-- LINK ALLO SHOW -->
-				<router-link
-					v-for="apartment in apartments"
-					:to="{name: 'Apartments.show', params: {id: apartment.id}}"
-					v-slot="{singleCard}"
-					class="col-xl-2 col-lg-3 col-md-4 col-sm-6 card-group my-lg-4 my-md-2 my-sm-0">
-					<!-- CARD -->
-					<SingleCardApartment :is="singleCard" :apartment="apartment">
-					</SingleCardApartment>
-				</router-link>
-				<!-- pagination down -->
-			</div>
+	</div>
+
+	<div class="card-container px-sm-2 px-xl-5">
+		<!-- non dovrebbe servire perchè avviene il redirect -->
+		<h2 class="my-3">
+			{{ querySearch ? querySearch : 'Pensati per Te' }}
+		</h2>
+		<small v-if="apartments && apartments.length"
+			>({{ apartments.length }})risultati trovati</small
+		>
+		<div class="row g-4">
+			<!-- LINK ALLO SHOW -->
+			<router-link
+				v-for="apartment in apartments"
+				:to="{name: 'Apartments.show', params: {id: apartment.id}}"
+				v-slot="{singleCard}"
+				class="col-xl-2 col-lg-3 col-md-4 col-sm-6 card-group my-lg-4 my-md-2 my-sm-0">
+				<!-- CARD -->
+				<SingleCardApartment :is="singleCard" :apartment="apartment">
+				</SingleCardApartment>
+			</router-link>
+			<!-- pagination down -->
 		</div>
 	</div>
 </template>
