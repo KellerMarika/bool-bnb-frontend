@@ -106,22 +106,23 @@
 						</div>
 					</div>
 
+					
 					<div class="my-3 d-flex align-items-baseline justify-content-between">
-						<a class="btn btn-info"
+					<!-- 	<a class="btn btn-info"
 						@click="$router.go(-1)">
-							<!-- CARD -->
 							<h5 class="fs-5 my-2 mx-3 my-md-1 mx-sm-1 mx-md-3">
 								<i class="fa-solid fa-delete-left"></i>
 								torna alla Ricerca
 							</h5>
 						</a>
 
-	<!-- 					<router-link :to="{ name: 'AdvancedSearch' }" class="btn btn-info">
+						<router-link :to="{ name: 'AdvancedSearch', query:{...$router.query} }" class="btn btn-success">
 							<h5 class="fs-5 my-2 mx-3 my-md-1 mx-sm-1 mx-md-3">
 								<i class="fa-solid fa-delete-left"></i>
 								torna alla Ricerca
 							</h5>
 						</router-link> -->
+						
 						<a :href="
 							store.backedRootUrl +
 							'/apartments/messages/' +
