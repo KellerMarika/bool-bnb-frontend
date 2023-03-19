@@ -1,10 +1,12 @@
 <template>
+
+
   <nav v-if="pagination" aria-label="..." class="d-flex justify-content-end">
     <ul class="pagination">
-      <!--     @click="api_GET(getPageNumber(link, pagination))" -->
+      <!--     @click="api_SEARCH(getPageNumber(link, pagination))" -->
       <li v-for="link in pagination.links"
 
-          @click="api_GET('/search', query, getPageNumber(link, pagination))"
+          @click="api_SEARCH(query={...query,  ...getPageNumber(link, pagination) } )"
 
           class="page-item">
 
@@ -37,13 +39,15 @@ export default {
       type: Object
     },
     /**
-    *@param {int} min_rooms
-     *@param {int} min_beds
-     *@param {int} radius
-     *@param {array}  services
+     *@param {int} page
+     *@param {string} querySearchText
      *@param {string} lat
-    *@param {string} lon
-       */
+     *@param {string} lon
+     *@param {int} radius
+     *@param {int} min_rooms
+     *@param {int} min_beds
+     *@param {array}  services
+     */
     query: {
       required: true,
       type: Object
@@ -62,8 +66,8 @@ export default {
   methods: {
 
     /* EMIT */
-    api_GET(thisRoutePath, payload, page) {
-      this.$emit("api_GET", thisRoutePath, payload, page)
+    api_SEARCH(thisRoutePath, payload, page) {
+      this.$emit("api_SEARCH", thisRoutePath, payload, page)
     },
     /* COMPUTED CHE NON VANNO COL THIS */
 

@@ -123,7 +123,7 @@
       <!-- PAGINAZIONE SOTTO -->
       <Pagination :pagination="pagination"
           :query="query"
-          @api_GET="api_GET"></Pagination>
+          @api_SEARCH="api_SEARCH"></Pagination>
 
     </div>
   </section>
