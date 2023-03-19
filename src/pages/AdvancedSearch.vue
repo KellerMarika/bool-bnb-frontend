@@ -9,7 +9,7 @@
         <div class="input-container mb-2 col-12  ">
           <label class="form-label fw-bold ms-2 fw-bold " for="city">Citta e Indirizzo: </label>
           <input type="text" placeholder="Es. Via generale cascino 14 Roma" class="form-control" id="streetNameInput"
-              v-model="querySearchText" @input="getSuggestions" style="max-width: 100%;" />
+              v-model="querySearchText" @input="getSuggestions()" style="max-width: 100%;" />
           <ul class="list-group list-group-flush" v-if="suggestions && suggestions.length > 0">
             <li class="list-unstyled list-group-item-action list-group-item" v-for="suggestion in suggestions"
                 :key="suggestion.id" @click="selectSuggestion(suggestion)">
@@ -83,10 +83,6 @@
     </form>
   </fieldset>
 
-
-
-
-
   <section v-if="selectedSuggestion && apartments" class="pt-lg-5 pt-sm-2 mt-3">
     <div class="container-fluid px-5">
       <h1 class="p-lg-5 p-sm-0 p-md-1">Appartamenti nel raggio di {{ query.radius }}km da {{ selectedSuggestion }}</h1>
@@ -95,9 +91,9 @@
 
         <div class="col-8-lg col-8-md col-12-sm offset-2 ">
           <div id="map" class="map  border rounded-3 mb-5 m-auto me-3">
+          </div>
         </div>
-        </div>
-       
+
       </div>
 
 
@@ -144,7 +140,7 @@ export default {
     return {
       store,
       services: [],
-      /*  */
+
       querySearchText: null,
       suggestions: null,
       selectedSuggestion: null,
@@ -180,10 +176,10 @@ export default {
       this.selectedSuggestion = "";
       if (this.querySearchText.length > 0) {
         axios.get(`https://api.tomtom.com/search/2/geocode/${this.querySearchText}.json?storeResult=false&limit=5&countrySet=IT&view=Unified&key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE`)
+
           .then((resp) => {
-            /* 	console.log(resp.data.results); */
             this.suggestions = resp.data.results;
-            console.log(this.suggestions);
+            /*  console.log(this.suggestions); */
           })
           .catch((error) => {
             console.log(error);
@@ -197,8 +193,7 @@ export default {
       this.querySearchText = (suggestion.address.freeformAddress + ', ' + suggestion.address.country);
       this.query.lat = suggestion.position.lat;
       this.query.lon = suggestion.position.lon;
-      console.log('suggestion: ', this.query, this.suggestion)
-
+      /* console.log('suggestion: ', this.query, this.suggestion) */
       this.suggestions = [];
     },
 
@@ -211,8 +206,6 @@ export default {
         zoom: 10,
       });
 
-      /* console.log('dentro al createmap', appartamenti[0].longitude, appartamenti[0].latitude, appartamenti); */
-
       Object.keys(appartamenti).forEach((apartment) => {
 
         /*    console.log('dentro ciclo foreach', appartamenti[apartment].longitude, appartamenti[apartment].latitude,appartamenti[apartment].title); */
@@ -220,10 +213,6 @@ export default {
         this.Marker = new tt.Marker().setLngLat([appartamenti[apartment].longitude, appartamenti[apartment].latitude]).setPopup(new tt.Popup({ offset: 35 }).setHTML(appartamenti[apartment].title + '<br/>' + appartamenti[apartment].address)).addTo(this.map);
         //  //marker
       });
-
-
-
-
 
     },
 
@@ -272,7 +261,7 @@ export default {
 
     api_GET(thisRoutePath, payload, page) {
       let apiUrl = `${this.store.backedRootUrl}/api${thisRoutePath}`;
-      console.log('URL', apiUrl);
+      //  console.log('URL', apiUrl);
       this.selectedSuggestion = this.querySearchText
       axios
         .get(`${apiUrl}`, {
@@ -282,30 +271,19 @@ export default {
           },
         })
         .then((resp) => {
-          /*    this.$route.query={}
-             this.$route.query={...payload, ...page} */
 
           this.$router.replace({ query: { ...payload, ...page } })
-          console.log("this dopo invio", this.$route.query)
-          this.store.submitResult = 'success';
-          this.store.loading = false;
+          /*    console.log("this dopo invio", this.$route.query) */
+          // this.store.submitResult = 'success';
+          // this.store.loading = false;
 
-          console.log("GET", resp.data)
+          /*  console.log("GET", resp.data) */
           this.apartments = { ...resp.data.data };
           this.pagination = { ...this.omitKey(resp.data, 'data') };
-
-          //ad ogni invio ricarica la mappa con la chiamata axios
-          //prendendo le coordinate
           let appartamenti = { ...resp.data.data };
 
-          /*  console.log('CREATE MAP: ', this.query.lon, this.query.lat,  appartamenti ); */
 
-          this.createMap(this.query.lon, this.query.lat, appartamenti);
-
-
-
-
-
+          //this.createMap(this.query.lon, this.query.lat, appartamenti);
         })
         .catch((e) => {
           if (e.response && e.response.data) {
@@ -318,54 +296,85 @@ export default {
     },
 
 
-    // createMap(apartments){
-    //       // mappa 
-    //       console.log(apartmets);
-    //       apartments.forEach((apartment)  => {
-    //         this.marker = new tt.Marker().setLngLat([apartment.longitude, apartment.latitude])
-    //       	.setPopup(new tt.Popup({ offset: 35 }).setHTML(apartment.title))
-    //       	.addTo(this.map);
-    //       })
-    //       //marker
-    // },
-
-    /* CHIAMATA A GEOCODE TOM TOM RECUPERA LAT LONG E ADDRESS DA STRINGA */
-    fetchTomTom() {
-      if (this.selectSuggestion) {
-        // axios.get("https://api.tomtom.com/search/2/geocode/De%20Ruijterkade%20154,%201011%20AC,%20Amsterdam.json?key=lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E").then((resp) => {
-        axios.get(this.baseUrl + encodeURIComponent(this.selectedSuggestion) + this.api_key).then((resp) => {
-          console.log(resp);
-
-          if (resp.data.results.length) {
-            this.querySearchText = resp.data.results[0].address.freeformAddress;
-            this.query.lat = resp.data.results[0].position.lat;
-            this.query.lon = resp.data.results[0].position.lon;
-
-            console.log(this.query);
-
-            this.api_GET('/search', this.query);
-          } else {
-            return alert(
-              'Ricerca non valida, inserisci un indirizzo valido!'
-            );
-          }
-        });
-      };
-    },
-    /* recupero i dati e li assegno alle variabili del form */
-    fechRedirectData() {
-      this.querySearchText = this.$route.query.homeSearchAddress;
+    api_SEARCH(payload/* , page */) {
+      let apiUrl = `${this.store.backedRootUrl}/api/search`;
+      //  console.log('URL', apiUrl);
       this.selectedSuggestion = this.querySearchText;
+
+      axios
+        .get(`${apiUrl}`, {
+          params: {
+            /*     ...page, */
+            ...payload
+          },
+        })
+        .then((resp) => {
+
+          this.$router.replace({
+            query: { ...payload/*  , ...page */ }
+          }).then(()=>{
+            console.log("ROUTE SEARCH REPLACE", this.$route.query)
+          })
+          
+          /*    console.log("this dopo invio", this.$route.query) */
+          // this.store.submitResult = 'success';
+          // this.store.loading = false;
+
+          /*  console.log("GET", resp.data) */
+          this.apartments = { ...resp.data.data };
+          this.pagination = { ...this.omitKey(resp.data, 'data') };
+          let appartamenti = { ...resp.data.data };
+
+
+          //this.createMap(this.query.lon, this.query.lat, appartamenti);
+        })
+        .catch((e) => {
+          if (e.response && e.response.data) {
+            this.store.submitResult = e.response.data.message;
+          } else {
+            this.store.submitResult = e.message;
+          }
+          console.log(e);
+        });
+    },
+
+    fechRedirectData() {
+
+      console.log("ROUTE refresh", this.$route.query)
+      console.log("FORM refresh", this.query)
+
+
+
+
+      if (this.$route.query.homeSearchAddress) {
+        console.log("Redirect From HOME")
+
+        this.querySearchText = this.$route.query.homeSearchAddress;
+        this.selectedSuggestion = this.querySearchText;
+
+
+
+        /*   const query = Object.assign({}, this.$route.query);
+          delete query.homeSearchAddress;
+          this.$router.replace({ query }); */
+      } else {
+        console.log("redirect from SHOW /")
+
+
+      }
+
+
       this.query.lat = this.$route.query.lat;
       this.query.lon = this.$route.query.lon;
-      console.log(this.query);
 
       //faccio partire il get sui dati che ho aggiornato al redirect
 
-      this.api_GET('/search', this.query);
+      console.log("ROUTE after fechRed", this.$route.query)
+      console.log("FORM after fechRed", this.query)
+
+      this.api_SEARCH(this.query);
+
     },
-
-
   },
   mounted() {
     //asssegno titolo
@@ -373,8 +382,10 @@ export default {
     //recupero i services per form
     this.fetchServices();
     //recupero i dati del redirect se c'è (modifica url!!)
+    console.log(this.$route.query)
     this.fechRedirectData();
-    console.log("THIS ROUTER", this.$route.query)
+
+
   },
   beforeUpdate() {
     //reset submitREsult
