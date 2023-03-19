@@ -2,14 +2,16 @@
   <fieldset class="container border rounded" style="margin-top:80px">
     <legend class=" fw-bold text-primary fs-1 pb-0 pt-5 p-3 text-start">Ricerca Avanzata:</legend>
 
-    <form @submit.prevent="api_GET('/search', this.query)" class="px-5 pb-4 text-start">
+    <form @submit.prevent="api_SEARCH(this.query)" class="px-5 pb-4 text-start">
 
       <div class="row align-items-center justify-content-between gap-4">
 
         <div class="input-container mb-2 col-12  ">
           <label class="form-label fw-bold ms-2 fw-bold " for="city">Citta e Indirizzo: </label>
+
           <input type="text" placeholder="Es. Via generale cascino 14 Roma" class="form-control" id="streetNameInput"
-              v-model="querySearchText" @input="getSuggestions" style="max-width: 100%;" />
+              v-model="query.querySearchText" @input="getSuggestions()" style="max-width: 100%;" />
+
           <ul class="list-group list-group-flush" v-if="suggestions && suggestions.length > 0">
             <li class="list-unstyled list-group-item-action list-group-item" v-for="suggestion in suggestions"
                 :key="suggestion.id" @click="selectSuggestion(suggestion)">
@@ -83,10 +85,6 @@
     </form>
   </fieldset>
 
-
-
-
-
   <section v-if="selectedSuggestion && apartments" class="pt-lg-5 pt-sm-2 mt-3">
     <div class="container-fluid px-5">
       <h1 class="p-lg-5 p-sm-0 p-md-1">Appartamenti nel raggio di {{ query.radius }}km da {{ selectedSuggestion }}</h1>
@@ -95,9 +93,9 @@
 
         <div class="col-8-lg col-8-md col-12-sm offset-2 ">
           <div id="map" class="map  border rounded-3 mb-5 m-auto me-3">
+          </div>
         </div>
-        </div>
-       
+
       </div>
 
 
@@ -125,7 +123,7 @@
       <!-- PAGINAZIONE SOTTO -->
       <Pagination :pagination="pagination"
           :query="query"
-          @api_GET="api_GET"></Pagination>
+          @api_SEARCH="api_SEARCH"></Pagination>
 
     </div>
   </section>
@@ -144,8 +142,8 @@ export default {
     return {
       store,
       services: [],
-      /*  */
-      querySearchText: null,
+
+
       suggestions: null,
       selectedSuggestion: null,
       querySearch: '',
@@ -157,12 +155,14 @@ export default {
       appartamenti: null,
 
       query: {
+        querySearchText: '',
         lat: '',
         lon: '',
         radius: 20,
         min_rooms: 1,
         min_beds: 1,
         services: [],
+        page: 1
       },
 
 
@@ -178,12 +178,12 @@ export default {
 
     getSuggestions() {
       this.selectedSuggestion = "";
-      if (this.querySearchText.length > 0) {
-        axios.get(`https://api.tomtom.com/search/2/geocode/${this.querySearchText}.json?storeResult=false&limit=5&countrySet=IT&view=Unified&key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE`)
+      if (this.query.querySearchText.length > 0) {
+        axios.get(`https://api.tomtom.com/search/2/geocode/${this.query.querySearchText}.json?storeResult=false&limit=5&countrySet=IT&view=Unified&key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE`)
+
           .then((resp) => {
-            /* 	console.log(resp.data.results); */
             this.suggestions = resp.data.results;
-            console.log(this.suggestions);
+            /*  console.log(this.suggestions); */
           })
           .catch((error) => {
             console.log(error);
@@ -194,11 +194,10 @@ export default {
     },
 
     selectSuggestion(suggestion) {
-      this.querySearchText = (suggestion.address.freeformAddress + ', ' + suggestion.address.country);
+      this.query.querySearchText = (suggestion.address.freeformAddress + ', ' + suggestion.address.country);
       this.query.lat = suggestion.position.lat;
       this.query.lon = suggestion.position.lon;
-      console.log('suggestion: ', this.query, this.suggestion)
-
+      /* console.log('suggestion: ', this.query, this.suggestion) */
       this.suggestions = [];
     },
 
@@ -211,8 +210,6 @@ export default {
         zoom: 10,
       });
 
-      /* console.log('dentro al createmap', appartamenti[0].longitude, appartamenti[0].latitude, appartamenti); */
-
       Object.keys(appartamenti).forEach((apartment) => {
 
         /*    console.log('dentro ciclo foreach', appartamenti[apartment].longitude, appartamenti[apartment].latitude,appartamenti[apartment].title); */
@@ -220,10 +217,6 @@ export default {
         this.Marker = new tt.Marker().setLngLat([appartamenti[apartment].longitude, appartamenti[apartment].latitude]).setPopup(new tt.Popup({ offset: 35 }).setHTML(appartamenti[apartment].title + '<br/>' + appartamenti[apartment].address)).addTo(this.map);
         //  //marker
       });
-
-
-
-
 
     },
 
@@ -272,8 +265,8 @@ export default {
 
     api_GET(thisRoutePath, payload, page) {
       let apiUrl = `${this.store.backedRootUrl}/api${thisRoutePath}`;
-      console.log('URL', apiUrl);
-      this.selectedSuggestion = this.querySearchText
+      //  console.log('URL', apiUrl);
+      this.selectedSuggestion = this.query.querySearchText
       axios
         .get(`${apiUrl}`, {
           params: {
@@ -282,30 +275,19 @@ export default {
           },
         })
         .then((resp) => {
-          /*    this.$route.query={}
-             this.$route.query={...payload, ...page} */
 
           this.$router.replace({ query: { ...payload, ...page } })
-          console.log("this dopo invio", this.$route.query)
-          this.store.submitResult = 'success';
-          this.store.loading = false;
+          /*    console.log("this dopo invio", this.$route.query) */
+          // this.store.submitResult = 'success';
+          // this.store.loading = false;
 
-          console.log("GET", resp.data)
+          /*  console.log("GET", resp.data) */
           this.apartments = { ...resp.data.data };
           this.pagination = { ...this.omitKey(resp.data, 'data') };
-
-          //ad ogni invio ricarica la mappa con la chiamata axios
-          //prendendo le coordinate
           let appartamenti = { ...resp.data.data };
 
-          /*  console.log('CREATE MAP: ', this.query.lon, this.query.lat,  appartamenti ); */
 
-          this.createMap(this.query.lon, this.query.lat, appartamenti);
-
-
-
-
-
+          //this.createMap(this.query.lon, this.query.lat, appartamenti);
         })
         .catch((e) => {
           if (e.response && e.response.data) {
@@ -318,54 +300,83 @@ export default {
     },
 
 
-    // createMap(apartments){
-    //       // mappa 
-    //       console.log(apartmets);
-    //       apartments.forEach((apartment)  => {
-    //         this.marker = new tt.Marker().setLngLat([apartment.longitude, apartment.latitude])
-    //       	.setPopup(new tt.Popup({ offset: 35 }).setHTML(apartment.title))
-    //       	.addTo(this.map);
-    //       })
-    //       //marker
-    // },
+    api_SEARCH(payload/* , page */) {
+      let apiUrl = `${this.store.backedRootUrl}/api/search`;
+      //  console.log('URL', apiUrl);
+      this.selectedSuggestion = this.query.querySearchText;
+      console.log("PAYLOAD", payload)
 
-    /* CHIAMATA A GEOCODE TOM TOM RECUPERA LAT LONG E ADDRESS DA STRINGA */
-    fetchTomTom() {
-      if (this.selectSuggestion) {
-        // axios.get("https://api.tomtom.com/search/2/geocode/De%20Ruijterkade%20154,%201011%20AC,%20Amsterdam.json?key=lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E").then((resp) => {
-        axios.get(this.baseUrl + encodeURIComponent(this.selectedSuggestion) + this.api_key).then((resp) => {
-          console.log(resp);
+      axios
+        .get(`${apiUrl}`, {
+          params: {
+            /*     ...page, */
+            ...payload
+          },
+        })
+        .then((resp) => {
 
-          if (resp.data.results.length) {
-            this.querySearchText = resp.data.results[0].address.freeformAddress;
-            this.query.lat = resp.data.results[0].position.lat;
-            this.query.lon = resp.data.results[0].position.lon;
+          this.$router.replace({
+            query: { ...payload/*  , ...page */ }
+          }).then(()=>{
+            console.log("ROUTE SEARCH REPLACE", this.$route.query)
+          }) 
 
-            console.log(this.query);
+          /*    console.log("this dopo invio", this.$route.query) */
+          // this.store.submitResult = 'success';
+          // this.store.loading = false;
 
-            this.api_GET('/search', this.query);
+          /*  console.log("GET", resp.data) */
+          this.apartments = { ...resp.data.data };
+          this.pagination = { ...this.omitKey(resp.data, 'data') };
+          let appartamenti = { ...resp.data.data };
+
+
+          //this.createMap(this.query.lon, this.query.lat, appartamenti);
+        })
+        .catch((e) => {
+          if (e.response && e.response.data) {
+            this.store.submitResult = e.response.data.message;
           } else {
-            return alert(
-              'Ricerca non valida, inserisci un indirizzo valido!'
-            );
+            this.store.submitResult = e.message;
           }
+          console.log(e);
         });
-      };
     },
-    /* recupero i dati e li assegno alle variabili del form */
+
     fechRedirectData() {
-      this.querySearchText = this.$route.query.homeSearchAddress;
-      this.selectedSuggestion = this.querySearchText;
-      this.query.lat = this.$route.query.lat;
-      this.query.lon = this.$route.query.lon;
-      console.log(this.query);
 
-      //faccio partire il get sui dati che ho aggiornato al redirect
+      console.log("ROUTE refresh", this.$route.query)
+      console.log("FORM refresh", this.query)
 
-      this.api_GET('/search', this.query);
+      //se nella route esiste una chiave con lo stesso nome di una di quelle nell'array query su cui sto ciclando, rimpiazzo i valori
+      Object.keys(this.query).forEach((filter) => {
+        console.log(
+          Object.keys(this.$route.query).some(key => key === filter),
+          "ROUTE:", this.$route.query[filter],
+          "FORM", this.query[filter])
+
+        if (Object.keys(this.$route.query).some(key => key === filter)) {
+          this.query[filter] = this.$route.query[filter]
+        }
+      });
+
+      this.selectedSuggestion = this.query.querySearchText;
+      /*     const query = Object.assign({}, this.$route.query);
+          delete query.homeSearchAddress; */
+
+      //a fine ciclo è importante rendere form e route.query uguali in modo che l'URL sia fedele alla ricerca fatta     
+      this.$router.replace({ query: this.query }).then(() => {
+        console.log(
+          "ROUTE .then REPLACE", this.$route.query,
+          "FORM after fechRed", this.query)
+        this.api_SEARCH(this.query);
+      })
+
+
+
+      /*   this.api_SEARCH(this.query); */
+
     },
-
-
   },
   mounted() {
     //asssegno titolo
@@ -374,7 +385,8 @@ export default {
     this.fetchServices();
     //recupero i dati del redirect se c'è (modifica url!!)
     this.fechRedirectData();
-    console.log("THIS ROUTER", this.$route.query)
+
+
   },
   beforeUpdate() {
     //reset submitREsult

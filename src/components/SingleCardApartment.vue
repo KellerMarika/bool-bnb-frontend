@@ -1,8 +1,9 @@
 <template>
 	<div class="card text-dark border-0">
 		<div class="card text-dark border-0">
+			<!-- :class="getSponsorizedFrame().isActive ? 'bg-primary' : ''" -->
 			<div class="sponsorized-frame rounded-4"
-				:class="getSponsorizedFrame().isActive ? 'bg-primary' : ''">
+				>
 				<img class="card-img-top mb-2 card-img rounded-4"
 					:src="fetchImage(apartment.cover_img, apartment.images)"
 					alt=""
@@ -268,7 +269,7 @@ export default {
 	// },
 
 	mounted() {
-		this.getSponsorizedFrame();
+/* 		this.getSponsorizedFrame(); */
 		/* 	console.log("APARTMENT",this.apartment) */
 	},
 };
