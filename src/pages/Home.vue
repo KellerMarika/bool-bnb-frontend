@@ -15,27 +15,27 @@
 					<i class="fa-solid fa-magnifying-glass"></i>
 				</button>
 			</div>
+
 		</div>
-	</div>
+		<div class="card-container px-sm-2 px-xl-5">
 
-	<div class="card-container px-sm-2 px-xl-5 bg-bunner  pt-4">
+			<!-- non dovrebbe servire perchè avviene il redirect -->
+			<h2 class="my-3">{{ querySearch ? querySearch : 'Pensati per Te' }}</h2>
+			<small v-if="apartments && apartments.length">({{ apartments.length }})risultati trovati</small>
+			<div class="row g-4">
 
-		<!-- non dovrebbe servire perchè avviene il redirect -->
-		<h2 class="my-3 text-center">{{ querySearch ? querySearch : 'Pensati per Te' }}</h2>
-		<small v-if="apartments && apartments.length">({{ apartments.length }})risultati trovati</small>
-		<div class="row row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5 g-4 px-md-5">
-
-			<!-- LINK ALLO SHOW -->
-			<router-link
-				v-for="apartment in apartments"
-				:to="{ name: 'Apartments.show', params: { id: apartment.id } }"
-				v-slot="{ singleCard }"
-				class="card-group my-4">
-				<!-- CARD -->
-				<SingleCardApartment :is="singleCard" :apartment="apartment">
-				</SingleCardApartment>
-			</router-link>
-			<!-- pagination down -->
+				<!-- LINK ALLO SHOW -->
+				<router-link
+					v-for="apartment in apartments"
+					:to="{ name: 'Apartments.show', params: { id: apartment.id } }"
+					v-slot="{ singleCard }"
+					class="col-xl-2 col-lg-3 col-md-4 col-sm-6 card-group my-lg-4 my-md-2 my-sm-0">
+					<!-- CARD -->
+					<SingleCardApartment :is="singleCard" :apartment="apartment">
+					</SingleCardApartment>
+				</router-link>
+				<!-- pagination down -->
+			</div>
 		</div>
 	</div>
 </template>
@@ -66,7 +66,7 @@ export default {
 			apartments: null,
 
 			api_key: '.json?storeResult=false&limit=5&countrySet=IT&view=Unified&key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE',
-			baseUrl: 'https://api.tomtom.com/search/2/geocode/',
+			baseUrl: 'https://api.tomtom.com/search/2/geocode/', 
 
 			// non dovrebbe servire perchè avviene il redirect 
 			querySearch: '',
@@ -81,7 +81,7 @@ export default {
 					.then((resp) => {
 						/* 	console.log(resp.data.results); */
 						this.suggestions = resp.data.results;
-						/* 						console.log(this.suggestions); */
+/* 						console.log(this.suggestions); */
 					})
 					.catch((error) => {
 						console.log(error);
@@ -90,20 +90,20 @@ export default {
 				this.suggestions = [];
 			}
 		},
-		/* SELECT ADDRESS FROM AUTOCOMPELTE */
+/* SELECT ADDRESS FROM AUTOCOMPELTE */
 		selectSuggestion(suggestion) {
 			//mi è piaciuto sopra e ho aggiunto anche a db il coutry
 			this.querySearchText = (suggestion.address.freeformAddress + ', ' + suggestion.address.country);
 			/* 			this.dataToRedirect.selectedSuggestion = this.querySearchText; */
-			this.dataToRedirect = { ...suggestion.position, homeSearchAddress: this.querySearchText };
-			/* 	console.log('QUELLO CHE PASSO IN ADVANCED SEARCH E SU CUI FACCIO LA CALL TOMTOM', this.dataToRedirect); */
+			this.dataToRedirect = { ...suggestion.position, querySearchText: this.querySearchText };
+		/* 	console.log('QUELLO CHE PASSO IN ADVANCED SEARCH E SU CUI FACCIO LA CALL TOMTOM', this.dataToRedirect); */
 
 			//reset list sparisce dropdown!
 			this.suggestions = [];
 
 			//REDIRECT
-			/* 	this.$router.push({ name: "AdvancedSearch", query: { ...this.dataToRedirect } }); */
-			this.$router.push({ name: "AdvancedSearch", query: this.dataToRedirect });
+		/* 	this.$router.push({ name: "AdvancedSearch", query: { ...this.dataToRedirect } }); */
+			this.$router.push({ name: "AdvancedSearch", query: this.dataToRedirect});
 		},
 
 		/**FUNZIONE API CALL GET (index).........................
@@ -114,7 +114,7 @@ export default {
 
 		api_GET(thisRoutePath, payload) {
 			let apiUrl = `${this.store.backedRootUrl}/api${thisRoutePath}`;
-			/* 			console.log('URL', apiUrl); */
+/* 			console.log('URL', apiUrl); */
 			axios
 				.get(`${apiUrl}`, {
 					params: payload,
@@ -136,9 +136,9 @@ export default {
 				});
 		},
 	},
-
+	
 	mounted() {
-		/* 	console.log(this.$router.getRoutes()[2]) */
+	/* 	console.log(this.$router.getRoutes()[2]) */
 		titles(this.$route.meta.title);
 		this.api_GET(this.$route.meta.apiRoutePath);
 	},
