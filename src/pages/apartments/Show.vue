@@ -105,11 +105,11 @@
 
 					<div class="mb-4 mx-2 col-8">
 						<div class="fw-semibold">Cosa troverai:</div>
-						<div class="d-flex gap-3">
-							<span class="d-flex gap-2 my-services" v-for="service in apartment.services">
+						<div class="row g-2">
+							<div class="col d-flex gap-3 align-items-center my-services text-center" v-for="service in apartment.services">
 								<img class="with-icon" :src="'/public/services-icons/' + service.icon" alt="" />
-								{{ service.name }}
-							</span>
+								<span style="white-space: nowrap;">{{ service.name }}</span>
+							</div>
 						</div>
 					</div>
 

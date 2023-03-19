@@ -294,6 +294,6 @@ export default {
 
 img {
 	aspect-ratio: 1 / 1;
-	box-shadow: 3px 5px 4px black;
+	box-shadow: 3px 3px 7px rgb(125, 125, 125);
 }
 </style>
