@@ -24,7 +24,8 @@
 
 			<h1 class="my-4">{{ apartment.title }}</h1>
 			<!-- se non ci sono immagini gallery -->
-			<div v-if="apartment.images && apartment.images.length > 0" class="img-container rounded-4 overflow-hidden">
+			<div v-if="apartment.images && apartment.images.length > 0" class="img-container rounded-4 overflow-hidden"
+				@mouseleave="activeImage=0">
 				<div class="img-row-left border-success border-5 row row-cols-1 row-cols-lg-2 gap-2">
 					<!-- main img -->
 					<div class="col h-100 p-0 pb-md-2">
