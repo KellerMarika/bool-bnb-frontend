@@ -96,10 +96,10 @@
 					</div>
 					<hr />
 
-					<div class="mb-4 mx-2 col-8">
+					<div class="mb-4 mx-2 col-md-8 col-sm-12 m-auto">
 						<div class="fw-semibold">Cosa troverai:</div>
-						<div class="d-flex gap-3">
-							<span class="d-flex gap-2 my-services" v-for="service in apartment.services">
+						<div class="row gap-1">
+							<span class="col d-flex gap-2 my-services" v-for="service in apartment.services">
 								<img class="with-icon" :src="'/public/services-icons/' + service.icon" alt="" />
 								{{ service.name }}
 							</span>
