@@ -22,7 +22,6 @@
 
 			<!--Apartments Show -->
 
-			<h1 class="my-4">{{ apartment.title }}</h1>
 			<!-- se non ci sono immagini gallery -->
 			<div v-if="apartment.images && apartment.images.length > 0" class="img-container rounded-4 overflow-hidden">
 				<div class="img-row-left border-success border-5 row row-cols-1 row-cols-lg-2 gap-2">
@@ -30,7 +29,7 @@
 					<div class="col h-100 p-0 pb-md-2">
 						<img class="img-fluid w-100" :src="apartment.images[0].image" alt="" />
 					</div>
-
+ 
 					<!--  <div class="col h-100 p-0"> -->
 					<div class="row-dx col row row-cols-4 row-cols-lg-2 p-0">
 						<div v-for="(img, index) in apartment.images" v-show="index > 0"
@@ -41,16 +40,23 @@
 				</div>
 			</div>
 
-			<!-- carica solo la cover -->
-			<div v-else-if="apartment.cover_img" class="img-container rounded-4 overflow-hidden"
-				:class="apartment.cover_img ? 'w-50' : 'w-25'">
-				<img :src="
-					apartment.cover_img
-						? this.store.backedRootUrl +
-						'/storage/' +
-						apartment.cover_img
-						: '/placeholder-image.png'
-				" :alt="apartment.title + '_img_' + apartment.cover_img" class="img-fluid w-100" />
+			<h1 class="my-4 text-center">{{ apartment.title }}</h1>
+			<!-- se non ci sono immagini gallery -->
+			<div v-if="apartment.images && apartment.images.length > 0" class="img-container rounded-4 overflow-hidden">
+				<div class="img-row-left border-success border-5 row row-cols-1 row-cols-lg-2 gap-2">
+					<!-- main img -->
+					<div class="col h-100 p-0 pb-md-2">
+						<img class=" img-fluid w-100" :src="apartment.images[activeImage].image" alt="" />
+					</div>
+
+					<!--  <div class="col h-100 p-0"> -->
+					<div class="row-dx col row row-cols-4 row-cols-lg-2 p-0">
+						<div v-for="(img, index) in apartment.images" v-show="index > 0"
+							class="col h-50 p-0 px-md-1 px-lg-3 py-lg-4">
+							<img class="img-fluid" :src="img.image" :alt="'image ' + (index + 1)" @click="activeImage=index"/>
+						</div>
+					</div>
+				</div>
 			</div>
 
 			<!-- carica placeolder -->
