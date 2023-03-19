@@ -34,9 +34,6 @@ export function titles(pageTitle) {
 } */
 
 
-
-
-
 /**FUNZIONE API CALL POST (create->store)....................
  * 
  * @param {string} thisRoutePath  es= 'apartments/create'
