@@ -2,14 +2,16 @@
   <fieldset class="container border rounded" style="margin-top:80px">
     <legend class=" fw-bold text-primary fs-1 pb-0 pt-5 p-3 text-start">Ricerca Avanzata:</legend>
 
-    <form @submit.prevent="api_GET('/search', this.query)" class="px-5 pb-4 text-start">
+    <form @submit.prevent="api_SEARCH(this.query)" class="px-5 pb-4 text-start">
 
       <div class="row align-items-center justify-content-between gap-4">
 
         <div class="input-container mb-2 col-12  ">
           <label class="form-label fw-bold ms-2 fw-bold " for="city">Citta e Indirizzo: </label>
+
           <input type="text" placeholder="Es. Via generale cascino 14 Roma" class="form-control" id="streetNameInput"
-              v-model="querySearchText" @input="getSuggestions()" style="max-width: 100%;" />
+              v-model="query.querySearchText" @input="getSuggestions()" style="max-width: 100%;" />
+
           <ul class="list-group list-group-flush" v-if="suggestions && suggestions.length > 0">
             <li class="list-unstyled list-group-item-action list-group-item" v-for="suggestion in suggestions"
                 :key="suggestion.id" @click="selectSuggestion(suggestion)">
@@ -141,7 +143,7 @@ export default {
       store,
       services: [],
 
-      querySearchText: null,
+
       suggestions: null,
       selectedSuggestion: null,
       querySearch: '',
@@ -153,12 +155,14 @@ export default {
       appartamenti: null,
 
       query: {
+        querySearchText: '',
         lat: '',
         lon: '',
         radius: 20,
         min_rooms: 1,
         min_beds: 1,
         services: [],
+        page: 1
       },
 
 
@@ -174,8 +178,8 @@ export default {
 
     getSuggestions() {
       this.selectedSuggestion = "";
-      if (this.querySearchText.length > 0) {
-        axios.get(`https://api.tomtom.com/search/2/geocode/${this.querySearchText}.json?storeResult=false&limit=5&countrySet=IT&view=Unified&key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE`)
+      if (this.query.querySearchText.length > 0) {
+        axios.get(`https://api.tomtom.com/search/2/geocode/${this.query.querySearchText}.json?storeResult=false&limit=5&countrySet=IT&view=Unified&key=OwsqVQlIWGAZAkomcYI0rDYG2tDpmRPE`)
 
           .then((resp) => {
             this.suggestions = resp.data.results;
@@ -190,7 +194,7 @@ export default {
     },
 
     selectSuggestion(suggestion) {
-      this.querySearchText = (suggestion.address.freeformAddress + ', ' + suggestion.address.country);
+      this.query.querySearchText = (suggestion.address.freeformAddress + ', ' + suggestion.address.country);
       this.query.lat = suggestion.position.lat;
       this.query.lon = suggestion.position.lon;
       /* console.log('suggestion: ', this.query, this.suggestion) */
@@ -262,7 +266,7 @@ export default {
     api_GET(thisRoutePath, payload, page) {
       let apiUrl = `${this.store.backedRootUrl}/api${thisRoutePath}`;
       //  console.log('URL', apiUrl);
-      this.selectedSuggestion = this.querySearchText
+      this.selectedSuggestion = this.query.querySearchText
       axios
         .get(`${apiUrl}`, {
           params: {
@@ -299,7 +303,8 @@ export default {
     api_SEARCH(payload/* , page */) {
       let apiUrl = `${this.store.backedRootUrl}/api/search`;
       //  console.log('URL', apiUrl);
-      this.selectedSuggestion = this.querySearchText;
+      this.selectedSuggestion = this.query.querySearchText;
+      console.log("PAYLOAD", payload)
 
       axios
         .get(`${apiUrl}`, {
@@ -314,8 +319,8 @@ export default {
             query: { ...payload/*  , ...page */ }
           }).then(()=>{
             console.log("ROUTE SEARCH REPLACE", this.$route.query)
-          })
-          
+          }) 
+
           /*    console.log("this dopo invio", this.$route.query) */
           // this.store.submitResult = 'success';
           // this.store.loading = false;
@@ -343,36 +348,33 @@ export default {
       console.log("ROUTE refresh", this.$route.query)
       console.log("FORM refresh", this.query)
 
+      //se nella route esiste una chiave con lo stesso nome di una di quelle nell'array query su cui sto ciclando, rimpiazzo i valori
+      Object.keys(this.query).forEach((filter) => {
+        console.log(
+          Object.keys(this.$route.query).some(key => key === filter),
+          "ROUTE:", this.$route.query[filter],
+          "FORM", this.query[filter])
+
+        if (Object.keys(this.$route.query).some(key => key === filter)) {
+          this.query[filter] = this.$route.query[filter]
+        }
+      });
+
+      this.selectedSuggestion = this.query.querySearchText;
+      /*     const query = Object.assign({}, this.$route.query);
+          delete query.homeSearchAddress; */
+
+      //a fine ciclo è importante rendere form e route.query uguali in modo che l'URL sia fedele alla ricerca fatta     
+      this.$router.replace({ query: this.query }).then(() => {
+        console.log(
+          "ROUTE .then REPLACE", this.$route.query,
+          "FORM after fechRed", this.query)
+        this.api_SEARCH(this.query);
+      })
 
 
 
-      if (this.$route.query.homeSearchAddress) {
-        console.log("Redirect From HOME")
-
-        this.querySearchText = this.$route.query.homeSearchAddress;
-        this.selectedSuggestion = this.querySearchText;
-
-
-
-        /*   const query = Object.assign({}, this.$route.query);
-          delete query.homeSearchAddress;
-          this.$router.replace({ query }); */
-      } else {
-        console.log("redirect from SHOW /")
-
-
-      }
-
-
-      this.query.lat = this.$route.query.lat;
-      this.query.lon = this.$route.query.lon;
-
-      //faccio partire il get sui dati che ho aggiornato al redirect
-
-      console.log("ROUTE after fechRed", this.$route.query)
-      console.log("FORM after fechRed", this.query)
-
-      this.api_SEARCH(this.query);
+      /*   this.api_SEARCH(this.query); */
 
     },
   },
@@ -382,7 +384,6 @@ export default {
     //recupero i services per form
     this.fetchServices();
     //recupero i dati del redirect se c'è (modifica url!!)
-    console.log(this.$route.query)
     this.fechRedirectData();
 
 

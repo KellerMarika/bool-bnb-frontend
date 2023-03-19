@@ -95,7 +95,7 @@ export default {
 			//mi è piaciuto sopra e ho aggiunto anche a db il coutry
 			this.querySearchText = (suggestion.address.freeformAddress + ', ' + suggestion.address.country);
 			/* 			this.dataToRedirect.selectedSuggestion = this.querySearchText; */
-			this.dataToRedirect = { ...suggestion.position, homeSearchAddress: this.querySearchText };
+			this.dataToRedirect = { ...suggestion.position, querySearchText: this.querySearchText };
 		/* 	console.log('QUELLO CHE PASSO IN ADVANCED SEARCH E SU CUI FACCIO LA CALL TOMTOM', this.dataToRedirect); */
 
 			//reset list sparisce dropdown!
