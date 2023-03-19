@@ -84,18 +84,19 @@
       </div>
     </form>
   </fieldset>
-
   <section v-if="selectedSuggestion && apartments" class="pt-lg-5 pt-sm-2 mt-3">
     <div class="container-fluid px-5">
+
       <h1 class="p-lg-5 p-sm-0 p-md-1">Appartamenti nel raggio di {{ query.radius }}km da {{ selectedSuggestion }}</h1>
 
-      <div class="container row justify-content-center">
 
+      <!-- MAP -->
+      <div class="container row justify-content-center">
         <div class="col-8-lg col-8-md col-12-sm offset-2 ">
           <div id="map" class="map  border rounded-3 mb-5 m-auto me-3">
+
           </div>
         </div>
-
       </div>
 
 
@@ -130,11 +131,13 @@
 </template>
 
 <script>
-import tt from '@tomtom-international/web-sdk-maps';
+import tt, { map } from '@tomtom-international/web-sdk-maps';
 import axios from 'axios';
-import { store, titles } from '../store';
+import { store, titles} from '../store';
 import SingleCardApartment from '../components/SingleCardApartment.vue';
 import Pagination from '../components/Pagination.vue';
+import { toHandlers } from 'vue';
+import { walkIdentifiers } from '@vue/compiler-core';
 export default {
   components: { SingleCardApartment, Pagination },
   name: 'AdvancedSearch',
@@ -165,17 +168,34 @@ export default {
         page: 1
       },
 
-
+      map_Element: document.getElementById('map'),
       marker: [],
       lng: {},
       lat: {},
       markertitle: null,
-
     }
   },
   methods: {
-    // nuova funzione------------------------------------------------------------
 
+
+    /* CREATE MAP */
+    createMap(lon, lat, appartamenti) {
+
+      this.map = tt.map({
+        key: 'lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E',
+        container: 'map',
+        center: [lon, lat],
+        zoom: 10,
+      })
+
+      Object.keys(appartamenti).forEach((apartment) => {
+        this.Marker = new tt.Marker().setLngLat([appartamenti[apartment].longitude, appartamenti[apartment].latitude]).setPopup(new tt.Popup({ offset: 35 }).setHTML(appartamenti[apartment].title + '<br/>' + appartamenti[apartment].address)).addTo(this.map);
+      });
+      return this.map
+    },
+
+
+    // AUTOCOMPLETE------------------------------------------------------------
     getSuggestions() {
       this.selectedSuggestion = "";
       if (this.query.querySearchText.length > 0) {
@@ -192,7 +212,7 @@ export default {
         this.suggestions = [];
       }
     },
-
+    //SELECT SUGGESSTED ADDRESS
     selectSuggestion(suggestion) {
       this.query.querySearchText = (suggestion.address.freeformAddress + ', ' + suggestion.address.country);
       this.query.lat = suggestion.position.lat;
@@ -201,24 +221,6 @@ export default {
       this.suggestions = [];
     },
 
-    createMap(lon, lat, appartamenti) {
-      // mappa 
-      this.map = tt.map({
-        key: 'lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E',
-        container: 'map',
-        center: [lon, lat],
-        zoom: 10,
-      });
-
-      Object.keys(appartamenti).forEach((apartment) => {
-
-        /*    console.log('dentro ciclo foreach', appartamenti[apartment].longitude, appartamenti[apartment].latitude,appartamenti[apartment].title); */
-
-        this.Marker = new tt.Marker().setLngLat([appartamenti[apartment].longitude, appartamenti[apartment].latitude]).setPopup(new tt.Popup({ offset: 35 }).setHTML(appartamenti[apartment].title + '<br/>' + appartamenti[apartment].address)).addTo(this.map);
-        //  //marker
-      });
-
-    },
 
 
     /* RECUPERA LISTA SERVIZI DISPONIBILI PER APPARTAMENTO */
@@ -257,50 +259,10 @@ export default {
       }, {});
     },
 
-    /**FUNZIONE API CALL GET (index).........................
-     *
-     * @param {string} thisRoutePath  es= 'apartments/create'
-     * @param {object} payload es=  {pagination:3}
-     */
-
-    api_GET(thisRoutePath, payload, page) {
-      let apiUrl = `${this.store.backedRootUrl}/api${thisRoutePath}`;
-      //  console.log('URL', apiUrl);
-      this.selectedSuggestion = this.query.querySearchText
-      axios
-        .get(`${apiUrl}`, {
-          params: {
-            ...page,
-            ...payload
-          },
-        })
-        .then((resp) => {
-
-          this.$router.replace({ query: { ...payload, ...page } })
-          /*    console.log("this dopo invio", this.$route.query) */
-          // this.store.submitResult = 'success';
-          // this.store.loading = false;
-
-          /*  console.log("GET", resp.data) */
-          this.apartments = { ...resp.data.data };
-          this.pagination = { ...this.omitKey(resp.data, 'data') };
-          let appartamenti = { ...resp.data.data };
-
-
-          //this.createMap(this.query.lon, this.query.lat, appartamenti);
-        })
-        .catch((e) => {
-          if (e.response && e.response.data) {
-            this.store.submitResult = e.response.data.message;
-          } else {
-            this.store.submitResult = e.message;
-          }
-          console.log(e);
-        });
-    },
 
 
     api_SEARCH(payload/* , page */) {
+
       let apiUrl = `${this.store.backedRootUrl}/api/search`;
       //  console.log('URL', apiUrl);
       this.selectedSuggestion = this.query.querySearchText;
@@ -309,18 +271,16 @@ export default {
       axios
         .get(`${apiUrl}`, {
           params: {
-            /*     ...page, */
             ...payload
           },
         })
         .then((resp) => {
 
           this.$router.replace({
-            query: { ...payload/*  , ...page */ }
-          }).then(()=>{
+            query: { ...payload }
+          }).then(() => {
             console.log("ROUTE SEARCH REPLACE", this.$route.query)
-          }) 
-
+          });
           /*    console.log("this dopo invio", this.$route.query) */
           // this.store.submitResult = 'success';
           // this.store.loading = false;
@@ -328,10 +288,13 @@ export default {
           /*  console.log("GET", resp.data) */
           this.apartments = { ...resp.data.data };
           this.pagination = { ...this.omitKey(resp.data, 'data') };
-          let appartamenti = { ...resp.data.data };
 
-
-          //this.createMap(this.query.lon, this.query.lat, appartamenti);
+          const map_Element = document.getElementById("map");
+          if (map_Element) {
+            this.createMap(this.query.lon, this.query.lat, this.apartments);
+            console.log(this.createMap(this.query.lon, this.query.lat, this.apartments))
+            console.log(this.map)
+          }
         })
         .catch((e) => {
           if (e.response && e.response.data) {
@@ -341,19 +304,20 @@ export default {
           }
           console.log(e);
         });
+
     },
 
     fechRedirectData() {
 
-      console.log("ROUTE refresh", this.$route.query)
-      console.log("FORM refresh", this.query)
+      /*   console.log("ROUTE refresh", this.$route.query)
+        console.log("FORM refresh", this.query) */
 
       //se nella route esiste una chiave con lo stesso nome di una di quelle nell'array query su cui sto ciclando, rimpiazzo i valori
       Object.keys(this.query).forEach((filter) => {
-        console.log(
-          Object.keys(this.$route.query).some(key => key === filter),
-          "ROUTE:", this.$route.query[filter],
-          "FORM", this.query[filter])
+        /*   console.log(
+            Object.keys(this.$route.query).some(key => key === filter),
+            "ROUTE:", this.$route.query[filter],
+            "FORM", this.query[filter]) */
 
         if (Object.keys(this.$route.query).some(key => key === filter)) {
           this.query[filter] = this.$route.query[filter]
@@ -366,9 +330,9 @@ export default {
 
       //a fine ciclo è importante rendere form e route.query uguali in modo che l'URL sia fedele alla ricerca fatta     
       this.$router.replace({ query: this.query }).then(() => {
-        console.log(
-          "ROUTE .then REPLACE", this.$route.query,
-          "FORM after fechRed", this.query)
+        /*   console.log(
+            "ROUTE .then REPLACE", this.$route.query,
+            "FORM after fechRed", this.query) */
         this.api_SEARCH(this.query);
       })
 
@@ -377,6 +341,28 @@ export default {
       /*   this.api_SEARCH(this.query); */
 
     },
+
+    waitForElm(selector) {
+      return new Promise(resolve => {
+        if (document.querySelector(selector)) {
+          return resolve(document.querySelector(selector));
+        }
+
+        const observer = new MutationObserver(mutations => {
+          if (document.querySelector(selector)) {
+            resolve(document.querySelector(selector));
+            observer.disconnect();
+          }
+        });
+
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true
+        });
+      });
+    },
+
+
   },
   mounted() {
     //asssegno titolo
@@ -385,14 +371,30 @@ export default {
     this.fetchServices();
     //recupero i dati del redirect se c'è (modifica url!!)
     this.fechRedirectData();
+  },
+  watch: {
 
+    apartments: {
+      handler(newVal, oldVal) {
+        if (newVal) {
+          console.log("apartments new", newVal)
+          this.waitForElm('#map').then((elm) => {
+            console.log('Element is ready');
+
+            this.createMap(this.query.lon, this.query.lat, this.apartments);
+            /* console.log(elm.textContent); */
+          });
+        }
+      }
+    }
+  },
+
+  updated() {
 
   },
-  beforeUpdate() {
-    //reset submitREsult
-    this.store.submitResult = '';
+  created() {
   },
-  created() { },
+
 };
 </script>
 
