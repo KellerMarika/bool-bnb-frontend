@@ -313,7 +313,7 @@ export default {
 	}
 }
 	.card-container{
-		background-color:lighten($secondary_color, 35%);
+		background-color:lighten($secondary_color_dark, 35%);
 		margin-bottom: 200px;
 		.title-cursive{
 		font-family: 'Gochi Hand', cursive;
