@@ -9,7 +9,7 @@
         </div>
       </a>
 
-      <div class="flex-fill ps-3 pe-2 pe-lg-3  text-end">
+      <div class="flex-fill w-100 ps-3 pe-2 pe-lg-3  text-end">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation"><!-- {{ __('Toggle navigation') }} -->
