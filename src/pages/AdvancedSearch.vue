@@ -1,139 +1,143 @@
 <template >
-  <fieldset class="container border rounded" style="margin-top:80px">
-    <legend class=" fw-bold text-primary fs-1 pb-0 pt-5 p-3 text-start">Ricerca Avanzata:</legend>
+  <div class="bg-main-container">
 
-    <form @submit.prevent="api_SEARCH(this.query)" class="px-5 pb-4 text-start">
+    <fieldset class="container form-container border rounded-4">
+      <legend class=" fw-bold text-primary fs-1 pb-0 pt-5 p-3 text-start">Ricerca Avanzata:</legend>
 
-      <div class="row align-items-center justify-content-between gap-4">
+      <form @submit.prevent="api_SEARCH(this.query)" class="px-5 pb-4 text-start">
 
-        <div class="input-container mb-2 col-12  ">
-          <label class="form-label fw-bold ms-2 fw-bold " for="city">Citta e Indirizzo: </label>
+        <div class="row align-items-center justify-content-between gap-4">
 
-          <input type="text" placeholder="Es. Via generale cascino 14 Roma" class="form-control" id="streetNameInput"
-              v-model="query.querySearchText" @input="getSuggestions()" style="max-width: 100%;" />
+          <div class="input-container mb-2 col-12  ">
+            <label class="form-label fw-bold ms-2 fw-bold " for="city">Citta e Indirizzo: </label>
 
-          <ul class="list-group list-group-flush" v-if="suggestions && suggestions.length > 0">
-            <li class="list-unstyled list-group-item-action list-group-item" v-for="suggestion in suggestions"
-                :key="suggestion.id" @click="selectSuggestion(suggestion)">
-              {{ suggestion.address.freeformAddress + ' ' + suggestion.address.country }}
-            </li>
-          </ul>
+            <input type="text" placeholder="Es. Via generale cascino 14 Roma" class="form-control" id="streetNameInput"
+                v-model="query.querySearchText" @input="getSuggestions()" style="max-width: 100%;" />
+
+            <ul class="list-group list-group-flush" v-if="suggestions && suggestions.length > 0">
+              <li class="list-unstyled list-group-item-action list-group-item" v-for="suggestion in suggestions"
+                  :key="suggestion.id" @click="selectSuggestion(suggestion)">
+                {{ suggestion.address.freeformAddress + ' ' + suggestion.address.country }}
+              </li>
+            </ul>
+          </div>
+
+          <!-- rooms -->
+
+          <div class="input-container pb-2 col-3 text-start ">
+            <label class="form-label fw-bold fw-bold" for="min_rooms">min Camere: </label>
+            <select v-model="query.min_rooms" class="form-control" id="min_rooms" name="min_rooms">
+              <option v-for="i in 5" :key="i" :value="i">
+                {{ i == 5 ? i + ' +' : i }}
+              </option>
+            </select>
+          </div>
+
+          <!--     {{-- BEDROOMS QTY ------------- --}} -->
+
+          <div class="input-container text-start pb-2 col-3">
+            <label class="form-label fw-bold" for="min_beads ">min Letti</label>
+            <select v-model="query.min_beds" class="form-control" id="min_beads" name="min_beads">
+              <option v-for="i in 5" :key="i" :value="i">
+                {{ i == 5 ? i + ' +' : i }}
+              </option>
+            </select>
+          </div>
+
+          <!-- radius --------->
+
+          <div class="mb-2 col-3">
+            <label class="form-label fw-bold me-2 text-start" for="radiusInput">Raggio (km)</label>
+            <select v-model="query.radius" class="form-control " name="radiusInput" value="20">
+              <option value="20">20</option>
+              <option value="10">10</option>
+              <option value="5">-5</option>
+            </select>
+          </div>
+
         </div>
+        <div class="input-container pb-2 col-12">
+          <label class="form-label fw-bold d-block pb-3 ">Scegli i Servizi:</label>
+          <div class="input-container pb-2 row justify-content-center">
 
-        <!-- rooms -->
+            <div
+                class=" col row  row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-between align-items-baseline mx-0 ">
+              <div v-for="(service, i) in services" :key="i" class="col text-center d-flex align-items-center py-2">
 
-        <div class="input-container pb-2 col-3 text-start ">
-          <label class="form-label fw-bold fw-bold" for="min_rooms">min Camere: </label>
-          <select v-model="query.min_rooms" class="form-control" id="min_rooms" name="min_rooms">
-            <option v-for="i in 5" :key="i" :value="i">
-              {{ i == 5 ? i + ' +' : i }}
-            </option>
-          </select>
-        </div>
+                <input class="form-check" type="checkbox" :value="service.id" id="service_{{i}}" v-model="query.services">
+                <label for="service_{{i}}">
+                  <i><img :src="'../../public/services-icons/' + service.icon" alt="" /></i>
 
-        <!--     {{-- BEDROOMS QTY ------------- --}} -->
+                  {{ service.name == 'Aria Condizionata' ? 'Clima' : service.name }}
+                </label>
 
-        <div class="input-container text-start pb-2 col-3">
-          <label class="form-label fw-bold" for="min_beads ">min Letti</label>
-          <select v-model="query.min_beds" class="form-control" id="min_beads" name="min_beads">
-            <option v-for="i in 5" :key="i" :value="i">
-              {{ i == 5 ? i + ' +' : i }}
-            </option>
-          </select>
-        </div>
-
-        <!-- radius --------->
-
-        <div class="mb-2 col-3">
-          <label class="form-label fw-bold me-2 text-start" for="radiusInput">Raggio (km)</label>
-          <select v-model="query.radius" class="form-control " name="radiusInput" value="20">
-            <option value="20">20</option>
-            <option value="10">10</option>
-            <option value="5">-5</option>
-          </select>
-        </div>
-
-      </div>
-      <div class="input-container pb-2 col-12">
-        <label class="form-label fw-bold d-block pb-3 ">Scegli i Servizi:</label>
-        <div class="input-container pb-2 row justify-content-center">
-
-          <div
-              class=" col row  row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-between align-items-baseline mx-0 ">
-            <div v-for="(service, i) in services" :key="i" class="col text-center d-flex align-items-center py-2">
-
-              <input class="form-check" type="checkbox" :value="service.id" id="service_{{i}}" v-model="query.services">
-              <label for="service_{{i}}">
-                <i><img :src="'../../public/services-icons/' + service.icon" alt="" /></i>
-
-                {{ service.name == 'Aria Condizionata' ? 'Clima' : service.name }}
-              </label>
-
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="d-flex justify-content-center gap-3">
-        <button class="btn btn-secondary" typeof="reset" :disabled="loading"> Annulla
-        </button>
-        <button class="btn btn-success" :disabled="loading">
-          <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          Invia
-        </button>
-      </div>
-    </form>
-  </fieldset>
-  <section v-if="selectedSuggestion && apartments" class="pt-lg-5 pt-sm-2 mt-3">
-    <div class="container-fluid px-5">
+        <div class="d-flex justify-content-center gap-3">
+          <button class="btn btn-secondary" typeof="reset" :disabled="loading"> Annulla
+          </button>
+          <button class="btn btn-success" :disabled="loading">
+            <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Invia
+          </button>
+        </div>
+      </form>
+    </fieldset>
 
-      <h1 class="p-lg-5 p-sm-0 p-md-1">Appartamenti nel raggio di {{ query.radius }}km da {{ selectedSuggestion }}</h1>
+    <section id="search-Result" v-if="selectedSuggestion && apartments" class="pt-lg-5 pt-sm-2 mt-3">
+      <div class="container-fluid px-5">
+
+        <div class="map-main-container">
+          <h1 class=" p-0 p-md-1 p-lg-3 text-center  title-cursive">Appartamenti nel raggio di {{ this.$route.query.radius }}km da
+            <span class="title-focus"> {{ selectedSuggestion }}</span>
+          </h1>
 
 
-      <!-- MAP -->
-      <div class="container row justify-content-center">
-        <div class="col-8-lg col-8-md col-12-sm offset-2 ">
-          <div id="map" class="map  border rounded-3 mb-5 m-auto me-3">
-
+          <!-- MAP -->
+          <div class="container row justify-content-center p-0 pb-5 m-auto ">
+            <div class="map-container p-0 m-0 col-8-lg col-8-md col-12-sm position-relative ">
+              <div id="map" class="map  border rounded-3 mb-5 m-auto me-3">
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+        <!-- pagination up -->
+        <div class="cards-container  row row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5 g-4 px-md-5">
 
+          <!-- LINK ALLO SHOW -->
+          <router-link v-for="apartment in apartments" :to="{ name: 'Apartments.show', params: { id: apartment.id } }"
+              v-slot="{ singleCard }" class="card-group my-4">
 
-      <!-- pagination up -->
-      <div class="row row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5 g-4 px-md-5">
-
-        <!-- LINK ALLO SHOW -->
-        <router-link v-for="apartment in apartments" :to="{ name: 'Apartments.show', params: { id: apartment.id } }"
-            v-slot="{ singleCard }" class="card-group my-4">
-
-          <!-- CARD -->
-          <div>
-            <SingleCardApartment :is="singleCard" :apartment='apartment'> </SingleCardApartment>
-            <div class="px-1 mt-0 fw-bolder">
-              <span class="text-black"> Distanza: </span> {{ apartment.distance }} <span
-                  class="card-text text-black opacity-25 ">Km</span>
-            </div>
-            <!-- <div class="px-1 mt-0 fw-bolder">
+            <!-- CARD -->
+            <div>
+              <SingleCardApartment :is="singleCard" :apartment='apartment'> </SingleCardApartment>
+              <div class="px-1 mt-0 fw-bolder">
+                <span class="text-black"> Distanza: </span> {{ apartment.distance }} <span
+                    class="card-text text-black opacity-25 ">Km</span>
+              </div>
+              <!-- <div class="px-1 mt-0 fw-bolder">
               <span class="text-black" > Total services: </span> {{ apartment.services.length }}
             </div> -->
-          </div>
-        </router-link>
+            </div>
+          </router-link>
+        </div>
+
+        <!-- PAGINAZIONE SOTTO -->
+        <Pagination :pagination="pagination"
+            :query="query"
+            @api_SEARCH="api_SEARCH"></Pagination>
       </div>
-
-      <!-- PAGINAZIONE SOTTO -->
-      <Pagination :pagination="pagination"
-          :query="query"
-          @api_SEARCH="api_SEARCH"></Pagination>
-
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
 
 <script>
 import tt, { map } from '@tomtom-international/web-sdk-maps';
 import axios from 'axios';
-import { store, titles} from '../store';
+import { store, titles } from '../store';
 import SingleCardApartment from '../components/SingleCardApartment.vue';
 import Pagination from '../components/Pagination.vue';
 import { toHandlers } from 'vue';
@@ -145,7 +149,6 @@ export default {
     return {
       store,
       services: [],
-
 
       suggestions: null,
       selectedSuggestion: null,
@@ -185,7 +188,7 @@ export default {
         key: 'lAYuyhutioeCVRvHVSZgBC8wf8CPcO0E',
         container: 'map',
         center: [lon, lat],
-        zoom: 10,
+        zoom: 13,
       })
 
       Object.keys(appartamenti).forEach((apartment) => {
@@ -402,6 +405,49 @@ export default {
 @use '../styles/generic.scss';
 @use '../styles/partials/variables' as *;
 
+.bg-main-container {
+  background: rgb(255, 255, 255);
+  background: linear-gradient(0deg, rgba(255, 255, 255, 1) 22%, saturate($secondary_color_light,10%) 100%);
+
+  .form-container{
+  margin-top: 80px;
+  background-color: rgba(255, 255, 255, 0.674);
+  }
+}
+
+.map-main-container {
+  background-color: $secondary_color_dark;
+  margin-bottom: 200px;
+  max-width: 1500px; 
+  padding: 30px;
+  margin:auto;
+  &>*{
+    margin: auto;
+  }
+  .map-container{
+    margin:auto;
+  overflow: hidden;
+ 
+  min-height: 700px;
+  position: relative;
+
+    #map {
+      width: 100%;
+      height: 100%;
+     position: relative;
+     top: 0;
+     left: 0;
+     bottom: 0;
+     right: 0;
+     margin: 0 !important;
+    }
+  }
+}
+
+.cards-container{
+padding-top: 120px;
+}
+
 i {
   img {
     width: 25px;
@@ -409,7 +455,4 @@ i {
   }
 }
 
-#map {
-  aspect-ratio: 16/9;
-}
 </style>

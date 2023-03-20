@@ -1,8 +1,8 @@
 <template>
 
   <TheHeader></TheHeader>
-    <router-view></router-view>
-  <TheFooter/>
+    <router-view ></router-view>
+  <TheFooter />
   </template>
   
   <script>

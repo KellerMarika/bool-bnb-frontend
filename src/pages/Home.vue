@@ -205,7 +205,7 @@ export default {
 .suggestion-element{
 	background-color: #252e2ecb !important;
 	&:hover{
-		color: $secondary_color_light !important;
+		color: saturate($secondary_color, 10%)  !important;
 	}
 }
 
@@ -313,17 +313,8 @@ export default {
 	}
 }
 	.card-container{
-		background-color:lighten($secondary_color_dark, 35%);
+		background-color:$secondary_color_light;
 		margin-bottom: 200px;
-		.title-cursive{
-		font-family: 'Gochi Hand', cursive;
-		font-size: 50px;
-		padding-top: 50px;
-		color: $dark_color;
-		.title-focus{
-			color:saturate($primary_color, 20%);
-			font-size: 60px;
-		}
-	}
+	
 	}
 </style>
