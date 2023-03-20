@@ -4,17 +4,17 @@
     <div class="container overflow-auto">
 
       <div class="row row-cols-1 row-cols-md-3 mt-5 p-5 overflow-auto">
-        <ul class="col">
+        <ul class="col py-2">
           <li>link</li>
           <li>link</li>
           <li>link</li>
         </ul>
-        <ul class="col">
+        <ul class="col py-2">
           <li>link</li>
           <li>link</li>
           <li>link</li>
         </ul>
-        <ul class="col">
+        <ul class="col py-2">
           <li>link</li>
           <li>link</li>
           <li>link</li>
@@ -39,7 +39,7 @@ export default {
 <style scoped lang="scss">
 footer {
   margin-top: 350px;
-  height: 200px;
+  min-height: 200px;
 
   .footer-bg-top-img {
     position: absolute;
