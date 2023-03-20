@@ -415,10 +415,9 @@ export default {
 }
 
 .map-main-container {
-  background-color: $secondary_color_dark;
+  background-color: $info_color;
   margin-bottom: 200px;
   max-width: 1500px; 
-  padding: 30px;
   margin:auto;
   &>*{
     margin: auto;
