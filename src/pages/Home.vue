@@ -6,7 +6,7 @@
 				Il tuo prossimo viaggio parte da:
 				<p class="text-primary mt-3" id="cities"> </p>
 			</h1>
-			<div class="w-75 search-input position-relative">
+			<div class="w-75 search-input rounded-5 position-relative">
 				<input
 					v-model="querySearchText"
 					class="search__input"
@@ -180,6 +180,32 @@ export default {
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,700,900');
 
 
+/* UTILITIES */
+.title-cursive {
+  font-family: 'Gochi Hand',
+    cursive;
+  font-size: 40px;
+  padding-top: 40px;
+  color: $dark_color;
+
+  .title-focus {
+    color: saturate($primary_color, 20%);
+    font-size: 50px;
+  }
+
+  @include media-breakpoint-up(md) {
+    font-size: 50px;
+    padding-top: 50px;
+
+    .title-focus {
+      font-size: 60px;
+    }
+  }
+}
+
+
+
+
 ::-webkit-scrollbar {
     width: 8px;
   }
@@ -224,6 +250,12 @@ export default {
 	align-items: center;
 	justify-content: center;
 	position: relative;
+	/* From https://css.glass */
+background: rgba(255, 255, 255, 0.16);
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(6.3px);
+-webkit-backdrop-filter: blur(6.3px);
+border: 1px solid rgba(255, 255, 255, 0.32);
 
 	ul {
 		position: absolute;
