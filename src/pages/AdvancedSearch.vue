@@ -1,7 +1,7 @@
 <template >
-  <div class="bg-main-container" style="padding-top: 80px;">
+  <div class="bg-main-container position-relative" style="padding-top: 80px;">
 
-    <fieldset class="container form-container border rounded-4 shadow">
+    <fieldset class="container form-container border rounded-4 shadow" @click="showActive=false">
       <legend class=" fw-bold text-primary fs-1 pb-0 pt-5 p-3 text-start">
         <i class="fa-solid fa-magnifying-glass-location"></i>
         Ricerca Avanzata:
@@ -27,9 +27,9 @@
             </ul>
           </div>
 
-          <div class="row gap-3 align-items-end">
+          <div class="row gap-3 align-items-end m-0 p-0">
 
-            <div class="col row row-cols-3">
+            <div class="col row row-cols-1 row-cols-md-3 align-items-end">
               <!-- rooms -->
               <div class="input-container pb-2 col text-start ">
                 <label class="form-label fw-bold fw-bold" for="min_rooms">min Camere: </label>
@@ -53,7 +53,7 @@
 
               <!-- radius --------->
 
-              <div class="mb-2 col">
+              <div class="col pb-2 input-container ">
                 <label class="form-label fw-bold me-2 text-start" for="radiusInput">Raggio (km)</label>
                 <select v-model="query.radius" class="form-control rounded-5 " name="radiusInput" value="20">
                   <option value="20">20</option>
@@ -63,7 +63,7 @@
               </div>
             </div>
 
-            <div class="col-5 row">
+            <div class=" col-12  col-lg-5 row m-0 p-0">
               <!-- services -->
               <div class="input-container  pb-2 col">
                 <div class="dropdown w-auto pt-3 ">
@@ -97,14 +97,12 @@
                   </div>
                 </div>
               </div>
-
             </div>
-
           </div>
-
         </div>
 
-        <div class="d-flex justify-content-start gap-3">
+        <!-- options -->
+        <div class="d-flex justify-content-between  justify-content-lg-start gap-3">
           <button class="btn btn-outline-primary " typeof="reset" :disabled="loading">
             <i class="fa-solid fa-reply"></i>
             Annulla
@@ -117,7 +115,7 @@
       </form>
     </fieldset>
 
-    <section id="search-Result" v-if="selectedSuggestion && apartments" class="pt-lg-5 pt-sm-2 mt-3">
+    <section id="search-Result" v-if="showActive===true && selectedSuggestion && apartments" class="pt-lg-5 pt-sm-2 mt-3">
       <div class="container-fluid p-0">
 
         <div class="map-main-container">
@@ -179,6 +177,8 @@ export default {
     return {
       store,
       services: [],
+
+      showActive:true,
 
       suggestions: null,
       selectedSuggestion: null,
@@ -312,7 +312,8 @@ export default {
           this.$router.replace({
             query: { ...payload }
           }).then(() => {
-            console.log("ROUTE SEARCH REPLACE", this.$route.query)
+            console.log("ROUTE SEARCH REPLACE", this.$route.query),
+            this.showActive=true;
           });
           /*    console.log("this dopo invio", this.$route.query) */
           // this.store.submitResult = 'success';
@@ -470,7 +471,10 @@ export default {
     backdrop-filter: blur(6.3px);
     -webkit-backdrop-filter: blur(6.3px);
     border: 1px solid rgba(255, 255, 255, 0.32);
-    z-index: 50;
+    z-index: 5000000;
+    position: sticky;
+
+
   }
 }
 
@@ -481,11 +485,10 @@ export default {
 
 
 .map-main-container {
-  background-color: $info_color;
+/*   background-color: $info_color; */
   margin-bottom: 200px;
   max-width: 1500px;
   margin: auto;
-
   &>* {
     margin: auto;
   }
