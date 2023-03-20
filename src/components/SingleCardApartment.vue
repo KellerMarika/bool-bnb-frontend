@@ -1,10 +1,10 @@
 <template>
-	<div class="card text-dark border-0">
-		<div class="card text-dark border-0">
+	<div class="card text-dark border-0 bg-transparent">
+		<div class="card text-dark border-0  bg-transparent">
 			<!-- :class="getSponsorizedFrame().isActive ? 'bg-primary' : ''" -->
-			<div class="sponsorized-frame rounded-4"
+			<div class="sponsorized-frame rounded-4 bg-transparent "
 				>
-				<img class="card-img-top mb-2 card-img rounded-4"
+				<img class="card-img-top mb-2 card-img rounded-4 "
 					:src="fetchImage(apartment.cover_img, apartment.images)"
 					alt=""
 					@mouseover="startSlideShow"
@@ -276,6 +276,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.card-img-top{
+	min-width: 200px;
+}
 .sponsorized-frame {
 	padding: 10px;
 	padding-bottom: 6px;

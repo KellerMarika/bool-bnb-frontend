@@ -4,7 +4,7 @@
 			class="search-container d-flex flex-column h-100 justify-content-center align-items-center">
 			<h1 class="display-1 fw-normal text-center text-light p-3 p-lg-5">
 				Il tuo prossimo viaggio parte da:
-				<p class="text-primary" id="cities"> </p>
+				<p class="text-primary mt-3" id="cities"> </p>
 			</h1>
 			<div class="w-75 search-input position-relative">
 				<input
@@ -33,20 +33,19 @@
 		</div>
 	</div>
 
-	<div class="card-container px-sm-2 px-xl-5">
+	<div class="card-container px-sm-2 px-xl-5 overflow-hidden" >
 		<!-- non dovrebbe servire perchè avviene il redirect -->
-		<h2 class="my-3">
-			{{ querySearch ? querySearch : 'Pensati per Te' }}
+		<h2 class="title-cursive  mt-2 mb-0 pb-0">
+		<span class="title-focus ">Occasioni </span>    da non perdere:
 		</h2>
-		<small v-if="apartments && apartments.length"
-			>({{ apartments.length }})risultati trovati</small
-		>
-		<div class="row g-4">
+		
+
+		<div class="scrollbar-container d-flex gap-3 overflow-auto g-4">
 			<!-- LINK ALLO SHOW -->
 			<router-link
 				v-for="apartment in apartments"
-				:to="{name: 'Apartments.show', params: {id: apartment.id}}"
-				v-slot="{singleCard}"
+				:to="{ name: 'Apartments.show', params: { id: apartment.id } }"
+				v-slot="{ singleCard }"
 				class="col-xl-2 col-lg-3 col-md-4 col-sm-6 card-group my-lg-4 my-md-2 my-sm-0">
 				<!-- CARD -->
 				<SingleCardApartment :is="singleCard" :apartment="apartment">
@@ -58,14 +57,14 @@
 </template>
 
 <script>
-import {titles} from '../store';
+import { titles } from '../store';
 import axios from 'axios';
-import {store} from '../store';
+import { store } from '../store';
 import SingleCardApartment from '../components/SingleCardApartment.vue';
 
 export default {
 	name: 'Home',
-	components: {SingleCardApartment},
+	components: { SingleCardApartment },
 	data() {
 		return {
 			store,
@@ -134,10 +133,10 @@ export default {
 		},
 
 		/**FUNZIONE API CALL GET (index).........................
-		 *
-		 * @param {string} thisRoutePath  es= 'apartments/create'
-		 * @param {object} payload es=  {pagination:3}
-		 */
+			*
+			* @param {string} thisRoutePath  es= 'apartments/create'
+			* @param {object} payload es=  {pagination:3}
+			*/
 
 		api_GET(thisRoutePath, payload) {
 			let apiUrl = `${this.store.backedRootUrl}/api${thisRoutePath}`;
@@ -151,7 +150,7 @@ export default {
 					//this.store.loading = false;
 
 					/*      console.log("GET", resp.data) */
-					this.apartments = {...resp.data.data};
+					this.apartments = { ...resp.data.data };
 				})
 				.catch((e) => {
 					if (e.response && e.response.data) {
@@ -169,15 +168,38 @@ export default {
 		titles(this.$route.meta.title);
 		this.api_GET(this.$route.meta.apiRoutePath);
 	},
-	created() {},
+	created() { },
 };
 </script>
+
 <style lang="scss" scoped>
 @use '../styles/generic.scss';
 @use '../styles/partials/variables' as *;
+@use '../styles/partials/fonts.scss' as *;
 
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,700,900');
 
+
+::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 8px $secondary_color;
+    border-radius: 8px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background:$primary_color_light;
+    border-radius: 8px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: $primary_color;
+  }
 /* Base styling */
 .main-banner {
 	background-image: url(../styles/banner-3.jpg);
@@ -207,41 +229,54 @@ export default {
 #cities {
 	color: $primary-color;
 }
+
+
 #cities:after {
 	content: '';
 	animation: spin 8s ease-in-out infinite;
 }
+
 @keyframes spin {
 	0% {
 		content: 'Qui';
 	}
+
 	10% {
 		content: 'Roma';
 	}
+
 	20% {
 		content: 'Milano';
 	}
+
 	30% {
 		content: 'Palermo';
 	}
+
 	40% {
 		content: 'Napoli';
 	}
+
 	50% {
 		content: 'Bari';
 	}
+
 	60% {
 		content: 'Bologna';
 	}
+
 	70% {
 		content: 'Torino';
 	}
+
 	80% {
 		content: 'Venezia';
 	}
+
 	90% {
 		content: 'Genova';
 	}
+
 	100% {
 		content: 'Qui';
 	}
@@ -275,4 +310,19 @@ export default {
 		}
 	}
 }
+
+	.card-container{
+		background-color:lighten($secondary_color, 35%);
+		margin-bottom: 200px;
+		.title-cursive{
+		font-family: 'Gochi Hand', cursive;
+		font-size: 50px;
+		padding-top: 50px;
+		color: $dark_color;
+		.title-focus{
+			color:saturate($primary_color, 20%);
+			font-size: 60px;
+		}
+	}
+	}
 </style>
