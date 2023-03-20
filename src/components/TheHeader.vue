@@ -9,7 +9,7 @@
         </div>
       </a>
 
-      <div class="flex-fill ps-3 pe-2 pe-lg-3 text-end">
+      <div class="flex-fill ps-3 pe-2 pe-lg-3  text-end">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation"><!-- {{ __('Toggle navigation') }} -->
@@ -20,7 +20,7 @@
           <!-- Left Side Of Navbar -->
           
         
-          <ul class="navbar nav me-md-auto align-items-end py-0">
+          <ul class="navbar flex-column flex-md-row  nav me-md-auto align-items-end py-0 fw-semibold">
             <li class="nav-item d-flex flex-column align-items-center">
               <a class="nav-link fs-5  pt-md-4 px-2 "
               :class="this.$route.name=='home'? 'active':''" 
@@ -39,14 +39,14 @@
               <a class="nav-link fs-5  pt-md-4 px-2" 
               :class="this.$route.name=='about'? 'active':''"
               href="/about">
-                About</a>
+                Chi Siamo</a>
               <div class="link-underline m-3 mb-0"></div>
             </li>
             <li class="nav-item  d-flex flex-column align-items-center">
               <a class="nav-link fs-5  pt-md-4 px-2"
               :class="this.$route.name=='contacts'? 'active':''"
               href="/contacts">
-                Contacts</a>
+                Contatti</a>
               <div class="link-underline m-3 mb-0"></div>
             </li>
           </ul>
