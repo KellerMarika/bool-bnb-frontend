@@ -55,26 +55,25 @@
             </select>
           </div>
 
-        </div>
-        <div class="input-container pb-2 col-12">
-          <label class="form-label fw-bold d-block pb-3 ">Scegli i Servizi:</label>
-          <div class="input-container pb-2 row justify-content-center">
+      </div>
+      <div class="input-container pb-2 col-12">
+        <div class="pb-3 dropdown w-auto pt-3 ">
+        <button class="btn btn-secondary col-12 col-md-3 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Scegli i Servizi:</button>
+          <div class="dropdown-menu  px-3 col-12 col-md-4 col-lg-3 ">
+            <div class="dropdown-toggle">
+            <div v-for="(service, i) in services" :key="i" class="text-center d-flex align-items-center py-2">
+              <input class="form-check" type="checkbox" :value="service.id" id="service_{{i}}" v-model="query.services">
+              <label for="service_{{i}}">
+                <i><img :src="'../../public/services-icons/' + service.icon" alt="" /></i>
+                {{ service.name == 'Aria Condizionata' ? 'Clima' : service.name }}
+              </label>
 
-            <div
-                class=" col row  row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-between align-items-baseline mx-0 ">
-              <div v-for="(service, i) in services" :key="i" class="col text-center d-flex align-items-center py-2">
-
-                <input class="form-check" type="checkbox" :value="service.id" id="service_{{i}}" v-model="query.services">
-                <label for="service_{{i}}">
-                  <i><img :src="'../../public/services-icons/' + service.icon" alt="" /></i>
-
-                  {{ service.name == 'Aria Condizionata' ? 'Clima' : service.name }}
-                </label>
-
-              </div>
             </div>
           </div>
+          </div>
         </div>
+        </div>
+      
 
         <div class="d-flex justify-content-center gap-3">
           <button class="btn btn-secondary" typeof="reset" :disabled="loading"> Annulla

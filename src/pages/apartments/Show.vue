@@ -103,9 +103,9 @@
 					<hr />
 
 					<div class="mb-4 mx-2 col-md-8 col-sm-12 m-auto">
-						<div class="fw-semibold">Cosa troverai:</div>
+						<div class="fw-semibold p-1">Cosa troverai:</div>
 						<div class="row gap-1">
-							<span class="col d-flex gap-2 my-services" v-for="service in apartment.services">
+							<span class="col d-flex py-1 gap-2 my-services" v-for="service in apartment.services">
 								<img class="with-icon" :src="'/public/services-icons/' + service.icon" alt="" />
 								{{ service.name }}
 							</span>
