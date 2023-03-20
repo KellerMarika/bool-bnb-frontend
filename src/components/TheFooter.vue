@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-secondary text-light position-relative">
+  <footer class=" text-light position-relative">
     <div class="footer-bg-top-img"></div>
     <div class="container overflow-auto">
 
@@ -36,10 +36,13 @@ export default {
 };
 </script>
 
+
 <style scoped lang="scss">
+@use '../styles/partials/variables.scss' as *;
 footer {
   margin-top: 350px;
   min-height: 200px;
+  background-color: $secondary_color_dark;
 
   .footer-bg-top-img {
     position: absolute;

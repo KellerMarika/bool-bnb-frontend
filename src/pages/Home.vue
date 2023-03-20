@@ -15,10 +15,10 @@
 					placeholder="Scegli destinazione" />
 
 				<ul
-					class="list-group list-group-flush w-100"
+					class="suggestions-container list-group list-group-flush w-100 border-0"
 					v-if="suggestions && suggestions.length > 0">
 					<li
-						class="list-unstyled list-group-item-action list-group-item"
+						class="suggestion-element text-light list-unstyled list-group-item-action list-group-item"
 						v-for="suggestion in suggestions"
 						:key="suggestion.id"
 						@click="selectSuggestion(suggestion)">
@@ -36,7 +36,7 @@
 	<div class="card-container px-sm-2 px-xl-5 overflow-hidden" >
 		<!-- non dovrebbe servire perchè avviene il redirect -->
 		<h2 class="title-cursive  mt-2 mb-0 pb-0">
-		<span class="title-focus ">Occasioni </span>    da non perdere:
+		<span class="title-focus ">Occasioni </span>da non perdere:
 		</h2>
 		
 
@@ -200,7 +200,16 @@ export default {
   ::-webkit-scrollbar-thumb:hover {
     background: $primary_color;
   }
+
 /* Base styling */
+.suggestion-element{
+	background-color: #252e2ecb !important;
+	&:hover{
+		color: $secondary_color_light !important;
+	}
+}
+
+
 .main-banner {
 	background-image: url(../styles/banner-3.jpg);
 	box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.4);
@@ -214,22 +223,18 @@ export default {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-
 	position: relative;
 
 	ul {
 		position: absolute;
 		top: 100%;
 		z-index: 1;
-
 		border-radius: 1rem;
 	}
 }
-
 #cities {
 	color: $primary-color;
 }
-
 
 #cities:after {
 	content: '';
