@@ -9,7 +9,7 @@
 			<div class="w-75 search-input rounded-5 position-relative">
 				<input
 					v-model="querySearchText"
-					class="search__input"
+					class="search__input fs-5 text-capitalize"
 					type="text"
 					@input="getSuggestions"
 					placeholder="Scegli destinazione" />

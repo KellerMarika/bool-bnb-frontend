@@ -27,72 +27,81 @@
             </ul>
           </div>
 
-          <!-- rooms -->
-          <div class="input-container pb-2 col-2 text-start ">
+          <div class="row gap-3 align-items-end">
+
+            <div class="col row row-cols-3">
+              <!-- rooms -->
+              <div class="input-container pb-2 col text-start ">
+                <label class="form-label fw-bold fw-bold" for="min_rooms">min Camere: </label>
+                <select v-model="query.min_rooms" class="form-control rounded-5" id="min_rooms" name="min_rooms">
+                  <option v-for="i in 5" :key="i" :value="i" class=" bg-transparent">
+                    {{ i == 5 ? i + ' +' : i }}
+                  </option>
+                </select>
+              </div>
+
+              <!--     {{-- BEDROOMS QTY ------------- --}} -->
+
+              <div class="input-container text-start pb-2 col">
+                <label class="form-label fw-bold" for="min_beads ">min Letti</label>
+                <select v-model="query.min_beds" class="form-control rounded-5" id="min_beads" name="min_beads">
+                  <option v-for="i in 5" :key="i" :value="i">
+                    {{ i == 5 ? i + ' +' : i }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- radius --------->
+
+              <div class="mb-2 col">
+                <label class="form-label fw-bold me-2 text-start" for="radiusInput">Raggio (km)</label>
+                <select v-model="query.radius" class="form-control rounded-5 " name="radiusInput" value="20">
+                  <option value="20">20</option>
+                  <option value="10">10</option>
+                  <option value="5">-5</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-5 row">
+              <!-- services -->
+              <div class="input-container  pb-2 col">
+                <div class="dropdown w-auto pt-3 ">
+                  <button class="btn btn-primary text-light w-100 dropdown-toggle " type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false">Scegli i Servizi:</button>
 
 
-            <label class="form-label fw-bold fw-bold" for="min_rooms">min Camere: </label>
-            <select v-model="query.min_rooms" class="form-control rounded-5" id="min_rooms" name="min_rooms">
-              <option v-for="i in 5" :key="i" :value="i" class=" bg-transparent">
-                {{ i == 5 ? i + ' +' : i }}
-              </option>
-            </select>
-          </div>
-
-          <!--     {{-- BEDROOMS QTY ------------- --}} -->
-
-          <div class="input-container text-start pb-2 col-2">
-            <label class="form-label fw-bold" for="min_beads ">min Letti</label>
-            <select v-model="query.min_beds" class="form-control rounded-5" id="min_beads" name="min_beads">
-              <option v-for="i in 5" :key="i" :value="i">
-                {{ i == 5 ? i + ' +' : i }}
-              </option>
-            </select>
-          </div>
-
-          <!-- radius --------->
-
-          <div class="mb-2 col-2">
-            <label class="form-label fw-bold me-2 text-start" for="radiusInput">Raggio (km)</label>
-            <select v-model="query.radius" class="form-control rounded-5 " name="radiusInput" value="20">
-              <option value="20">20</option>
-              <option value="10">10</option>
-              <option value="5">-5</option>
-            </select>
-          </div>
+                  <div class="dropdown-menu p-0 w-100">
+                    <div class="dropdown-toggle position-relative">
+                      <div v-for="(service, i) in services" :key="i" class="text-center d-flex align-items-center ">
 
 
-          <!-- services -->
-          <div class="input-container  pb-2 col-4">
-            <div class="dropdown w-auto pt-3 ">
-              <button class="btn btn-primary text-light w-100 dropdown-toggle " type="button" data-bs-toggle="dropdown"
-                  aria-expanded="false">Scegli i Servizi:</button>
+                        <label for="service_{{i}}"
+                            class=" service-label dropdown-item d-flex gap-2 h-100 w-100 position-relative py-2"
+                            :class="(query.services.includes(service.id)) ? 'active' : ''">
 
+                          <input class="service-input form-check position-absolute ms-2 opacity-0 " type="checkbox"
+                              :value="service.id" id="service_{{i}}" style="transform: scale(300%) ;"
+                              v-model="query.services">
 
-              <div class="dropdown-menu p-0 w-100">
-                <div class="dropdown-toggle">
-                  <div v-for="(service, i) in services" :key="i" class="text-center d-flex align-items-center ">
+                          <img class="service-icon"
+                              style="height: 30px; width: 30px;"
+                              :src="'../../public/services-icons/' + service.icon">
 
-
-                    <label for="service_{{i}}" class=" service-label d-flex gap-2 h-100 w-100 position-relative py-2"
-                        :class="(query.services.includes(service.id)) ? 'active' : ''">
-
-                      <input class="service-input form-check position-absolute ms-2 opacity-0 " type="checkbox"
-                          :value="service.id" id="service_{{i}}" style="transform: scale(300%) ;"
-                          v-model="query.services">
-
-                      <img class="service-icon"
-                          style="height: 30px; width: 30px;"
-                          :src="'../../public/services-icons/' + service.icon">
-
-                      <div class="service-title"> {{ service.name == 'Aria Condizionata' ? 'Clima' : service.name }}
+                          <div class="service-title"> {{ service.name == 'Aria Condizionata' ? 'Clima' : service.name }}
+                          </div>
+                        </label>
                       </div>
-                    </label>
+                    </div>
                   </div>
                 </div>
               </div>
+
             </div>
+
           </div>
+
         </div>
 
         <div class="d-flex justify-content-start gap-3">
@@ -461,25 +470,15 @@ export default {
     backdrop-filter: blur(6.3px);
     -webkit-backdrop-filter: blur(6.3px);
     border: 1px solid rgba(255, 255, 255, 0.32);
-
-
-
-
-
-    /*     .dropdown-menu{
-
-    } */
+    z-index: 50;
   }
 }
 
 .service-label.active {
   background-color: lighten($primary_color_light, 10%);
+  z-index: 3 !important;
 }
 
-.service-input:checked+svg {
-  fill: red !important;
-  filter: hue-rotate(90deg);
-}
 
 .map-main-container {
   background-color: $info_color;
@@ -494,7 +493,7 @@ export default {
   .map-container {
     margin: auto;
     overflow: hidden;
-    z-index: -1;
+    z-index: 1;
     min-height: 700px;
     position: relative;
 
@@ -507,6 +506,7 @@ export default {
       bottom: 0;
       right: 0;
       margin: 0 !important;
+      z-index: 2 !important;
     }
   }
 }
