@@ -1,5 +1,5 @@
 <template >
-  <div class="bg-main-container">
+  <div class="bg-main-container" style="padding-top: 80px;">
 
     <fieldset class="container form-container border rounded-4 shadow">
       <legend class=" fw-bold text-primary fs-1 pb-0 pt-5 p-3 text-start">
@@ -69,7 +69,7 @@
                   aria-expanded="false">Scegli i Servizi:</button>
 
 
-              <div class="dropdown-menu w-100 px-3  ">
+              <div class="dropdown-menu p-0 w-100">
                 <div class="dropdown-toggle">
                   <div v-for="(service, i) in services" :key="i" class="text-center d-flex align-items-center ">
 
@@ -456,7 +456,6 @@ export default {
   background: linear-gradient(0deg, rgba(255, 255, 255, 1) 22%, saturate($secondary_color_light, 10%) 100%);
 
   .form-container {
-    margin-top: 80px;
     background: rgba(255, 255, 255, 0.16);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(6.3px);
