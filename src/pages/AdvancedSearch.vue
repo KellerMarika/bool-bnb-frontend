@@ -104,15 +104,17 @@
         <!-- options -->
 
         <div class="d-flex justify-content-between  justify-content-lg-start gap-3">
-          <router-link :to="{ name: 'home' }"
-              class="">
+          
             <button class="btn btn-outline-primary " typeof="reset" >
+              <router-link :to="{ name: 'home' }"
+              class="" >
               <i class="fa-solid fa-reply"></i>
 
               Annulla
+            </router-link>
             </button>
-          </router-link>
 
+      
 
           <button class="btn btn-primary text-light" :disabled="loading">
             <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
