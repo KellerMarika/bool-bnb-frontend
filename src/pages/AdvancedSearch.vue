@@ -1,7 +1,7 @@
 <template >
   <div class="bg-main-container position-relative" style="padding-top: 80px;">
 
-    <fieldset class="container form-container border rounded-4 shadow" @click="showActive=false">
+    <fieldset class="container form-container border rounded-4 shadow" @click="showActive = false">
       <legend class=" fw-bold text-primary fs-1 pb-0 pt-5 p-3 text-start">
         <i class="fa-solid fa-magnifying-glass-location"></i>
         Ricerca Avanzata:
@@ -102,11 +102,18 @@
         </div>
 
         <!-- options -->
+
         <div class="d-flex justify-content-between  justify-content-lg-start gap-3">
-          <button class="btn btn-outline-primary " typeof="reset" :disabled="loading">
-            <i class="fa-solid fa-reply"></i>
-            Annulla
-          </button>
+          <router-link :to="{ name: 'home' }"
+              class="">
+            <button class="btn btn-outline-primary " typeof="reset" >
+              <i class="fa-solid fa-reply"></i>
+
+              Annulla
+            </button>
+          </router-link>
+
+
           <button class="btn btn-primary text-light" :disabled="loading">
             <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             Mostra I Risultati
@@ -115,7 +122,8 @@
       </form>
     </fieldset>
 
-    <section id="search-Result" v-if="showActive===true && selectedSuggestion && apartments" class="pt-lg-5 pt-sm-2 mt-3">
+    <section id="search-Result" v-if="showActive === true && selectedSuggestion && apartments"
+        class="pt-lg-5 pt-sm-2 mt-3">
       <div class="container-fluid p-0">
 
         <div class="map-main-container">
@@ -178,7 +186,7 @@ export default {
       store,
       services: [],
 
-      showActive:true,
+      showActive: true,
 
       suggestions: null,
       selectedSuggestion: null,
@@ -313,7 +321,7 @@ export default {
             query: { ...payload }
           }).then(() => {
             console.log("ROUTE SEARCH REPLACE", this.$route.query),
-            this.showActive=true;
+              this.showActive = true;
           });
           /*    console.log("this dopo invio", this.$route.query) */
           // this.store.submitResult = 'success';
@@ -485,10 +493,11 @@ export default {
 
 
 .map-main-container {
-/*   background-color: $info_color; */
+  /*   background-color: $info_color; */
   margin-bottom: 200px;
   max-width: 1500px;
   margin: auto;
+
   &>* {
     margin: auto;
   }
