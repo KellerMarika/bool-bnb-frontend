@@ -50,33 +50,9 @@
               <div class="link-underline m-3 mb-0"></div>
             </li>
           </ul>
+          
           <!-- Right Side Of Navbar -->
           <ul class="navbar-nav ml-auto align-items-end">
-
-            <!-- Authentication Links -->
-            <!-- <li class="nav-item  d-flex flex-column align-items-center">
-                  <a class="nav-link fs-5  pt-md-4 px-2"
-                      :href="store.backedRootUrl + '/login'">Login</a>
-                  <div class="link-underline m-3 mb-0"></div>
-                </li>
-
-                <li class="nav-item   d-flex flex-column align-items-center">
-                  <a class="nav-link fs-5 pt-md-4 px-2"
-                      :href="store.backedRootUrl + '/register'">Register</a>
-                  <div class="link-underline m-3 mb-0"></div>
-                </li>
- -->
-            <!--       <li class="nav-item  dropdown">
-                  <a id="navbarDropdown" class="nav-link dropdown-toggle fs-5" href="#" role="button"
-                      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                  </a>
-
-                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item fs-5" :href="store.backedRootUrl + '/Admin/dashboard'">Dashboard</a>
-   
-                    <a class="dropdown-item fs-5" :href="store.backedRootUrl + '/Admin/logout'">Logout</a>
-                  </div>
-                </li> -->
 
             <li class="nav-item   d-flex flex-column align-items-center">
               <a class=" fa-solid fa-user-tie nav-link fs-5 pt-md-4 px-2 fs-2"

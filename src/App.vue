@@ -1,7 +1,10 @@
 <template>
 
   <TheHeader></TheHeader>
+  <div class=" a flex-fill">
     <router-view ></router-view>
+  </div>
+
   <TheFooter />
   </template>
   
@@ -26,5 +29,7 @@ import TheHeader from "./components/TheHeader.vue";
   <style lang="scss">
   @use "./styles/generic.scss";
   @use "./styles/partials/variables" as *;
-  
+  a{
+    flex-grow: 10;
+  }
   </style>
