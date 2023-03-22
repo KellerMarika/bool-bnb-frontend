@@ -8,7 +8,7 @@
   <section class="cards-container ">
 
 
-    <div class="row gap-1 px-5 ">
+    <div class="row gap-1 px-5">
 
       <div class="card-container col rounded-3 text-dark px-2">
         <span class="pro">PRO</span>
@@ -26,14 +26,19 @@
         </div>
         <div class="skills">
           <h6 style="color: grey">Skills</h6>
-          <ul class="text-light">
+          <ul class="text-light text-center">
             <li> / </li>
             <li>full-stack Development</li>
-            <li>HTML</li>
-            <li>CSS</li>
+            <li>MySQL</li>
+            <li>PHP</li>
+            <li>Laravel</li>
             <li>JavaScript</li>
-            <li>Php</li>
-            <li>My SQL</li>
+            <li>Vue.js</li>
+            <li>Git</li>
+            <li>bootstrap</li>
+            <li>CSS</li>
+            <li>HTML</li>
+            
           </ul>
         </div>
       </div>
@@ -54,14 +59,19 @@
         </div>
         <div class="skills">
           <h6 style="color: grey">Skills</h6>
-          <ul class="text-light">
+          <ul class="text-light text-center">
             <li> / </li>
             <li>full-stack Development</li>
-            <li>HTML</li>
-            <li>CSS</li>
+            <li>MySQL</li>
+            <li>PHP</li>
+            <li>Laravel</li>
             <li>JavaScript</li>
-            <li>Php</li>
-            <li>My SQL</li>
+            <li>Vue.js</li>
+            <li>Git</li>
+            <li>bootstrap</li>
+            <li>CSS</li>
+            <li>HTML</li>
+            
           </ul>
         </div>
       </div>
@@ -81,14 +91,19 @@
         </div>
         <div class="skills">
           <h6 style="color: grey">Skills</h6>
-          <ul class="text-light">
+          <ul class="text-light text-center">
             <li> / </li>
             <li>full-stack Development</li>
-            <li>HTML</li>
-            <li>CSS</li>
+            <li>MySQL</li>
+            <li>PHP</li>
+            <li>Laravel</li>
             <li>JavaScript</li>
-            <li>Php</li>
-            <li>My SQL</li>
+            <li>Vue.js</li>
+            <li>Git</li>
+            <li>bootstrap</li>
+            <li>CSS</li>
+            <li>HTML</li>
+            
           </ul>
         </div>
       </div>
@@ -108,14 +123,19 @@
         </div>
         <div class="skills">
           <h6 style="color: grey">Skills</h6>
-          <ul class="text-light">
+          <ul class="text-light text-center">
             <li> / </li>
             <li>full-stack Development</li>
-            <li>HTML</li>
-            <li>CSS</li>
+            <li>MySQL</li>
+            <li>PHP</li>
+            <li>Laravel</li>
             <li>JavaScript</li>
-            <li>Php</li>
-            <li>My SQL</li>
+            <li>Vue.js</li>
+            <li>Git</li>
+            <li>bootstrap</li>
+            <li>CSS</li>
+            <li>HTML</li>
+            
           </ul>
         </div>
       </div>
@@ -135,19 +155,24 @@
         </div>
         <div class="skills">
           <h6 style="color: grey">Skills</h6>
-          <ul class="text-light">
+          <ul class="text-light text-center">
             <li> / </li>
             <li>full-stack Development</li>
-            <li>HTML</li>
-            <li>CSS</li>
+            <li>MySQL</li>
+            <li>PHP</li>
+            <li>Laravel</li>
             <li>JavaScript</li>
-            <li>Php</li>
-            <li>My SQL</li>
+            <li>Vue.js</li>
+            <li>Git</li>
+            <li>bootstrap</li>
+            <li>CSS</li>
+            <li>HTML</li>
+            
           </ul>
         </div>
       </div>
 
-    
+
     </div>
   </section>
   <TheFooterVue />
@@ -214,7 +239,7 @@ p {
 }
 
 .cards-container {
-/*   background: rgb(255, 0, 110);
+  /*   background: rgb(255, 0, 110);
   background: linear-gradient(0deg, rgba(255, 0, 110, 1) 0%, rgba(247, 100, 95, 1) 43%, rgba(247, 100, 95, 1) 100%); */
   background: rgb(255, 255, 255);
   background: linear-gradient(0deg, #f8f9fa 22%, saturate($primary_color, 10%) 100%);
@@ -234,7 +259,7 @@ p {
   max-width: 100%;
   text-align: center;
   transform: scale(80%);
-  
+
 
 
   background: rgba(255, 255, 255, 0.16);
@@ -325,4 +350,5 @@ footer i {
 footer a {
   color: #3c97bf;
   text-decoration: none;
-}</style>
+}
+</style>
