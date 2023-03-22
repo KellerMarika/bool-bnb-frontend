@@ -8,7 +8,7 @@
   <section class="cards-container ">
 
 
-    <div class=" d-flex gap-5 px-5  overflow-auto">
+    <div class="row gap-1 px-5 ">
 
       <div class="card-container col rounded-3 text-dark px-2">
         <span class="pro">PRO</span>
@@ -123,7 +123,7 @@
         <span class="pro">PRO</span>
         <img class="round img-fluid" style="max-width: 250px;" src="Mari.jpeg" alt="user" />
         <h3>Mehari Pieropan</h3>
-        <h6>Modena, Emilia Romagna</h6>
+        <h6>Padova, Veneto</h6>
         <p> jr. full-stack web developer</p>
         <div class="buttons">
           <button class="primary">
@@ -219,7 +219,7 @@ p {
   background: rgb(255, 255, 255);
   background: linear-gradient(0deg, #f8f9fa 22%, saturate($primary_color, 10%) 100%);
 
-  padding-top: 120px;
+  padding-top: 20px;
 
 }
 
@@ -233,6 +233,8 @@ p {
   width: 350px;
   max-width: 100%;
   text-align: center;
+  transform: scale(80%);
+  
 
 
   background: rgba(255, 255, 255, 0.16);
